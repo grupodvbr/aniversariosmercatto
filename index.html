@@ -12,6 +12,8 @@
       --muted:#cfc8b0;
       --brand:#d4af37;
       --brand-2:#f5d26a;
+      --ok:#16a34a;
+      --danger:#ef4444;
     }
 
     *{box-sizing:border-box}
@@ -37,7 +39,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:rgba(0,0,0,.3); /* overlay leve */
+      background:rgba(0,0,0,.3);
     }
 
     /* PAINEL DE RESERVA */
@@ -47,7 +49,7 @@
       border-radius:14px;
       padding:18px;
       width:100%;
-      max-width:280px;   /* compacto */
+      max-width:280px;
       z-index:1;
     }
     .section-title{font-size:16px;font-weight:800;margin-bottom:12px;color:var(--brand-2)}
@@ -74,6 +76,8 @@
     .btn{cursor:pointer;border:0;border-radius:999px;padding:12px;font-weight:700}
     .btn-primary{background:linear-gradient(180deg,var(--brand),#c79b1d);color:#1a1500;border:1px solid #d0a62d}
     .btn-line{background:transparent;border:1px solid var(--line);color:var(--text)}
+    .success{background:rgba(22,163,74,.15);color:#a6f3b5;padding:10px;border-radius:8px;font-size:14px}
+    .error{background:rgba(239,68,68,.15);color:#ffc6c6;padding:10px;border-radius:8px;font-size:14px}
 
     /* BLOCOS DE REGRAS */
     .rules{
@@ -97,43 +101,44 @@
   <section class="hero">
     <div class="form-box">
       <div class="section-title">Faça sua reserva</div>
-      <form>
+      <form id="formReserva">
         <div>
           <label>Nome completo</label>
-          <input placeholder="Seu nome" required />
+          <input id="nome" placeholder="Seu nome" required />
         </div>
         <div>
           <label>Email</label>
-          <input type="email" placeholder="seu@email.com" />
+          <input id="email" type="email" placeholder="seu@email.com" />
         </div>
         <div>
           <label>Telefone (com DDD)</label>
-          <input inputmode="tel" placeholder="(99) 99999-9999" required />
+          <input id="telefone" inputmode="tel" placeholder="(99) 99999-9999" required />
         </div>
         <div>
           <label>Quantidade de pessoas</label>
-          <input type="number" min="1" max="50" placeholder="ex.: 4" required />
+          <input id="pessoas" type="number" min="1" max="50" placeholder="ex.: 4" required />
         </div>
         <div>
           <label>Data</label>
-          <input type="date" required />
+          <input id="data" type="date" required />
         </div>
         <div>
           <label>Hora</label>
-          <input type="time" required />
+          <input id="hora" type="time" required />
         </div>
         <div>
           <label>Nº da mesa (opcional)</label>
-          <input placeholder="ex.: 12" />
+          <input id="mesa" placeholder="ex.: 12" />
         </div>
         <div>
           <label>Observações (opcional)</label>
-          <textarea placeholder="Ex.: Preferência por mesa externa, levar bolo, etc."></textarea>
+          <textarea id="observacoes" placeholder="Ex.: Preferência por mesa externa, levar bolo, etc."></textarea>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-primary" type="submit">Reservar agora</button>
-          <a class="btn btn-line" href="#" target="_blank" rel="noopener">Falar com atendente</a>
+          <button id="btnReservar" class="btn btn-primary" type="submit">Reservar agora</button>
+          <a id="btnAtendente" class="btn btn-line" href="#" target="_blank" rel="noopener">Falar com atendente</a>
         </div>
+        <div id="msg" style="margin-top:10px"></div>
       </form>
     </div>
   </section>
@@ -154,5 +159,93 @@
       <li>R$ 500 ou mais → R$ 100 de desconto (limite)</li>
     </ul>
   </section>
+
+<script>
+  const CONFIG = {
+    SHEET_ENDPOINT: "https://script.google.com/macros/s/SEU_SCRIPT_ID/exec",
+    ATENDENTE_WHATS: "5599999999999",
+    ATENDENTE_MSG: "Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
+  };
+
+  const $ = sel => document.querySelector(sel);
+
+  function normalizePhoneBR(p){
+    let raw = String(p||'').replace(/\D+/g,'');
+    if (!raw) return '';
+    raw = raw.replace(/^0+/, '');
+    if (!raw.startsWith('55')) raw = '55' + raw;
+    if (raw.length===12){ const ddd = raw.slice(2,4); const local = raw.slice(4); raw = '55'+ddd+'9'+local; }
+    return raw;
+  }
+  function buildWhatsLink(phoneDigits, text){
+    const encoded = encodeURIComponent(text).replace(/%0D%0A|%0D/g, '%0A');
+    const ua = navigator.userAgent||'';
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile|WhatsApp/i.test(ua);
+    if (isMobile) return `whatsapp://send?phone=${phoneDigits}&text=${encoded}`;
+    return `https://web.whatsapp.com/send?phone=${phoneDigits}&text=${encoded}`;
+  }
+
+  // Atualiza link do atendente
+  $('#btnAtendente').href = buildWhatsLink(CONFIG.ATENDENTE_WHATS, CONFIG.ATENDENTE_MSG);
+
+  // Envio do formulário
+  $('#formReserva').addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    const btn = $('#btnReservar');
+    const msg = $('#msg'); msg.textContent=''; msg.className='';
+
+    const nome = $('#nome').value.trim();
+    const email = $('#email').value.trim();
+    const telefone = normalizePhoneBR($('#telefone').value);
+    const pessoas = $('#pessoas').value.trim();
+    const mesa = $('#mesa').value.trim();
+    const data = $('#data').value;
+    const hora = $('#hora').value;
+    const observacoes = $('#observacoes').value.trim();
+
+    if (!nome || !telefone || !pessoas || !data || !hora){
+      msg.textContent = 'Preencha os campos obrigatórios.';
+      msg.className = 'error';
+      return;
+    }
+
+    const id = 'R'+Date.now().toString(36)+Math.random().toString(36).slice(2,7).toUpperCase();
+    const carimbo = new Date().toISOString();
+    const dataHoraISO = new Date(`${data}T${hora}:00`).toISOString();
+
+    const payload = {
+      ID: id,
+      Carimbo: carimbo,
+      Nome: nome,
+      Email: email,
+      Telefone: telefone,
+      Pessoas: pessoas,
+      Mesa: mesa,
+      DataHora: dataHoraISO,
+      Status: 'Pendente',
+      Observacoes: observacoes
+    };
+
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    try{
+      const r = await fetch(CONFIG.SHEET_ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      if (r.ok){
+        msg.innerHTML = `<div class="success"><b>Reserva enviada!</b><br>Protocolo: <b>${id}</b>.</div>`;
+        $('#formReserva').reset();
+      }else{
+        throw new Error('Falha ao enviar');
+      }
+    }catch(err){
+      console.error(err);
+      msg.innerHTML = `<div class="error">Não foi possível enviar sua reserva agora.</div>`;
+    }finally{
+      btn.disabled = false; btn.textContent = 'Reservar agora';
+    }
+  });
+</script>
 </body>
 </html>
