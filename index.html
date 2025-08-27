@@ -2,8 +2,33 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
+  <!-- Impede zoom no mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
+
+  <!-- ===================== COMPARTILHAMENTO (PREVIEW) ===================== -->
+  <!-- COLE AQUI O LINK DIRETO DA IMAGEM QUE QUER NA PRÉVIA (ideal 1200x630) -->
+  <!-- Ex.: https://seu-dominio.com/og-banner.jpg  (precisa ser https e público) -->
+  <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+  <meta property="og:title" content="Reserva de Aniversário • Mercatto Delícia" />
+  <meta property="og:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
+  <meta property="og:type" content="website" />
+  <!-- Se o seu site ficará em GitHub Pages, ajuste a URL abaixo para a final: -->
+  <meta property="og:url" content="https://grupodvbr.github.io/aniversariosmercatto/" />
+  <!-- Dimensões recomendadas (ajuda o WhatsApp/Facebook a renderizar) -->
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card (algumas plataformas usam isso) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Reserva de Aniversário • Mercatto Delícia" />
+  <meta name="twitter:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
+  <meta name="twitter:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+
+  <!-- Fallback antigo que alguns scrapers respeitam -->
+  <link rel="image_src" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+  <!-- ===================================================================== -->
+
   <style>
     :root{
       --brand:#d4af37;
@@ -70,49 +95,19 @@
       font-size:18px;
     }
     .close{
-      background:none;
-      border:0;
-      color:var(--text);
-      font-size:26px;
-      float:right;
-      cursor:pointer;
+      background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer;
     }
 
     form{display:grid;gap:12px;margin-top:10px}
     label{font-size:16px;color:var(--brand-2)}
     input,textarea{
-      width:100%;
-      padding:12px;
-      border-radius:8px;
-      border:1px solid var(--line);
-      background:#0c0d0f;
-      color:var(--text);
-      font-size:16px;
+      width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0c0d0f;color:var(--text);font-size:16px;
     }
     textarea{min-height:70px;resize:vertical}
 
-    /* BLOCO DE INFO ABAIXO DA IMAGEM */
-    section.info{
-      padding:20px;
-      background:#0a0a0a;
-    }
-    section.info h2{
-      font-size:20px;
-      color:var(--brand-2);
-      margin:0 0 10px;
-    }
-    section.info p, section.info li{
-      font-size:15px;
-      color:var(--text);
-      margin:6px 0;
-    }
-
     /* CONFETES */
     #confetti-canvas{
-      position:fixed;
-      top:0;left:0;width:100%;height:100%;
-      pointer-events:none;
-      z-index:2000;
+      position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000;
     }
   </style>
 </head>
@@ -125,7 +120,6 @@
     <button class="btn" id="abrirReserva">Reservar</button>
     <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
   </div>
-
 
   <!-- MODAL RESERVA -->
   <div class="modal" id="modalReserva">
@@ -189,15 +183,12 @@
         ctx.fillStyle=c.color;
         ctx.fill();
       });
-      update();
-    }
-    function update(){
       confs.forEach(c=>{
         c.y+=c.d*4;
         if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
       });
     }
-    let interval=setInterval(draw,20);
+    const interval=setInterval(draw,20);
     setTimeout(()=>{clearInterval(interval);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
