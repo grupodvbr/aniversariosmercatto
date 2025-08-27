@@ -2,12 +2,10 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <!-- Impede zoom no mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
 
   <!-- ===================== COMPARTILHAMENTO (PREVIEW) ===================== -->
-  <!-- COLE AQUI O LINK DIRETO DA IMAGEM DA PRÉVIA (ideal 1200x630, pública/https) -->
   <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
   <meta property="og:title" content="Reserva de Aniversário • Mercatto Delícia" />
   <meta property="og:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
@@ -31,92 +29,67 @@
       --text:#f8f7f4;
       --line:#292929;
     }
-
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:#000}
 
-    /* HERO: imagem cheia */
+    /* HERO imagem cheia */
     .hero{
-      position:relative;
       background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true') no-repeat center center;
       background-size:cover;
       min-height:100vh;
     }
 
-    /* BOTÕES FIXOS NO FINAL DA TELA */
+    /* Botões fixos no final */
     .actions{
-      position:fixed;
-      bottom:20px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      gap:20px;
-      z-index:100;
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      display:flex;gap:20px;z-index:100;
     }
     .btn{
-      cursor:pointer;
-      border:0;
-      border-radius:999px;
-      padding:14px 22px;
-      font-weight:700;
-      font-size:15px;
-      color:#1a1500;
+      cursor:pointer;border:0;border-radius:999px;padding:14px 22px;
+      font-weight:700;font-size:15px;color:#1a1500;
       background:linear-gradient(180deg,var(--brand),#c79b1d);
-      border:1px solid #d0a62d;
-      box-shadow:0 0 8px rgba(212,175,55,.6);
+      border:1px solid #d0a62d;box-shadow:0 0 8px rgba(212,175,55,.6);
       transition:transform .2s ease, box-shadow .2s ease;
       text-decoration:none;
     }
     .btn:hover{transform:scale(1.05);box-shadow:0 0 14px rgba(245,210,106,.9)}
 
-    /* POPUP (modal) */
+    /* Modal popup */
     .modal{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,.7);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:999;
-      padding:10px;
+      position:fixed;inset:0;background:rgba(0,0,0,.7);
+      display:none;align-items:center;justify-content:center;z-index:999;padding:10px;
     }
     .modal.active{display:flex}
     .modal-content{
       background:rgba(17,18,20,.95);
-      padding:20px;
-      border-radius:14px;
-      max-width:400px;
-      width:100%;
-      color:var(--text);
-      font-size:18px;
+      padding:20px;border-radius:14px;
+      max-width:420px;width:100%;color:var(--text);font-size:18px;
+      max-height:90vh;overflow-y:auto;   /* rolagem dentro do modal */
     }
-    .close{
-      background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer;
-    }
+    .close{background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer}
 
     form{display:grid;gap:12px;margin-top:10px}
     label{font-size:16px;color:var(--brand-2)}
     input,textarea{
-      width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0c0d0f;color:var(--text);font-size:16px;
+      width:100%;padding:12px;border-radius:8px;
+      border:1px solid var(--line);background:#0c0d0f;color:var(--text);font-size:16px;
     }
     textarea{min-height:70px;resize:vertical}
 
-    /* CONFETES */
-    #confetti-canvas{
-      position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000;
-    }
+    /* Confetes */
+    #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000}
   </style>
 </head>
 <body>
-  <!-- HERO COM IMAGEM -->
   <section class="hero"></section>
 
-  <!-- BOTÕES FIXOS -->
+  <!-- Botões -->
   <div class="actions">
     <button class="btn" id="abrirReserva">Reservar</button>
     <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
   </div>
 
-  <!-- MODAL RESERVA -->
+  <!-- Modal Reserva -->
   <div class="modal" id="modalReserva">
     <div class="modal-content">
       <button class="close" id="fecharReserva">&times;</button>
@@ -125,7 +98,7 @@
         <div><label>Nome completo</label><input id="nome" required></div>
         <div><label>Email</label><input id="email" type="email"></div>
         <div><label>Telefone (com DDD)</label><input id="telefone" required></div>
-        <div><label>Qtd. Pessoas</label><input id="pessoas" type="number" min="1" max="50" required></div>
+        <div><label>Qtd. Pessoas</label><input id="pessoas" type="number" min="1" max="1000" required></div>
         <div><label>Data</label><input id="data" type="date" required></div>
         <div><label>Hora</label><input id="hora" type="time" required></div>
         <div><label>Nº da mesa (opcional)</label><input id="mesa"></div>
@@ -139,118 +112,69 @@
   <canvas id="confetti-canvas"></canvas>
 
 <script>
-  /* =================== CONFIG =================== */
   const CONFIG = {
-    SHEET_ENDPOINT:"https://script.google.com/macros/s/AKfycby_7QT-K_1-PSweGd4VVjb51IPK-ZfMMp0K_ewuKpYQkEwlahqc8Z41SEe9Z_Fg0i2l/exec", // <-- troque pelo seu Web App do Apps Script
-    ATENDENTE_WHATS:"557736135148", // número (DDI+DDD+fone)
+    SHEET_ENDPOINT:"https://script.google.com/macros/s/AKfycby_7QT-K_1-PSweGd4VVjb51IPK-ZfMMp0K_ewuKpYQkEwlahqc8Z41SEe9Z_Fg0i2l/exec",
+    ATENDENTE_WHATS:"557736135148",
     ATENDENTE_MSG:"Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
   };
 
   const $=sel=>document.querySelector(sel);
-
-  /* Link do atendente (WhatsApp) */
-  function buildWhats(phone,text){
-    return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-  }
+  function buildWhats(phone,text){return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`}
   $('#btnAtendente').href=buildWhats(CONFIG.ATENDENTE_WHATS,CONFIG.ATENDENTE_MSG);
 
-  /* Modal abrir/fechar */
+  // Modal
   $('#abrirReserva').onclick=()=>$('#modalReserva').classList.add('active');
   $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
   window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
 
-  /* Confetes */
+  // Confetti
   function confetti(){
-    const canvas=$('#confetti-canvas');
-    const ctx=canvas.getContext('2d');
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
+    const canvas=$('#confetti-canvas'),ctx=canvas.getContext('2d');
+    canvas.width=innerWidth;canvas.height=innerHeight;
     const confs=Array.from({length:120}).map(()=>({
-      x:Math.random()*canvas.width,
-      y:-Math.random()*canvas.height,
-      r:Math.random()*6+4,
-      d:Math.random()*0.5+0.5,
+      x:Math.random()*canvas.width,y:-Math.random()*canvas.height,
+      r:Math.random()*6+4,d:Math.random()*0.5+0.5,
       color:`hsl(${Math.random()*360},100%,50%)`
     }));
     function draw(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
       confs.forEach(c=>{
-        ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2,false);
-        ctx.fillStyle=c.color; ctx.fill();
-        c.y+=c.d*4; if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
+        ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,2*Math.PI);
+        ctx.fillStyle=c.color;ctx.fill();
+        c.y+=c.d*4;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
       });
     }
     const id=setInterval(draw,20);
     setTimeout(()=>{clearInterval(id);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
-  /* =================== ENVIO PARA A PLANILHA =================== */
-  // Sua planilha tem os cabeçalhos:
-  // ID | Carimbo | Nome | Email | Telefone | Pessoas | Mesa | Cardapio |
-  // DataHora | ValorEstimado | PagamentoAntecipado | Banco | ValorFinalPago |
-  // Status | Observacoes | NomeArquivo | ArquivoURL
-  //
-  // Preenchemos só os campos do formulário e o restante vai vazio (""),
-  // garantindo que cada valor caia na coluna correta.
-  $('#formReserva').addEventListener('submit', async (ev)=>{
+  // Envio
+  $('#formReserva').addEventListener('submit',async(ev)=>{
     ev.preventDefault();
+    const nome=$('#nome').value.trim(), email=$('#email').value.trim(),
+          telefone=$('#telefone').value.trim(), pessoas=$('#pessoas').value.trim(),
+          mesa=$('#mesa').value.trim(), data=$('#data').value, hora=$('#hora').value,
+          observacoes=$('#observacoes').value.trim();
+    if(!nome||!telefone||!pessoas||!data||!hora){$('#msg').textContent="Preencha os campos obrigatórios.";return;}
 
-    const nome = $('#nome').value.trim();
-    const email = $('#email').value.trim();
-    const telefone = $('#telefone').value.trim();
-    const pessoas = $('#pessoas').value.trim();
-    const mesa = $('#mesa').value.trim();
-    const data = $('#data').value;  // yyyy-mm-dd
-    const hora = $('#hora').value;  // HH:MM
-    const observacoes = $('#observacoes').value.trim();
+    const id='R'+Date.now().toString(36).toUpperCase();
+    const carimbo=new Date().toISOString();
+    const dataHoraISO=new Date(`${data}T${hora}:00`).toISOString();
 
-    if(!nome||!telefone||!pessoas||!data||!hora){
-      $('#msg').textContent="Preencha os campos obrigatórios."; return;
-    }
-
-    const id = 'R'+Date.now().toString(36).toUpperCase();
-    const carimbo = new Date().toISOString();
-    const dataHoraISO = new Date(`${data}T${hora}:00`).toISOString();
-
-    // Objeto com TODAS as colunas na ordem da planilha
-    const row = {
-      ID: id,
-      Carimbo: carimbo,
-      Nome: nome,
-      Email: email,
-      Telefone: telefone,
-      Pessoas: pessoas,
-      Mesa: mesa,
-      Cardapio: "",                 // ignorada
-      DataHora: dataHoraISO,
-      ValorEstimado: "",            // ignorada
-      PagamentoAntecipado: "",      // ignorada
-      Banco: "",                    // ignorada
-      ValorFinalPago: "",           // ignorada
-      Status: "Pendente",
-      Observacoes: observacoes,
-      NomeArquivo: "",              // ignorada
-      ArquivoURL: ""                // ignorada
+    const row={
+      ID:id,Carimbo:carimbo,Nome:nome,Email:email,Telefone:telefone,
+      Pessoas:pessoas,Mesa:mesa,Cardapio:"",DataHora:dataHoraISO,
+      ValorEstimado:"",PagamentoAntecipado:"",Banco:"",ValorFinalPago:"",
+      Status:"Pendente",Observacoes:observacoes,NomeArquivo:"",ArquivoURL:""
     };
 
-    const btn = ev.submitter; if(btn){ btn.disabled=true; btn.textContent='Enviando…'; }
+    const btn=ev.submitter; if(btn){btn.disabled=true;btn.textContent='Enviando…'}
     try{
-      const r = await fetch(CONFIG.SHEET_ENDPOINT, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(row)
-      });
-      if(!r.ok) throw new Error('Falha ao enviar');
-
-      $('#msg').textContent="Reserva enviada com sucesso!";
-      $('#formReserva').reset();
-      confetti();
-    }catch(e){
-      console.error(e);
-      $('#msg').textContent="Não foi possível enviar agora. Tente novamente.";
-    }finally{
-      if(btn){ btn.disabled=false; btn.textContent='Enviar reserva'; }
-    }
+      const r=await fetch(CONFIG.SHEET_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+      if(!r.ok) throw new Error('Falha');
+      $('#msg').textContent="Reserva enviada com sucesso!";$('#formReserva').reset();confetti();
+    }catch(e){console.error(e);$('#msg').textContent="Erro ao enviar. Tente novamente."}
+    finally{if(btn){btn.disabled=false;btn.textContent='Enviar reserva'}}
   });
 </script>
 </body>
