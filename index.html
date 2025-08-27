@@ -10,48 +10,42 @@
       --brand-2:#f5d26a;
       --text:#f8f7f4;
       --line:#292929;
-      --panel:#111214;
     }
 
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:#000}
 
-    /* HERO COM A IMAGEM DE FUNDO */
+    /* HERO: imagem cheia */
     .hero{
       position:relative;
-      background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2015.21.11_b5d8c770.jpg?raw=true') no-repeat center top;
+      background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2015.21.11_b5d8c770.jpg?raw=true') no-repeat center center;
       background-size:cover;
       min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end; /* joga conteúdo pro final */
-      align-items:center;
-      padding-bottom:120px; /* espaço pros botões */
     }
 
-    /* BOTÕES NO FINAL DA TELA */
+    /* BOTÕES FIXOS NO FINAL DA TELA */
     .actions{
-      display:flex;
-      gap:16px;
-      position:absolute;
+      position:fixed;
       bottom:20px;
       left:50%;
       transform:translateX(-50%);
-      z-index:10;
+      display:flex;
+      gap:20px;
+      z-index:100;
     }
     .btn{
       cursor:pointer;
       border:0;
       border-radius:999px;
-      padding:12px 22px;
+      padding:14px 22px;
       font-weight:700;
       font-size:15px;
       color:#1a1500;
-      text-decoration:none;
       background:linear-gradient(180deg,var(--brand),#c79b1d);
       border:1px solid #d0a62d;
       box-shadow:0 0 8px rgba(212,175,55,.6);
       transition:transform .2s ease, box-shadow .2s ease;
+      text-decoration:none;
     }
     .btn:hover{transform:scale(1.05);box-shadow:0 0 14px rgba(245,210,106,.9)}
 
@@ -73,12 +67,7 @@
       max-width:400px;
       width:100%;
       color:var(--text);
-      animation:fadeIn .3s ease;
       font-size:18px;
-    }
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(-20px)}
-      to{opacity:1;transform:translateY(0)}
     }
     .close{
       background:none;
@@ -102,7 +91,7 @@
     }
     textarea{min-height:70px;resize:vertical}
 
-    /* SEÇÕES ABAIXO DA FOTO */
+    /* BLOCO DE INFO ABAIXO DA IMAGEM */
     section.info{
       padding:20px;
       background:#0a0a0a;
@@ -118,7 +107,7 @@
       margin:6px 0;
     }
 
-    /* CANVAS DOS CONFETES */
+    /* CONFETES */
     #confetti-canvas{
       position:fixed;
       top:0;left:0;width:100%;height:100%;
@@ -128,15 +117,16 @@
   </style>
 </head>
 <body>
-  <!-- HERO COM IMAGEM E BOTÕES -->
-  <section class="hero">
-    <div class="actions">
-      <button class="btn" id="abrirReserva">Reservar</button>
-      <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
-    </div>
-  </section>
+  <!-- HERO COM IMAGEM -->
+  <section class="hero"></section>
 
-  <!-- SEÇÃO DE REGRAS -->
+  <!-- BOTÕES FIXOS -->
+  <div class="actions">
+    <button class="btn" id="abrirReserva">Reservar</button>
+    <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
+  </div>
+
+  <!-- REGRAS -->
   <section class="info">
     <h2>Regras</h2>
     <p>✔ Válido apenas no mês do aniversário (com documento).</p>
@@ -144,7 +134,7 @@
     <p>✔ Um benefício por aniversariante.</p>
   </section>
 
-  <!-- SEÇÃO DE EXEMPLOS -->
+  <!-- EXEMPLOS -->
   <section class="info">
     <h2>Exemplos de desconto</h2>
     <ul>
@@ -155,7 +145,7 @@
     </ul>
   </section>
 
-  <!-- MODAL DE RESERVA -->
+  <!-- MODAL RESERVA -->
   <div class="modal" id="modalReserva">
     <div class="modal-content">
       <button class="close" id="fecharReserva">&times;</button>
@@ -175,7 +165,6 @@
     </div>
   </div>
 
-  <!-- CANVAS CONFETTI -->
   <canvas id="confetti-canvas"></canvas>
 
 <script>
