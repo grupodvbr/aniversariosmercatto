@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
-  <meta name="description" content="Página de reservas de aniversário com envio para planilha do Google e botão de falar com atendente pelo WhatsApp.">
   <style>
     :root{
       --bg:#0a0a0a;
@@ -18,119 +17,93 @@
     }
 
     *{box-sizing:border-box}
-    html,body{margin:0;background:linear-gradient(180deg,#0b0b0c, #0a0a0a 60%);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    html,body{margin:0;background:#0a0a0a;color:var(--text);font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif}
     a{color:inherit}
 
-    .container{max-width:980px;margin:0 auto;padding:16px}
+    body{background:url('COLOQUE_AQUI_O_LINK_DA_FOTO_DE_FUNDO') no-repeat center top fixed;background-size:cover;}
 
-    /* HERO */
-    .hero{position:relative;overflow:hidden}
-    .hero img{width:100%;height:clamp(220px,48vh,520px);object-fit:cover;object-position:center top;filter:brightness(.72) contrast(1.05)}
-    .hero:after{content:"";position:absolute;inset:auto 0 0 0;height:64px;background:linear-gradient(180deg,rgba(10,10,10,0),rgba(10,10,10,.95));}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:-1}
 
-    /* CARD */
-    .card{background:rgba(17,18,20,.84);backdrop-filter:saturate(120%) blur(4px);border:1px solid #1f1f1f;border-radius:18px;padding:16px}
-    .card + .card{margin-top:12px}
+    .container{max-width:960px;margin:0 auto;padding:20px}
+
+    .card{background:rgba(17,18,20,.92);border-radius:18px;padding:20px;width:100%;max-width:480px;margin:20px auto}
+    .section-title{font-size:20px;font-weight:800;margin-bottom:12px;color:var(--brand-2)}
 
     form{display:grid;gap:12px}
     label{font-size:12px;color:var(--muted)}
-    input,select,textarea,button{font:inherit}
-    input,select,textarea{width:100%;background:#0c0d0f;border:1px solid var(--line);color:var(--text);padding:12px;border-radius:12px;outline:none}
-    input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 2px rgba(212,175,55,.18)}
+    input,textarea,button{font:inherit}
+    input,textarea{width:100%;background:#0c0d0f;border:1px solid var(--line);color:var(--text);padding:12px;border-radius:12px;outline:none}
+    input:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 2px rgba(212,175,55,.18)}
     textarea{min-height:96px;resize:vertical}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-    @media (max-width:860px){.row,.row-3{grid-template-columns:1fr}}
-
-    .hint{font-size:12px;color:var(--muted);opacity:.85;margin-top:4px}
 
     .btn{cursor:pointer;border:0;border-radius:999px;padding:14px 18px;font-weight:800;letter-spacing:.3px}
     .btn-primary{background:linear-gradient(180deg,var(--brand),#c79b1d);color:#1a1500;border:1px solid #d0a62d}
     .btn-line{background:transparent;border:1px solid var(--line);color:var(--text)}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
 
-    .sticky-cta{position:sticky;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(10,10,10,.05),rgba(10,10,10,.8));backdrop-filter:blur(6px);padding:12px;border-top:1px solid #1a1a1a;display:flex;gap:10px}
-
-    .section-title{font-size:18px;font-weight:800;margin:6px 0 12px 0;letter-spacing:.2px}
-
-    .grid-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:860px){.grid-two{grid-template-columns:1fr}}
-
-    .note{font-size:13px;color:var(--muted)}
-    .success{border:1px solid rgba(22,163,74,.35);background:rgba(22,163,74,.08);color:#c7f7d4;padding:12px;border-radius:10px}
-    .error{border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:#ffd5d5;padding:12px;border-radius:10px}
-
-    footer{color:var(--muted);font-size:12px;padding:24px 16px;text-align:center}
+    .rules{background:rgba(17,18,20,.92);padding:20px;border-radius:18px;max-width:480px;margin:20px auto}
+    .rules h2{font-size:18px;color:var(--brand-2);margin-top:0}
+    .rules p,.rules li{font-size:14px;color:var(--muted);margin:4px 0}
   </style>
 </head>
 <body>
-  <header class="hero">
-    <img id="heroImg" src="https://github.com/ClenaStore/aniversarios/raw/main/pages/api/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg" alt="Banner Aniversário Mercatto Delícia" />
-  </header>
+  <div class="overlay"></div>
 
-  <main class="container" id="app">
-    <section class="card">
+  <div class="container">
+    <div class="card">
       <div class="section-title">Faça sua reserva</div>
       <form id="formReserva">
-        <div class="row">
-          <div>
-            <label>Nome completo</label>
-            <input id="nome" placeholder="Seu nome" required />
-          </div>
-          <div>
-            <label>Email</label>
-            <input id="email" type="email" placeholder="seu@email.com" />
-          </div>
+        <div>
+          <label>Nome completo</label>
+          <input id="nome" placeholder="Seu nome" required />
         </div>
-        <div class="row">
-          <div>
-            <label>Telefone (com DDD)</label>
-            <input id="telefone" inputmode="tel" placeholder="(99) 99999-9999" required />
-            <div class="hint">Usaremos para confirmar sua reserva.</div>
-          </div>
-          <div>
-            <label>Quantidade de pessoas</label>
-            <input id="pessoas" type="number" inputmode="numeric" min="1" max="50" placeholder="ex.: 4" required />
-          </div>
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" placeholder="seu@email.com" />
         </div>
-        <div class="row-3">
-          <div>
-            <label>Data</label>
-            <input id="data" type="date" required />
-          </div>
-          <div>
-            <label>Hora</label>
-            <input id="hora" type="time" required />
-          </div>
-          <div>
-            <label>Nº da mesa (opcional)</label>
-            <input id="mesa" placeholder="ex.: 12" />
-          </div>
+        <div>
+          <label>Telefone (com DDD)</label>
+          <input id="telefone" inputmode="tel" placeholder="(99) 99999-9999" required />
+        </div>
+        <div>
+          <label>Quantidade de pessoas</label>
+          <input id="pessoas" type="number" inputmode="numeric" min="1" max="50" placeholder="ex.: 4" required />
+        </div>
+        <div>
+          <label>Data</label>
+          <input id="data" type="date" required />
+        </div>
+        <div>
+          <label>Hora</label>
+          <input id="hora" type="time" required />
+        </div>
+        <div>
+          <label>Nº da mesa (opcional)</label>
+          <input id="mesa" placeholder="ex.: 12" />
         </div>
         <div>
           <label>Observações (opcional)</label>
           <textarea id="observacoes" placeholder="Ex.: Preferência por mesa externa, levar bolo, etc."></textarea>
         </div>
-        <div class="grid-two">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button id="btnReservar" class="btn btn-primary" type="submit">Reservar agora</button>
           <a id="btnAtendente" class="btn btn-line" href="#" target="_blank" rel="noopener">Falar com atendente</a>
         </div>
         <div id="msg" style="margin-top:10px"></div>
       </form>
-    </section>
+    </div>
 
-    <section class="card">
-      <div class="section-title">Regras</div>
-      <p class="note">Válido apenas no mês do aniversário (com documento). Exclusivo para consumo no local. Um benefício por aniversariante. Desconto aplicado em múltiplos de R$ 20 até o limite de R$ 100.</p>
+    <section class="rules">
+      <h2>Regras</h2>
+      <p>Válido apenas no mês do aniversário (com documento). Exclusivo para consumo no local. Um benefício por aniversariante.</p>
+      <h2>Exemplos de desconto</h2>
+      <ul>
+        <li>R$ 100 → R$ 20 de desconto</li>
+        <li>R$ 200 → R$ 40 de desconto</li>
+        <li>R$ 300 → R$ 60 de desconto</li>
+        <li>R$ 500 ou mais → R$ 100 de desconto (limite)</li>
+      </ul>
     </section>
-  </main>
-
-  <div class="sticky-cta container">
-    <button class="btn btn-primary" id="ctaReservar">Reservar</button>
-    <a id="ctaAtendente" class="btn btn-line" href="#" target="_blank" rel="noopener">Atendente</a>
   </div>
-
-  <footer>Mercatto Delícia • © <span id="year"></span></footer>
 
 <script>
   const CONFIG = {
@@ -149,7 +122,6 @@
     if (raw.length===12){ const ddd = raw.slice(2,4); const local = raw.slice(4); raw = '55'+ddd+'9'+local; }
     return raw;
   }
-  function ensureHttp(u){ return /^https?:\/\//i.test(u)?u:(u?('https://'+u):''); }
   function buildWhatsLink(phoneDigits, text){
     const encoded = encodeURIComponent(text).replace(/%0D%0A|%0D/g, '%0A');
     const ua = navigator.userAgent||'';
@@ -157,19 +129,6 @@
     if (isMobile) return `whatsapp://send?phone=${phoneDigits}&text=${encoded}`;
     return `https://web.whatsapp.com/send?phone=${phoneDigits}&text=${encoded}`;
   }
-
-  $('#year').textContent = new Date().getFullYear();
-
-  function refreshAttendantLinks(){
-    const phone = normalizePhoneBR(CONFIG.ATENDENTE_WHATS);
-    const text = CONFIG.ATENDENTE_MSG;
-    const link = buildWhatsLink(phone, text);
-    $('#btnAtendente').href = link;
-    $('#ctaAtendente').href = link;
-  }
-  refreshAttendantLinks();
-
-  $('#ctaReservar').addEventListener('click', ()=> { document.getElementById('nome').focus(); window.scrollTo({top:document.getElementById('formReserva').offsetTop-16, behavior:'smooth'}); });
 
   $('#formReserva').addEventListener('submit', async (ev)=>{
     ev.preventDefault();
@@ -213,17 +172,15 @@
       const r = await fetch(CONFIG.SHEET_ENDPOINT,{
         method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
       });
-      const ok = r.ok; let data; try{ data = await r.json(); }catch{ }
-
-      if (ok){
-        msg.innerHTML = `<div class="success"><b>Reserva enviada!</b><br>Seu protocolo: <b>${id}</b>. Entraremos em contato para confirmar.</div>`;
+      if (r.ok){
+        msg.innerHTML = `<div class="success"><b>Reserva enviada!</b><br>Protocolo: <b>${id}</b>.</div>`;
         $('#formReserva').reset();
       }else{
-        throw new Error((data&&data.error)||'Falha ao enviar');
+        throw new Error('Falha ao enviar');
       }
     }catch(err){
       console.error(err);
-      msg.innerHTML = `<div class="error">Não foi possível enviar sua reserva agora. Tente novamente em instantes.</div>`;
+      msg.innerHTML = `<div class="error">Não foi possível enviar sua reserva agora.</div>`;
     }finally{
       btn.disabled = false; btn.textContent = 'Reservar agora';
     }
