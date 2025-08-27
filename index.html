@@ -7,25 +7,20 @@
   <title>Reserva de Aniversário • Mercatto Delícia</title>
 
   <!-- ===================== COMPARTILHAMENTO (PREVIEW) ===================== -->
-  <!-- COLE AQUI O LINK DIRETO DA IMAGEM QUE QUER NA PRÉVIA (ideal 1200x630) -->
-  <!-- Ex.: https://seu-dominio.com/og-banner.jpg  (precisa ser https e público) -->
+  <!-- COLE AQUI O LINK DIRETO DA IMAGEM DA PRÉVIA (ideal 1200x630, pública/https) -->
   <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
   <meta property="og:title" content="Reserva de Aniversário • Mercatto Delícia" />
   <meta property="og:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
   <meta property="og:type" content="website" />
-  <!-- Se o seu site ficará em GitHub Pages, ajuste a URL abaixo para a final: -->
   <meta property="og:url" content="https://grupodvbr.github.io/aniversariosmercatto/" />
-  <!-- Dimensões recomendadas (ajuda o WhatsApp/Facebook a renderizar) -->
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter Card (algumas plataformas usam isso) -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Reserva de Aniversário • Mercatto Delícia" />
   <meta name="twitter:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
   <meta name="twitter:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
 
-  <!-- Fallback antigo que alguns scrapers respeitam -->
   <link rel="image_src" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
   <!-- ===================================================================== -->
 
@@ -144,25 +139,27 @@
   <canvas id="confetti-canvas"></canvas>
 
 <script>
+  /* =================== CONFIG =================== */
   const CONFIG = {
-    SHEET_ENDPOINT:"https://script.google.com/macros/s/SEU_SCRIPT_ID/exec",
-    ATENDENTE_WHATS:"5599999999999",
+    SHEET_ENDPOINT:"https://script.google.com/macros/s/SEU_SCRIPT_ID/exec", // <-- troque pelo seu Web App do Apps Script
+    ATENDENTE_WHATS:"5599999999999", // número (DDI+DDD+fone)
     ATENDENTE_MSG:"Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
   };
 
   const $=sel=>document.querySelector(sel);
 
+  /* Link do atendente (WhatsApp) */
   function buildWhats(phone,text){
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
   }
   $('#btnAtendente').href=buildWhats(CONFIG.ATENDENTE_WHATS,CONFIG.ATENDENTE_MSG);
 
-  // Modal abrir/fechar
+  /* Modal abrir/fechar */
   $('#abrirReserva').onclick=()=>$('#modalReserva').classList.add('active');
   $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
   window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
 
-  // Confetti
+  /* Confetes */
   function confetti(){
     const canvas=$('#confetti-canvas');
     const ctx=canvas.getContext('2d');
@@ -170,7 +167,7 @@
     canvas.height=window.innerHeight;
     const confs=Array.from({length:120}).map(()=>({
       x:Math.random()*canvas.width,
-      y:Math.random()*canvas.height-canvas.height,
+      y:-Math.random()*canvas.height,
       r:Math.random()*6+4,
       d:Math.random()*0.5+0.5,
       color:`hsl(${Math.random()*360},100%,50%)`
@@ -178,26 +175,82 @@
     function draw(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
       confs.forEach(c=>{
-        ctx.beginPath();
-        ctx.arc(c.x,c.y,c.r,0,Math.PI*2,false);
-        ctx.fillStyle=c.color;
-        ctx.fill();
-      });
-      confs.forEach(c=>{
-        c.y+=c.d*4;
-        if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
+        ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2,false);
+        ctx.fillStyle=c.color; ctx.fill();
+        c.y+=c.d*4; if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
       });
     }
-    const interval=setInterval(draw,20);
-    setTimeout(()=>{clearInterval(interval);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
+    const id=setInterval(draw,20);
+    setTimeout(()=>{clearInterval(id);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
-  // Envio
-  $('#formReserva').addEventListener('submit',async(ev)=>{
+  /* =================== ENVIO PARA A PLANILHA =================== */
+  // Sua planilha tem os cabeçalhos:
+  // ID | Carimbo | Nome | Email | Telefone | Pessoas | Mesa | Cardapio |
+  // DataHora | ValorEstimado | PagamentoAntecipado | Banco | ValorFinalPago |
+  // Status | Observacoes | NomeArquivo | ArquivoURL
+  //
+  // Preenchemos só os campos do formulário e o restante vai vazio (""),
+  // garantindo que cada valor caia na coluna correta.
+  $('#formReserva').addEventListener('submit', async (ev)=>{
     ev.preventDefault();
-    $('#msg').textContent="Reserva enviada com sucesso!";
-    $('#formReserva').reset();
-    confetti();
+
+    const nome = $('#nome').value.trim();
+    const email = $('#email').value.trim();
+    const telefone = $('#telefone').value.trim();
+    const pessoas = $('#pessoas').value.trim();
+    const mesa = $('#mesa').value.trim();
+    const data = $('#data').value;  // yyyy-mm-dd
+    const hora = $('#hora').value;  // HH:MM
+    const observacoes = $('#observacoes').value.trim();
+
+    if(!nome||!telefone||!pessoas||!data||!hora){
+      $('#msg').textContent="Preencha os campos obrigatórios."; return;
+    }
+
+    const id = 'R'+Date.now().toString(36).toUpperCase();
+    const carimbo = new Date().toISOString();
+    const dataHoraISO = new Date(`${data}T${hora}:00`).toISOString();
+
+    // Objeto com TODAS as colunas na ordem da planilha
+    const row = {
+      ID: id,
+      Carimbo: carimbo,
+      Nome: nome,
+      Email: email,
+      Telefone: telefone,
+      Pessoas: pessoas,
+      Mesa: mesa,
+      Cardapio: "",                 // ignorada
+      DataHora: dataHoraISO,
+      ValorEstimado: "",            // ignorada
+      PagamentoAntecipado: "",      // ignorada
+      Banco: "",                    // ignorada
+      ValorFinalPago: "",           // ignorada
+      Status: "Pendente",
+      Observacoes: observacoes,
+      NomeArquivo: "",              // ignorada
+      ArquivoURL: ""                // ignorada
+    };
+
+    const btn = ev.submitter; if(btn){ btn.disabled=true; btn.textContent='Enviando…'; }
+    try{
+      const r = await fetch(CONFIG.SHEET_ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(row)
+      });
+      if(!r.ok) throw new Error('Falha ao enviar');
+
+      $('#msg').textContent="Reserva enviada com sucesso!";
+      $('#formReserva').reset();
+      confetti();
+    }catch(e){
+      console.error(e);
+      $('#msg').textContent="Não foi possível enviar agora. Tente novamente.";
+    }finally{
+      if(btn){ btn.disabled=false; btn.textContent='Enviar reserva'; }
+    }
   });
 </script>
 </body>
