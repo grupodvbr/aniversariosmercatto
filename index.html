@@ -23,9 +23,9 @@
       background-size:cover;
       min-height:100vh;
       display:flex;
-      align-items:center;
+      align-items:flex-end; /* empurra pro final vertical */
       justify-content:flex-start;
-      padding:20px;
+      padding:40px 20px 80px; /* mais espaço embaixo */
     }
     .hero::before{
       content:"";
@@ -37,7 +37,7 @@
       z-index:1;
       display:flex;
       flex-direction:column;
-      gap:20px;
+      gap:14px;
     }
 
     /* BOTÕES */
@@ -45,23 +45,25 @@
       cursor:pointer;
       border:0;
       border-radius:999px;
-      padding:16px 26px;
-      font-weight:800;
-      font-size:16px;
+      padding:10px 18px;   /* menor */
+      font-weight:700;
+      font-size:14px;      /* menor fonte */
       color:#1a1500;
       text-align:center;
       text-decoration:none;
       background:linear-gradient(180deg,var(--brand),#c79b1d);
       border:1px solid #d0a62d;
-      box-shadow:0 0 12px rgba(212,175,55,.6);
+      box-shadow:0 0 8px rgba(212,175,55,.6);
       animation:pulse 2s infinite;
       transition:transform .2s ease;
+      width:160px;         /* largura fixa */
+      text-align:center;
     }
     .btn:hover{transform:scale(1.05)}
     @keyframes pulse{
-      0%{box-shadow:0 0 10px rgba(212,175,55,.4)}
-      50%{box-shadow:0 0 25px rgba(245,210,106,.9)}
-      100%{box-shadow:0 0 10px rgba(212,175,55,.4)}
+      0%{box-shadow:0 0 6px rgba(212,175,55,.4)}
+      50%{box-shadow:0 0 18px rgba(245,210,106,.9)}
+      100%{box-shadow:0 0 6px rgba(212,175,55,.4)}
     }
 
     /* POPUP (modal) */
@@ -115,7 +117,7 @@
   <section class="hero">
     <div class="hero-content">
       <button class="btn" id="abrirReserva">Reservar</button>
-      <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Falar com atendente</a>
+      <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
     </div>
   </section>
 
@@ -148,7 +150,7 @@
 
   const $=sel=>document.querySelector(sel);
 
-  // Links do WhatsApp
+  // Link do WhatsApp
   function buildWhats(phone,text){
     const encoded=encodeURIComponent(text);
     return `https://wa.me/${phone}?text=${encoded}`;
@@ -160,7 +162,7 @@
   $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
   window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
 
-  // Envio do formulário
+  // Envio
   $('#formReserva').addEventListener('submit',async(ev)=>{
     ev.preventDefault();
     const nome=$('#nome').value.trim();
@@ -173,7 +175,7 @@
     const observacoes=$('#observacoes').value.trim();
 
     if(!nome||!telefone||!pessoas||!data||!hora){
-      $('#msg').innerHTML="<div class='error'>Preencha todos os campos obrigatórios.</div>";
+      $('#msg').innerHTML="<div class='error'>Preencha todos os obrigatórios.</div>";
       return;
     }
 
@@ -181,33 +183,17 @@
     const carimbo=new Date().toISOString();
     const dataHoraISO=new Date(`${data}T${hora}:00`).toISOString();
 
-    const payload={
-      ID:id,
-      Carimbo:carimbo,
-      Nome:nome,
-      Email:email,
-      Telefone:telefone,
-      Pessoas:pessoas,
-      Mesa:mesa,
-      DataHora:dataHoraISO,
-      Status:'Pendente',
-      Observacoes:observacoes
-    };
+    const payload={ID:id,Carimbo:carimbo,Nome:nome,Email:email,Telefone:telefone,Pessoas:pessoas,Mesa:mesa,DataHora:dataHoraISO,Status:'Pendente',Observacoes:observacoes};
 
     try{
       const r=await fetch(CONFIG.SHEET_ENDPOINT,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(payload)
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
       });
       if(r.ok){
-        $('#msg').innerHTML="<div class='success'>Reserva enviada com sucesso!</div>";
+        $('#msg').innerHTML="<div class='success'>Reserva enviada!</div>";
         $('#formReserva').reset();
-      }else{
-        throw new Error();
-      }
-    }catch{
-      $('#msg').innerHTML="<div class='error'>Erro ao enviar reserva.</div>";
-    }
+      }else{throw new Error()}
+    }catch{ $('#msg').innerHTML="<div class='error'>Erro ao enviar reserva.</div>"; }
   });
 </script>
 </body>
