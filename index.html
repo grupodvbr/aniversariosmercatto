@@ -113,6 +113,18 @@
       ul.clean{margin:8px 0 0 20px}
       ul.clean li{margin:6px 0}
     }
+
+    /* FAB só no desktop */
+    #fabQuick{ display:none }
+    @media (min-width:1024px){
+      #fabQuick{
+        display:inline-flex; align-items:center; gap:8px;
+        position:fixed; right:18px; bottom:18px; z-index:1000;
+        padding:14px 18px; border-radius:999px; border:0;
+        background:linear-gradient(180deg,var(--brand),#c79b1d); color:#1a1500; font-weight:800;
+        box-shadow:0 8px 20px rgba(0,0,0,.25); cursor:pointer;
+      }
+    }
   </style>
 </head>
 <body>
@@ -249,12 +261,70 @@
     </div>
   </div>
 
+  <!-- FAB (desktop) + Modal de Reserva Rápida -->
+  <button id="fabQuick">＋ Reserva rápida</button>
+  <div class="modal" id="quickModal" aria-hidden="true">
+    <div class="modal-content" style="max-width:520px">
+      <button class="close" id="closeQuick" aria-label="Fechar">&times;</button>
+      <h2>Reserva rápida</h2>
+      <form id="quickForm" novalidate>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_nome">Nome completo</label>
+            <input id="q_nome" required autocomplete="name" />
+          </div>
+          <div>
+            <label for="q_email">E-mail</label>
+            <input id="q_email" type="email" autocomplete="email" />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_telefone">Telefone (com DDD)</label>
+            <input id="q_telefone" required inputmode="tel" placeholder="(99) 99999-9999" />
+          </div>
+          <div>
+            <label for="q_pessoas">Qtd. pessoas</label>
+            <input id="q_pessoas" type="number" min="1" required />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_data">Data</label>
+            <input id="q_data" type="date" required />
+          </div>
+          <div>
+            <label for="q_hora">Hora</label>
+            <input id="q_hora" type="time" required />
+          </div>
+        </div>
+
+        <div>
+          <label for="q_mesa">Nº da mesa (opcional)</label>
+          <input id="q_mesa" />
+        </div>
+
+        <div>
+          <label for="q_obs">Observações</label>
+          <textarea id="q_obs" rows="3" placeholder="Preferências, levar bolo, etc."></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:6px">
+          <button type="button" class="btn" id="btnCancelQuick" style="background:#0000;border:1px solid var(--line);color:var(--text)">Cancelar</button>
+          <button type="submit" class="btn" id="sendQuick">Enviar</button>
+        </div>
+        <div id="q_msg" style="margin-top:6px;color:var(--muted)"></div>
+      </form>
+    </div>
+  </div>
+
   <canvas id="confetti-canvas"></canvas>
 
 <script>
   /* =================== CONFIG =================== */
   const CONFIG = {
-    // << TROQUE PELO SEU ENDPOINT PUBLICADO >>
     SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycby3URHEGOBWu2_GrF4lwdJSpPdgPtfZjonleDVDhTylrdphzjsK_tFlUDkz31WpnAH4/exec",
     ATENDENTE_WHATS: "557736135148",
     ATENDENTE_MSG: "Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
@@ -318,7 +388,6 @@
     const carimbo = new Date().toISOString();
     const dataHora = `${data} ${hora}`; // texto local (evita problema de fuso na planilha)
 
-    // >>> SOMENTE CAMPOS EXISTENTES NO FORMULÁRIO <<<
     const row = {
       ID: id,
       Carimbo: carimbo,
@@ -386,6 +455,47 @@
       btn: $('#btnEnviarDesk')
     });
     if(ok){ ev.target.reset(); }
+  });
+
+  /* ===== Pop-up (desktop) — Reserva rápida usando a MESMA lógica ===== */
+  const quickModal = $('#quickModal');
+  const fabQuick = $('#fabQuick');
+
+  fabQuick.addEventListener('click', ()=>{
+    // preencher data/hora com agora (local)
+    const now = new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+    $('#q_data').value = now.toISOString().slice(0,10);
+    $('#q_hora').value = now.toISOString().slice(11,16);
+    $('#q_msg').textContent = '';
+    quickModal.classList.add('active');
+    $('#q_nome').focus();
+  });
+  $('#closeQuick').addEventListener('click', ()=> quickModal.classList.remove('active'));
+  $('#btnCancelQuick').addEventListener('click', ()=> quickModal.classList.remove('active'));
+  window.addEventListener('click', (e)=>{ if(e.target===quickModal) quickModal.classList.remove('active'); });
+
+  // máscara simples de telefone
+  function maskPhone(v){ const d=v.replace(/\D/g,'').slice(0,11); return d.length<=10? d.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3") : d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/,"($1) $2-$3"); }
+  $('#q_telefone').addEventListener('input', e=> e.target.value = maskPhone(e.target.value));
+
+  $('#quickForm').addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    const ok = await enviarReserva({
+      nome: $('#q_nome').value.trim(),
+      email: $('#q_email').value.trim(),
+      telefone: $('#q_telefone').value.trim(),
+      pessoas: $('#q_pessoas').value.trim(),
+      mesa: $('#q_mesa').value.trim(),
+      data: $('#q_data').value,
+      hora: $('#q_hora').value,
+      observacoes: $('#q_obs').value.trim(),
+      saidaMsgEl: $('#q_msg'),
+      btn: $('#sendQuick')
+    });
+    if(ok){
+      ev.target.reset();
+      quickModal.classList.remove('active');
+    }
   });
 </script>
 </body>
