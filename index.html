@@ -25,10 +25,8 @@
       min-height:100vh;
 
       display:flex;
-      align-items:flex-end;    /* <<< altera para flex-start se quiser os botões mais pra cima */
-      justify-content:flex-start;
-
-      padding:40px 20px 70px;  /* <<< diminua o último valor (80px) para subir os botões */
+      align-items:center;     /* centraliza vertical */
+      justify-content:center; /* centraliza horizontal */
     }
     .hero::before{
       content:"";
@@ -39,8 +37,8 @@
       position:relative;
       z-index:1;
       display:flex;
-      flex-direction:column;
-      gap:14px;
+      flex-direction:row;   /* lado a lado */
+      gap:20px;
     }
 
     /* BOTÕES */
@@ -48,26 +46,18 @@
       cursor:pointer;
       border:0;
       border-radius:999px;
-      padding:10px 18px;
+      padding:14px 22px;
       font-weight:700;
-      font-size:14px;
+      font-size:16px;
       color:#1a1500;
       text-align:center;
       text-decoration:none;
       background:linear-gradient(180deg,var(--brand),#c79b1d);
       border:1px solid #d0a62d;
       box-shadow:0 0 8px rgba(212,175,55,.6);
-      animation:pulse 2s infinite;
-      transition:transform .2s ease;
-      width:160px;
-      text-align:center;
+      transition:transform .2s ease, box-shadow .2s ease;
     }
-    .btn:hover{transform:scale(1.05)}
-    @keyframes pulse{
-      0%{box-shadow:0 0 6px rgba(212,175,55,.4)}
-      50%{box-shadow:0 0 18px rgba(245,210,106,.9)}
-      100%{box-shadow:0 0 6px rgba(212,175,55,.4)}
-    }
+    .btn:hover{transform:scale(1.05);box-shadow:0 0 14px rgba(245,210,106,.9)}
 
     /* POPUP (modal) */
     .modal{
@@ -88,7 +78,7 @@
       width:100%;
       color:var(--text);
       animation:fadeIn .3s ease;
-      font-size:18px; /* <<< aumenta fonte geral dentro do modal */
+      font-size:18px;
     }
     @keyframes fadeIn{
       from{opacity:0;transform:translateY(-20px)}
@@ -104,7 +94,7 @@
     }
 
     form{display:grid;gap:12px;margin-top:10px}
-    label{font-size:16px;color:var(--brand-2)} /* <<< labels maiores */
+    label{font-size:16px;color:var(--brand-2)}
     input,textarea{
       width:100%;
       padding:12px;
@@ -112,9 +102,17 @@
       border:1px solid var(--line);
       background:#0c0d0f;
       color:var(--text);
-      font-size:16px; /* <<< textos dos campos maiores */
+      font-size:16px;
     }
     textarea{min-height:70px;resize:vertical}
+
+    /* CANVAS DOS CONFETES */
+    #confetti-canvas{
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      pointer-events:none;
+      z-index:2000;
+    }
   </style>
 </head>
 <body>
@@ -146,6 +144,9 @@
     </div>
   </div>
 
+  <!-- CANVAS CONFETTI -->
+  <canvas id="confetti-canvas"></canvas>
+
 <script>
   const CONFIG = {
     SHEET_ENDPOINT:"https://script.google.com/macros/s/SEU_SCRIPT_ID/exec",
@@ -165,11 +166,46 @@
   $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
   window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
 
-  // Envio (igual antes)
+  // Confetti simples
+  function confetti(){
+    const canvas=$('#confetti-canvas');
+    const ctx=canvas.getContext('2d');
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    const confs=Array.from({length:150}).map(()=>({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      r:Math.random()*6+4,
+      d:Math.random()*0.5+0.5,
+      color:`hsl(${Math.random()*360},100%,50%)`
+    }));
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      confs.forEach(c=>{
+        ctx.beginPath();
+        ctx.arc(c.x,c.y,c.r,0,Math.PI*2,false);
+        ctx.fillStyle=c.color;
+        ctx.fill();
+      });
+      update();
+    }
+    function update(){
+      confs.forEach(c=>{
+        c.y+=c.d*4;
+        if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
+      });
+    }
+    let duration=3000; // 3s
+    let interval=setInterval(draw,20);
+    setTimeout(()=>{clearInterval(interval);ctx.clearRect(0,0,canvas.width,canvas.height)},duration);
+  }
+
+  // Envio simulado com confetes
   $('#formReserva').addEventListener('submit',async(ev)=>{
     ev.preventDefault();
-    $('#msg').textContent="(simulação de envio para planilha)";
+    $('#msg').textContent="Reserva enviada com sucesso!";
     $('#formReserva').reset();
+    confetti(); // 🎉 dispara confetes
   });
 </script>
 </body>
