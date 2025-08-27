@@ -2,7 +2,6 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <!-- Impede zoom -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
   <style>
@@ -17,40 +16,37 @@
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:#000}
 
-    /* HERO COM A IMAGEM E OS BOTÕES */
+    /* HERO COM A IMAGEM DE FUNDO */
     .hero{
       position:relative;
       background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2015.21.11_b5d8c770.jpg?raw=true') no-repeat center top;
       background-size:cover;
       min-height:100vh;
-
       display:flex;
-      align-items:center;     /* centraliza vertical */
-      justify-content:center; /* centraliza horizontal */
-    }
-    .hero::before{
-      content:"";
-      position:absolute;inset:0;
-      background:rgba(0,0,0,.3);
-    }
-    .hero-content{
-      position:relative;
-      z-index:1;
-      display:flex;
-      flex-direction:row;   /* lado a lado */
-      gap:20px;
+      flex-direction:column;
+      justify-content:flex-end; /* joga conteúdo pro final */
+      align-items:center;
+      padding-bottom:120px; /* espaço pros botões */
     }
 
-    /* BOTÕES */
+    /* BOTÕES NO FINAL DA TELA */
+    .actions{
+      display:flex;
+      gap:16px;
+      position:absolute;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:10;
+    }
     .btn{
       cursor:pointer;
       border:0;
       border-radius:999px;
-      padding:14px 22px;
+      padding:12px 22px;
       font-weight:700;
-      font-size:16px;
+      font-size:15px;
       color:#1a1500;
-      text-align:center;
       text-decoration:none;
       background:linear-gradient(180deg,var(--brand),#c79b1d);
       border:1px solid #d0a62d;
@@ -106,6 +102,22 @@
     }
     textarea{min-height:70px;resize:vertical}
 
+    /* SEÇÕES ABAIXO DA FOTO */
+    section.info{
+      padding:20px;
+      background:#0a0a0a;
+    }
+    section.info h2{
+      font-size:20px;
+      color:var(--brand-2);
+      margin:0 0 10px;
+    }
+    section.info p, section.info li{
+      font-size:15px;
+      color:var(--text);
+      margin:6px 0;
+    }
+
     /* CANVAS DOS CONFETES */
     #confetti-canvas{
       position:fixed;
@@ -116,12 +128,31 @@
   </style>
 </head>
 <body>
-  <!-- HERO COM BOTÕES -->
+  <!-- HERO COM IMAGEM E BOTÕES -->
   <section class="hero">
-    <div class="hero-content">
+    <div class="actions">
       <button class="btn" id="abrirReserva">Reservar</button>
       <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
     </div>
+  </section>
+
+  <!-- SEÇÃO DE REGRAS -->
+  <section class="info">
+    <h2>Regras</h2>
+    <p>✔ Válido apenas no mês do aniversário (com documento).</p>
+    <p>✔ Exclusivo para consumo no local.</p>
+    <p>✔ Um benefício por aniversariante.</p>
+  </section>
+
+  <!-- SEÇÃO DE EXEMPLOS -->
+  <section class="info">
+    <h2>Exemplos de desconto</h2>
+    <ul>
+      <li>Conta de R$ 100 → desconto de R$ 20</li>
+      <li>Conta de R$ 200 → desconto de R$ 40</li>
+      <li>Conta de R$ 300 → desconto de R$ 60</li>
+      <li>Conta de R$ 500 ou mais → desconto de R$ 100 (limite)</li>
+    </ul>
   </section>
 
   <!-- MODAL DE RESERVA -->
@@ -166,13 +197,13 @@
   $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
   window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
 
-  // Confetti simples
+  // Confetti
   function confetti(){
     const canvas=$('#confetti-canvas');
     const ctx=canvas.getContext('2d');
     canvas.width=window.innerWidth;
     canvas.height=window.innerHeight;
-    const confs=Array.from({length:150}).map(()=>({
+    const confs=Array.from({length:120}).map(()=>({
       x:Math.random()*canvas.width,
       y:Math.random()*canvas.height-canvas.height,
       r:Math.random()*6+4,
@@ -195,17 +226,16 @@
         if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
       });
     }
-    let duration=3000; // 3s
     let interval=setInterval(draw,20);
-    setTimeout(()=>{clearInterval(interval);ctx.clearRect(0,0,canvas.width,canvas.height)},duration);
+    setTimeout(()=>{clearInterval(interval);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
-  // Envio simulado com confetes
+  // Envio
   $('#formReserva').addEventListener('submit',async(ev)=>{
     ev.preventDefault();
     $('#msg').textContent="Reserva enviada com sucesso!";
     $('#formReserva').reset();
-    confetti(); // 🎉 dispara confetes
+    confetti();
   });
 </script>
 </body>
