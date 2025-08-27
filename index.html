@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
+  <!-- Impede zoom no mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
 
@@ -27,22 +28,27 @@
       --brand:#d4af37;
       --brand-2:#f5d26a;
       --text:#f8f7f4;
+      --muted:#cfc8b0;
       --line:#292929;
+      --bg:#000;
+      --panel:#111214;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:#000}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
 
-    /* HERO imagem cheia */
+    a{color:inherit;text-decoration:none}
+
+    /* ========= MOBILE/TABLET (padrão) ========= */
+    /* HERO com imagem e botões fixos */
     .hero{
       background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true') no-repeat center center;
       background-size:cover;
       min-height:100vh;
+      position:relative;
     }
-
-    /* Botões fixos no final */
     .actions{
       position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      display:flex;gap:20px;z-index:100;
+      display:flex;gap:16px;z-index:100;
     }
     .btn{
       cursor:pointer;border:0;border-radius:999px;padding:14px 22px;
@@ -54,7 +60,7 @@
     }
     .btn:hover{transform:scale(1.05);box-shadow:0 0 14px rgba(245,210,106,.9)}
 
-    /* Modal popup */
+    /* Modal (pop-up) para mobile/tablet */
     .modal{
       position:fixed;inset:0;background:rgba(0,0,0,.7);
       display:none;align-items:center;justify-content:center;z-index:999;padding:10px;
@@ -67,7 +73,6 @@
       max-height:90vh;overflow-y:auto;   /* rolagem dentro do modal */
     }
     .close{background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer}
-
     form{display:grid;gap:12px;margin-top:10px}
     label{font-size:16px;color:var(--brand-2)}
     input,textarea{
@@ -75,43 +80,175 @@
       border:1px solid var(--line);background:#0c0d0f;color:var(--text);font-size:16px;
     }
     textarea{min-height:70px;resize:vertical}
+    #msg{margin-top:6px;color:var(--muted)}
 
-    /* Confetes */
+    /* Confetes (ambiente global) */
     #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000}
+
+    /* ========= DESKTOP (a partir de 1024px) ========= */
+    @media (min-width:1024px){
+      /* some com a hero e botões; mostra layout HTML limpo */
+      .hero{display:none}
+      .actions{display:none}
+
+      body{background:#0a0a0a}
+
+      .desktop{
+        max-width:1100px;margin:0 auto;padding:28px 20px 48px;
+      }
+
+      header.site{
+        display:flex;align-items:center;justify-content:space-between;gap:16px;
+        margin-bottom:18px;border-bottom:1px solid #1c1c1c;padding-bottom:12px;
+      }
+      .brand{
+        font-weight:800;letter-spacing:.3px;
+        color:var(--brand-2);font-size:22px;
+      }
+      .contact-mini a{
+        display:inline-flex;gap:8px;align-items:center;
+        border:1px solid #2a2a2a;border-radius:999px;padding:8px 12px;color:var(--text);
+      }
+
+      .grid{
+        display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;
+      }
+
+      .card{
+        background:rgba(17,18,20,.95);border:1px solid #1f1f1f;border-radius:16px;padding:18px;
+      }
+      .card h2{
+        margin:0 0 10px 0;font-size:18px;font-weight:800;color:var(--brand-2);
+      }
+      .note{color:var(--muted);font-size:14px}
+
+      /* formulário desktop inline (sem modal) */
+      .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .form-grid .full{grid-column:1/-1}
+      .form-grid label{font-size:13px;color:var(--muted)}
+      .form-grid input,.form-grid textarea,.form-grid button{
+        width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a2a;background:#0c0d0f;color:var(--text);font-size:15px;
+      }
+      .form-grid textarea{min-height:90px}
+      .btn-primary{
+        background:linear-gradient(180deg,var(--brand),#c79b1d);
+        color:#1a1500;border:1px solid #d0a62d;font-weight:800;border-radius:999px;cursor:pointer
+      }
+
+      /* colunas info */
+      ul.clean{margin:8px 0 0 20px}
+      ul.clean li{margin:6px 0}
+    }
   </style>
 </head>
 <body>
+  <!-- ========= MOBILE/TABLET: IMAGEM + BOTÕES + MODAL ========= -->
   <section class="hero"></section>
 
-  <!-- Botões -->
   <div class="actions">
     <button class="btn" id="abrirReserva">Reservar</button>
     <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
   </div>
 
-  <!-- Modal Reserva -->
   <div class="modal" id="modalReserva">
     <div class="modal-content">
-      <button class="close" id="fecharReserva">&times;</button>
+      <button class="close" id="fecharReserva" aria-label="Fechar">&times;</button>
       <h2>Faça sua reserva</h2>
-      <form id="formReserva">
-        <div><label>Nome completo</label><input id="nome" required></div>
-        <div><label>Email</label><input id="email" type="email"></div>
-        <div><label>Telefone (com DDD)</label><input id="telefone" required></div>
-        <div><label>Qtd. Pessoas</label><input id="pessoas" type="number" min="1" max="1000" required></div>
-        <div><label>Data</label><input id="data" type="date" required></div>
-        <div><label>Hora</label><input id="hora" type="time" required></div>
-        <div><label>Nº da mesa (opcional)</label><input id="mesa"></div>
-        <div><label>Observações</label><textarea id="observacoes"></textarea></div>
+      <form id="formReservaMobile">
+        <div><label>Nome completo</label><input id="m_nome" required></div>
+        <div><label>Email</label><input id="m_email" type="email"></div>
+        <div><label>Telefone (com DDD)</label><input id="m_telefone" required></div>
+        <div><label>Qtd. Pessoas</label><input id="m_pessoas" type="number" min="1" max="1000" required></div>
+        <div><label>Data</label><input id="m_data" type="date" required></div>
+        <div><label>Hora</label><input id="m_hora" type="time" required></div>
+        <div><label>Nº da mesa (opcional)</label><input id="m_mesa"></div>
+        <div><label>Observações</label><textarea id="m_observacoes"></textarea></div>
         <button type="submit" class="btn">Enviar reserva</button>
-        <div id="msg"></div>
+        <div id="m_msg"></div>
       </form>
+    </div>
+  </div>
+
+  <!-- ========= DESKTOP: TUDO EM HTML, SEM IMAGEM DE FUNDO ========= -->
+  <div class="desktop">
+    <header class="site">
+      <div class="brand">Mercatto Delícia — Reserva de Aniversário</div>
+      <div class="contact-mini">
+        <a id="deskAtendente" href="#" target="_blank" rel="noopener">Falar com atendente</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Coluna esquerda: Formulário completo -->
+      <section class="card">
+        <h2>Faça sua reserva</h2>
+        <p class="note">Preencha os dados abaixo. Entraremos em contato para confirmar.</p>
+        <form id="formReservaDesk" class="form-grid">
+          <div>
+            <label>Nome completo</label>
+            <input id="d_nome" required>
+          </div>
+          <div>
+            <label>Email</label>
+            <input id="d_email" type="email">
+          </div>
+          <div>
+            <label>Telefone (com DDD)</label>
+            <input id="d_telefone" required>
+          </div>
+          <div>
+            <label>Qtd. Pessoas</label>
+            <input id="d_pessoas" type="number" min="1" max="1000" required>
+          </div>
+          <div>
+            <label>Data</label>
+            <input id="d_data" type="date" required>
+          </div>
+          <div>
+            <label>Hora</label>
+            <input id="d_hora" type="time" required>
+          </div>
+          <div class="full">
+            <label>Nº da mesa (opcional)</label>
+            <input id="d_mesa">
+          </div>
+          <div class="full">
+            <label>Observações</label>
+            <textarea id="d_observacoes" placeholder="Preferência por mesa externa, levar bolo, etc."></textarea>
+          </div>
+          <div class="full">
+            <button class="btn-primary" type="submit">Enviar reserva</button>
+            <span id="d_msg" style="margin-left:10px;color:var(--muted)"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Coluna direita: Informações -->
+      <aside class="card">
+        <h2>Benefícios & Informações</h2>
+        <p class="note">Celebre com a gente! Veja como funciona a reserva de aniversário.</p>
+        <ul class="clean">
+          <li>Válido apenas no mês do aniversário (com documento).</li>
+          <li>Exclusivo para consumo no local.</li>
+          <li>Um benefício por aniversariante.</li>
+          <li>Desconto aplicado em múltiplos de R$ 20 até o limite de R$ 100.</li>
+        </ul>
+
+        <h2 style="margin-top:16px">Exemplos de valores</h2>
+        <ul class="clean">
+          <li>R$ 100 → R$ 20 de desconto</li>
+          <li>R$ 200 → R$ 40 de desconto</li>
+          <li>R$ 300 → R$ 60 de desconto</li>
+          <li>R$ 500 ou mais → R$ 100 de desconto (limite)</li>
+        </ul>
+      </aside>
     </div>
   </div>
 
   <canvas id="confetti-canvas"></canvas>
 
 <script>
+  /* =================== CONFIG =================== */
   const CONFIG = {
     SHEET_ENDPOINT:"https://script.google.com/macros/s/AKfycbyg5_V1OdJNHY2zYww2ADxWvo-f335_DkziXay2h53JjCk7SZDpHo3guq7-Psyby_MQ/exec",
     ATENDENTE_WHATS:"557736135148",
@@ -120,14 +257,17 @@
 
   const $=sel=>document.querySelector(sel);
   function buildWhats(phone,text){return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`}
+
+  // Links de atendente (mobile e desktop)
   $('#btnAtendente').href=buildWhats(CONFIG.ATENDENTE_WHATS,CONFIG.ATENDENTE_MSG);
+  $('#deskAtendente').href=buildWhats(CONFIG.ATENDENTE_WHATS,CONFIG.ATENDENTE_MSG);
 
-  // Modal
-  $('#abrirReserva').onclick=()=>$('#modalReserva').classList.add('active');
-  $('#fecharReserva').onclick=()=>$('#modalReserva').classList.remove('active');
-  window.onclick=(e)=>{if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active')};
+  /* ===== MOBILE/TABLET: modal ===== */
+  $('#abrirReserva')?.addEventListener('click',()=>$('#modalReserva').classList.add('active'));
+  $('#fecharReserva')?.addEventListener('click',()=>$('#modalReserva').classList.remove('active'));
+  window.addEventListener('click',(e)=>{ if(e.target===$('#modalReserva'))$('#modalReserva').classList.remove('active') });
 
-  // Confetti
+  /* ===== Confetes ===== */
   function confetti(){
     const canvas=$('#confetti-canvas'),ctx=canvas.getContext('2d');
     canvas.width=innerWidth;canvas.height=innerHeight;
@@ -148,33 +288,66 @@
     setTimeout(()=>{clearInterval(id);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
-  // Envio
-  $('#formReserva').addEventListener('submit',async(ev)=>{
-    ev.preventDefault();
-    const nome=$('#nome').value.trim(), email=$('#email').value.trim(),
-          telefone=$('#telefone').value.trim(), pessoas=$('#pessoas').value.trim(),
-          mesa=$('#mesa').value.trim(), data=$('#data').value, hora=$('#hora').value,
-          observacoes=$('#observacoes').value.trim();
-    if(!nome||!telefone||!pessoas||!data||!hora){$('#msg').textContent="Preencha os campos obrigatórios.";return;}
-
+  /* ===== Envio — função comum (reutilizada pelos dois formulários) ===== */
+  async function enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,saidaMsgEl}){
+    if(!nome||!telefone||!pessoas||!data||!hora){
+      if(saidaMsgEl) saidaMsgEl.textContent = "Preencha os campos obrigatórios.";
+      return;
+    }
     const id='R'+Date.now().toString(36).toUpperCase();
     const carimbo=new Date().toISOString();
     const dataHoraISO=new Date(`${data}T${hora}:00`).toISOString();
 
     const row={
-      ID:id,Carimbo:carimbo,Nome:nome,Email:email,Telefone:telefone,
-      Pessoas:pessoas,Mesa:mesa,Cardapio:"",DataHora:dataHoraISO,
+      ID:id,Carimbo:carimbo,Nome:nome,Email:email||"",Telefone:telefone,
+      Pessoas:String(pessoas),Mesa:mesa||"",Cardapio:"",DataHora:dataHoraISO,
       ValorEstimado:"",PagamentoAntecipado:"",Banco:"",ValorFinalPago:"",
-      Status:"Pendente",Observacoes:observacoes,NomeArquivo:"",ArquivoURL:""
+      Status:"Pendente",Observacoes:observacoes||"",NomeArquivo:"",ArquivoURL:""
     };
 
-    const btn=ev.submitter; if(btn){btn.disabled=true;btn.textContent='Enviando…'}
     try{
-      const r=await fetch(CONFIG.SHEET_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
-      if(!r.ok) throw new Error('Falha');
-      $('#msg').textContent="Reserva enviada com sucesso!";$('#formReserva').reset();confetti();
-    }catch(e){console.error(e);$('#msg').textContent="Erro ao enviar. Tente novamente."}
-    finally{if(btn){btn.disabled=false;btn.textContent='Enviar reserva'}}
+      const r=await fetch(CONFIG.SHEET_ENDPOINT,{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)
+      });
+      if(!r.ok) throw new Error('Falha ao enviar');
+      if(saidaMsgEl) saidaMsgEl.textContent="Reserva enviada com sucesso!";
+      confetti();
+      return true;
+    }catch(e){
+      console.error(e);
+      if(saidaMsgEl) saidaMsgEl.textContent="Erro ao enviar. Tente novamente.";
+      return false;
+    }
+  }
+
+  /* ===== Submit MOBILE ===== */
+  $('#formReservaMobile')?.addEventListener('submit',async(ev)=>{
+    ev.preventDefault();
+    const nome=$('#m_nome').value.trim(),
+          email=$('#m_email').value.trim(),
+          telefone=$('#m_telefone').value.trim(),
+          pessoas=$('#m_pessoas').value.trim(),
+          mesa=$('#m_mesa').value.trim(),
+          data=$('#m_data').value,
+          hora=$('#m_hora').value,
+          observacoes=$('#m_observacoes').value.trim();
+    const ok = await enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,saidaMsgEl:$('#m_msg')});
+    if(ok){ $('#formReservaMobile').reset(); }
+  });
+
+  /* ===== Submit DESKTOP ===== */
+  $('#formReservaDesk')?.addEventListener('submit',async(ev)=>{
+    ev.preventDefault();
+    const nome=$('#d_nome').value.trim(),
+          email=$('#d_email').value.trim(),
+          telefone=$('#d_telefone').value.trim(),
+          pessoas=$('#d_pessoas').value.trim(),
+          mesa=$('#d_mesa').value.trim(),
+          data=$('#d_data').value,
+          hora=$('#d_hora').value,
+          observacoes=$('#d_observacoes').value.trim();
+    const ok = await enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,saidaMsgEl:$('#d_msg')});
+    if(ok){ $('#formReservaDesk').reset(); }
   });
 </script>
 </body>
