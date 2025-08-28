@@ -1,519 +1,267 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <!-- Acessível (sem bloquear zoom) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Reserva de Aniversário • Mercatto Delícia</title>
-
-  <!-- ===================== COMPARTILHAMENTO (PREVIEW) ===================== -->
-  <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
-  <meta property="og:title" content="Reserva de Aniversário • Mercatto Delícia" />
-  <meta property="og:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://grupodvbr.github.io/aniversariosmercatto/" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Reserva de Aniversário • Mercatto Delícia" />
-  <meta name="twitter:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
-  <meta name="twitter:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
-
-  <link rel="image_src" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
-  <!-- ===================================================================== -->
-
-  <style>
-    :root{
-      --brand:#d4af37;
-      --brand-2:#f5d26a;
-      --text:#f8f7f4;
-      --muted:#cfc8b0;
-      --line:#292929;
-      --bg:#000;
-      --panel:#111214;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
-    a{color:inherit;text-decoration:none}
-
-    /* ========= MOBILE/TABLET ========= */
-    .hero{
-      background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true') no-repeat center center;
-      background-size:cover; min-height:100vh; position:relative;
-    }
-    .actions{
-      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-      display:flex; gap:16px; z-index:100;
-    }
-    .btn{
-      cursor:pointer; border:0; border-radius:999px; padding:14px 22px;
-      font-weight:700; font-size:15px; color:#1a1500;
-      background:linear-gradient(180deg,var(--brand),#c79b1d);
-      border:1px solid #d0a62d; box-shadow:0 0 8px rgba(212,175,55,.6);
-      transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .btn:hover{transform:scale(1.05); box-shadow:0 0 14px rgba(245,210,106,.9)}
-    .btn[disabled]{opacity:.6; cursor:not-allowed}
-
-    .modal{
-      position:fixed; inset:0; background:rgba(0,0,0,.7);
-      display:none; align-items:center; justify-content:center; z-index:999; padding:10px;
-    }
-    .modal.active{display:flex}
-    .modal-content{
-      background:rgba(17,18,20,.95); padding:20px; border-radius:14px;
-      max-width:420px; width:100%; color:var(--text); font-size:18px;
-      max-height:90vh; overflow-y:auto;
-    }
-    .close{background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer}
-    form{display:grid;gap:12px;margin-top:10px}
-    label{font-size:16px;color:var(--brand-2)}
-    input,textarea{
-      width:100%; padding:12px; border-radius:8px;
-      border:1px solid var(--line); background:#0c0d0f; color:var(--text); font-size:16px;
-    }
-    textarea{min-height:70px; resize:vertical}
-    #msg{margin-top:6px;color:var(--muted)}
-
-    /* Confetes */
-    #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000}
-
-    /* ========= DESKTOP (>=1024px) ========= */
-    @media (min-width:1024px){
-      .hero{display:none}
-      .actions{display:none}
-      body{background:#0a0a0a}
-
-      .desktop{max-width:1100px;margin:0 auto;padding:28px 20px 48px;}
-      header.site{
-        display:flex;align-items:center;justify-content:space-between;gap:16px;
-        margin-bottom:18px;border-bottom:1px solid #1c1c1c;padding-bottom:12px;
-      }
-      .brand{font-weight:800;letter-spacing:.3px;color:var(--brand-2);font-size:22px;}
-      .contact-mini a{
-        display:inline-flex;gap:8px;align-items:center;
-        border:1px solid #2a2a2a;border-radius:999px;padding:8px 12px;color:var(--text);
-      }
-      .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;}
-      .card{background:rgba(17,18,20,.95);border:1px solid #1f1f1f;border-radius:16px;padding:18px;}
-      .card h2{margin:0 0 10px 0;font-size:18px;font-weight:800;color:var(--brand-2);}
-      .note{color:var(--muted);font-size:14px}
-      .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-      .form-grid .full{grid-column:1/-1}
-      .form-grid label{font-size:13px;color:var(--muted)}
-      .form-grid input,.form-grid textarea,.form-grid button{
-        width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a2a;background:#0c0d0f;color:var(--text);font-size:15px;
-      }
-      .form-grid textarea{min-height:90px}
-      .btn-primary{
-        background:linear-gradient(180deg,var(--brand),#c79b1d);
-        color:#1a1500;border:1px solid #d0a62d;font-weight:800;border-radius:999px;cursor:pointer
-      }
-      ul.clean{margin:8px 0 0 20px}
-      ul.clean li{margin:6px 0}
-    }
-
-    /* FAB só no desktop */
-    #fabQuick{ display:none }
-    @media (min-width:1024px){
-      #fabQuick{
-        display:inline-flex; align-items:center; gap:8px;
-        position:fixed; right:18px; bottom:18px; z-index:1000;
-        padding:14px 18px; border-radius:999px; border:0;
-        background:linear-gradient(180deg,var(--brand),#c79b1d); color:#1a1500; font-weight:800;
-        box-shadow:0 8px 20px rgba(0,0,0,.25); cursor:pointer;
-      }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Painel • Reservas de Aniversário — Mercatto Delícia</title>
+<meta name="color-scheme" content="dark light">
+<style>
+  :root{
+    --brand:#d4af37; --brand-2:#f5d26a; --text:#f8f7f4; --muted:#cfc8b0; --line:#292929;
+    --bg:#000; --panel:#111214; --ok:#16a34a; --warn:#f59e0b; --danger:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #1a1a1a;background:#0b0c0d}
+  h1{margin:0;font-size:18px;color:var(--brand-2);letter-spacing:.3px}
+  .toolbar{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:12px 18px;background:#0c0d0f;border-bottom:1px solid #181818}
+  .toolbar input,.toolbar select,.toolbar button{
+    width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a2a2a;background:#0e0f12;color:var(--text)
+  }
+  .toolbar button.brand{
+    background:linear-gradient(180deg,var(--brand),#c79b1d);color:#1a1500;border:1px solid #d0a62d;font-weight:800;cursor:pointer
+  }
+  main{padding:16px 18px}
+  .card{background:var(--panel);border:1px solid #1f1f1f;border-radius:14px;overflow:hidden}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{padding:12px;border-bottom:1px solid #1f1f1f;font-size:14px;text-align:left}
+  .table th{background:#0e0f12;color:var(--muted);position:sticky;top:0;z-index:1}
+  .tag{padding:4px 8px;border-radius:999px;border:1px solid #2a2a2a;background:#0e0f12;color:#ddd;font-size:12px}
+  .tag.ok{border-color:rgba(22,163,74,.5)}
+  .tag.warn{border-color:rgba(245,158,11,.5)}
+  .tag.danger{border-color:rgba(239,68,68,.5)}
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .ghost{background:#0000;border:1px solid #2a2a2a;color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer}
+  .ghost:hover{border-color:#3a3a3a}
+  .footer-bar{display:flex;gap:10px;justify-content:flex-end;padding:10px;background:#0c0d0f;border-top:1px solid #1a1a1a}
+  .empty{padding:28px;color:#aaa;text-align:center}
+  .grid-cols{display:grid;grid-template-columns:1fr;gap:14px}
+  @media(min-width:1000px){ .grid-cols{grid-template-columns:1fr} }
+  .badge{font-weight:700}
+  .muted{color:var(--muted)}
+</style>
 </head>
 <body>
-  <!-- ========= MOBILE/TABLET: IMAGEM + BOTÕES + MODAL ========= -->
-  <section class="hero" aria-label="Fundo promocional de aniversário"></section>
+<header>
+  <h1>Mercatto Delícia — Painel de Reservas (Aniversários)</h1>
+  <div class="muted" id="infoSpan">carregando…</div>
+</header>
 
-  <div class="actions" aria-label="Ações rápidas">
-    <button class="btn" id="abrirReserva" type="button">Reservar</button>
-    <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
-  </div>
+<section class="toolbar">
+  <input type="date" id="fDe" />
+  <input type="date" id="fAte" />
+  <select id="fStatus">
+    <option value="">Status (todos)</option>
+    <option>Pendente</option>
+    <option>Confirmado</option>
+    <option>Compareceu</option>
+    <option>Cancelado</option>
+    <option>No-show</option>
+  </select>
+  <select id="fOrigem">
+    <option value="">Origem (todas)</option>
+    <option>site</option>
+    <option>mobile</option>
+    <option>desktop</option>
+    <option>desktop-quick</option>
+  </select>
+  <input id="fBusca" placeholder="Buscar nome, telefone, e-mail, observação..." />
+  <button class="brand" id="btnBuscar">Buscar</button>
+</section>
 
-  <div class="modal" id="modalReserva" role="dialog" aria-modal="true" aria-labelledby="tituloReservaMobile">
-    <div class="modal-content">
-      <button class="close" id="fecharReserva" aria-label="Fechar">&times;</button>
-      <h2 id="tituloReservaMobile">Faça sua reserva</h2>
-      <form id="formReservaMobile" novalidate>
-        <div hidden aria-hidden="true">
-          <label for="hp_field">Não preencha</label>
-          <input id="hp_field" name="hp_field" autocomplete="off" tabindex="-1">
-        </div>
-
-        <div>
-          <label for="m_nome">Nome completo</label>
-          <input id="m_nome" name="nome" required autocomplete="name">
-        </div>
-        <div>
-          <label for="m_email">Email</label>
-          <input id="m_email" name="email" type="email" autocomplete="email">
-        </div>
-        <div>
-          <label for="m_telefone">Telefone (com DDD)</label>
-          <input id="m_telefone" name="telefone" required inputmode="tel" autocomplete="tel">
-        </div>
-        <div>
-          <label for="m_pessoas">Qtd. Pessoas</label>
-          <input id="m_pessoas" name="pessoas" type="number" min="1" max="1000" required>
-        </div>
-        <div>
-          <label for="m_data">Data</label>
-          <input id="m_data" name="data" type="date" required>
-        </div>
-        <div>
-          <label for="m_hora">Hora</label>
-          <input id="m_hora" name="hora" type="time" required>
-        </div>
-        <div>
-          <label for="m_mesa">Nº da mesa (opcional)</label>
-          <input id="m_mesa" name="mesa">
-        </div>
-        <div>
-          <label for="m_observacoes">Observações</label>
-          <textarea id="m_observacoes" name="observacoes" placeholder="Preferências, levar bolo, etc."></textarea>
-        </div>
-
-        <button type="submit" class="btn" id="btnEnviarMobile">Enviar reserva</button>
-        <div id="m_msg" role="status" aria-live="polite"></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ========= DESKTOP ========= -->
-  <div class="desktop">
-    <header class="site">
-      <div class="brand">Mercatto Delícia — Reserva de Aniversário</div>
-      <div class="contact-mini">
-        <a id="deskAtendente" href="#" target="_blank" rel="noopener">Falar com atendente</a>
+<main>
+  <div class="grid-cols">
+    <div class="card">
+      <table class="table" id="tbl">
+        <thead>
+          <tr>
+            <th style="min-width:120px">Data • Hora</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Pessoas</th>
+            <th>Mesa</th>
+            <th>Status</th>
+            <th>Origem</th>
+            <th style="min-width:280px">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="8" class="empty">Carregando…</td></tr>
+        </tbody>
+      </table>
+      <div class="footer-bar">
+        <button class="ghost" id="btnCSV">Exportar CSV</button>
+        <span class="muted" id="resumo"></span>
       </div>
-    </header>
-
-    <div class="grid">
-      <!-- Formulário -->
-      <section class="card" aria-labelledby="tituloReservaDesk">
-        <h2 id="tituloReservaDesk">Faça sua reserva</h2>
-        <p class="note">Preencha os dados abaixo. Entraremos em contato para confirmar.</p>
-        <form id="formReservaDesk" class="form-grid" novalidate>
-          <div>
-            <label for="d_nome">Nome completo</label>
-            <input id="d_nome" name="nome" required autocomplete="name">
-          </div>
-          <div>
-            <label for="d_email">Email</label>
-            <input id="d_email" name="email" type="email" autocomplete="email">
-          </div>
-          <div>
-            <label for="d_telefone">Telefone (com DDD)</label>
-            <input id="d_telefone" name="telefone" required inputmode="tel" autocomplete="tel">
-          </div>
-          <div>
-            <label for="d_pessoas">Qtd. Pessoas</label>
-            <input id="d_pessoas" name="pessoas" type="number" min="1" max="1000" required>
-          </div>
-          <div>
-            <label for="d_data">Data</label>
-            <input id="d_data" name="data" type="date" required>
-          </div>
-          <div>
-            <label for="d_hora">Hora</label>
-            <input id="d_hora" name="hora" type="time" required>
-          </div>
-          <div class="full">
-            <label for="d_mesa">Nº da mesa (opcional)</label>
-            <input id="d_mesa" name="mesa">
-          </div>
-          <div class="full">
-            <label for="d_observacoes">Observações</label>
-            <textarea id="d_observacoes" name="observacoes" placeholder="Preferência por mesa externa, levar bolo, etc."></textarea>
-          </div>
-          <div class="full">
-            <button class="btn-primary" id="btnEnviarDesk" type="submit">Enviar reserva</button>
-            <span id="d_msg" style="margin-left:10px;color:var(--muted)" role="status" aria-live="polite"></span>
-          </div>
-        </form>
-      </section>
-
-      <!-- Informações -->
-      <aside class="card">
-        <h2>Benefícios & Informações</h2>
-        <p class="note">Celebre com a gente! Veja como funciona a reserva de aniversário.</p>
-        <ul class="clean">
-          <li>Válido apenas no mês do aniversário (com documento).</li>
-          <li>Exclusivo para consumo no local.</li>
-          <li>Um benefício por aniversariante.</li>
-          <li>Desconto aplicado em múltiplos de R$ 20 até o limite de R$ 100.</li>
-        </ul>
-
-        <h2 style="margin-top:16px">Exemplos de valores</h2>
-        <ul class="clean">
-          <li>R$ 100 → R$ 20 de desconto</li>
-          <li>R$ 200 → R$ 40 de desconto</li>
-          <li>R$ 300 → R$ 60 de desconto</li>
-          <li>R$ 500 ou mais → R$ 100 de desconto (limite)</li>
-        </ul>
-      </aside>
     </div>
   </div>
-
-  <!-- FAB (desktop) + Modal de Reserva Rápida -->
-  <button id="fabQuick">＋ Reserva rápida</button>
-  <div class="modal" id="quickModal" aria-hidden="true">
-    <div class="modal-content" style="max-width:520px">
-      <button class="close" id="closeQuick" aria-label="Fechar">&times;</button>
-      <h2>Reserva rápida</h2>
-      <form id="quickForm" novalidate>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-          <div>
-            <label for="q_nome">Nome completo</label>
-            <input id="q_nome" required autocomplete="name" />
-          </div>
-          <div>
-            <label for="q_email">E-mail</label>
-            <input id="q_email" type="email" autocomplete="email" />
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-          <div>
-            <label for="q_telefone">Telefone (com DDD)</label>
-            <input id="q_telefone" required inputmode="tel" placeholder="(99) 99999-9999" />
-          </div>
-          <div>
-            <label for="q_pessoas">Qtd. pessoas</label>
-            <input id="q_pessoas" type="number" min="1" required />
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-          <div>
-            <label for="q_data">Data</label>
-            <input id="q_data" type="date" required />
-          </div>
-          <div>
-            <label for="q_hora">Hora</label>
-            <input id="q_hora" type="time" required />
-          </div>
-        </div>
-
-        <div>
-          <label for="q_mesa">Nº da mesa (opcional)</label>
-          <input id="q_mesa" />
-        </div>
-
-        <div>
-          <label for="q_obs">Observações</label>
-          <textarea id="q_obs" rows="3" placeholder="Preferências, levar bolo, etc."></textarea>
-        </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:6px">
-          <button type="button" class="btn" id="btnCancelQuick" style="background:#0000;border:1px solid var(--line);color:var(--text)">Cancelar</button>
-          <button type="submit" class="btn" id="sendQuick">Enviar</button>
-        </div>
-        <div id="q_msg" style="margin-top:6px;color:var(--muted)"></div>
-      </form>
-    </div>
-  </div>
-
-  <canvas id="confetti-canvas"></canvas>
+</main>
 
 <script>
-  /* =================== CONFIG =================== */
-  const CONFIG = {
-    // Cole aqui a URL do Apps Script (Web App) que retorna { ok:true, id:"..." }
-    SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbxIfkTFchuEEKXGDQITlNtIqdb96Lbr53eND0dhqU7S-XFnAGarnlzbzJQJ54Ig9jrAQg/exec",
-    ATENDENTE_WHATS: "557736135148",
-    ATENDENTE_MSG: "Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
-  };
+const CONFIG = {
+  SHEET_ENDPOINT: "COLE_AQUI_SUA_URL_DO_WEBAPP/exec" // <- troque
+};
 
-  const $ = sel => document.querySelector(sel);
-  const setBtnLoading = (btn, loading=true, txt='Enviando...') => {
-    if(!btn) return;
-    if(loading){
-      btn.dataset._old = btn.textContent;
-      btn.textContent = txt;
-      btn.disabled = true;
-    } else {
-      btn.textContent = btn.dataset._old || 'Enviar';
-      btn.disabled = false;
-    }
-  };
-  const buildWhats = (phone,text) => `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+const $ = s=>document.querySelector(s);
+const formatTel = t => String(t||'').replace(/\D/g,'').replace(/^(\d{2})(\d{4,5})(\d{4}).*/, '($1) $2-$3');
 
-  // Links WhatsApp (mobile/desk)
-  $('#btnAtendente').href  = buildWhats(CONFIG.ATENDENTE_WHATS, CONFIG.ATENDENTE_MSG);
-  $('#deskAtendente').href = buildWhats(CONFIG.ATENDENTE_WHATS, CONFIG.ATENDENTE_MSG);
+function qs(obj){ return Object.entries(obj).filter(([,v])=>v!==''&&v!=null).map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&'); }
 
-  /* ===== Mobile modal ===== */
-  $('#abrirReserva')?.addEventListener('click',()=>$('#modalReserva').classList.add('active'));
-  $('#fecharReserva')?.addEventListener('click',()=>$('#modalReserva').classList.remove('active'));
-  window.addEventListener('click',(e)=>{ if(e.target===$('#modalReserva')) $('#modalReserva').classList.remove('active') });
+async function getInfo(){
+  try{
+    const r = await fetch(`${CONFIG.SHEET_ENDPOINT}?acao=info`);
+    const j = await r.json();
+    if(j.ok){ $('#infoSpan').textContent = 'conectado'; }
+    else { $('#infoSpan').textContent = 'erro na API'; }
+  }catch(_){ $('#infoSpan').textContent = 'offline'; }
+}
 
-  /* ===== Confetes ===== */
-  function confetti(){
-    const canvas=$('#confetti-canvas'),ctx=canvas.getContext('2d');
-    const resize=()=>{canvas.width=innerWidth;canvas.height=innerHeight}; resize();
-    addEventListener('resize',resize);
-    const confs=Array.from({length:120}).map(()=>({
-      x:Math.random()*canvas.width,y:-Math.random()*canvas.height,
-      r:Math.random()*6+4,d:Math.random()*0.5+0.5,
-      color:`hsl(${Math.random()*360},100%,50%)`
-    }));
-    const id=setInterval(()=>{
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      confs.forEach(c=>{
-        ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,2*Math.PI);
-        ctx.fillStyle=c.color;ctx.fill();
-        c.y+=c.d*4;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
-      });
-    },20);
-    setTimeout(()=>{clearInterval(id);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
+async function listar(){
+  const de   = $('#fDe').value;
+  const ate  = $('#fAte').value;
+  const status = $('#fStatus').value;
+  const origem = $('#fOrigem').value;
+  const q    = $('#fBusca').value.trim();
+  const query = qs({acao:'listar', de, ate, status, origem, q, lim:1000});
+
+  $('#tbody').innerHTML = `<tr><td colspan="8" class="empty">Carregando…</td></tr>`;
+
+  try{
+    const r = await fetch(`${CONFIG.SHEET_ENDPOINT}?${query}`);
+    const j = await r.json();
+    if(!j.ok){ throw new Error(j.error||'Falha'); }
+    renderRows(j.rows||[]);
+  }catch(e){
+    console.error(e);
+    $('#tbody').innerHTML = `<tr><td colspan="8" class="empty">Falha ao carregar</td></tr>`;
   }
+}
 
-  // máscara simples de telefone (reutilizável)
-  function maskPhone(v){ const d=String(v||'').replace(/\D/g,'').slice(0,11); return d.length<=10? d.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3") : d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/,"($1) $2-$3"); }
-
-  // aplica máscara aos 3 campos de telefone (mobile, desk, quick)
-  ['#m_telefone','#d_telefone','#q_telefone'].forEach(sel=>{
-    const el=$(sel); if(!el) return; el.addEventListener('input', e=> e.target.value = maskPhone(e.target.value));
-  });
-
-  // validação data/hora no futuro
-  function isPast(data, hora){
-    const dh = new Date(`${data}T${hora||'00:00'}:00`);
-    return isFinite(dh) && dh < new Date();
+function renderRows(rows){
+  if(!rows.length){
+    $('#tbody').innerHTML = `<tr><td colspan="8" class="empty">Sem registros para os filtros.</td></tr>`;
+    $('#resumo').textContent = '';
+    return;
   }
+  const frag = document.createDocumentFragment();
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="badge">${r.Data||''}</div><div class="muted">${r.Hora||''}</div></td>
+      <td>${escapeHtml(r.Nome||'')}</td>
+      <td>${formatTel(r.Telefone||'')}</td>
+      <td>${r.Pessoas||''}</td>
+      <td>${escapeHtml(r.Mesa||'')}</td>
+      <td>${statusTag(r.Status)}</td>
+      <td><span class="tag">${escapeHtml(r.Origem||'')}</span></td>
+      <td>
+        <div class="row-actions">
+          ${btnStatus(r.ID,'Confirmado')}
+          ${btnStatus(r.ID,'Cancelado')}
+          ${btnStatus(r.ID,'Compareceu')}
+          ${btnStatus(r.ID,'No-show')}
+          <button class="ghost" onclick='imprimir(${JSON.stringify(r)})'>Imprimir</button>
+          ${btnWhats(r)}
+        </div>
+      </td>
+    `;
+    frag.appendChild(tr);
+  });
+  $('#tbody').innerHTML = '';
+  $('#tbody').appendChild(frag);
+  $('#resumo').textContent = `${rows.length} reservas encontradas`;
+}
 
-  /* ===== Envio (payload mínimo que o Apps Script espera) ===== */
-  async function enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,saidaMsgEl,btn, origem}){
-    // honeypot anti-bot (apenas no mobile)
-    if($('#hp_field') && $('#hp_field').value) return false;
+function statusTag(s){
+  const m = String(s||'').toLowerCase();
+  let cls = '';
+  if(m==='confirmado'||m==='compareceu') cls='ok';
+  else if(m==='pendente') cls='warn';
+  else cls='danger';
+  return `<span class="tag ${cls}">${escapeHtml(s||'')}</span>`;
+}
 
-    if(!nome || !telefone || !pessoas || !data || !hora){
-      saidaMsgEl && (saidaMsgEl.textContent = "Preencha os campos obrigatórios.");
-      return false;
-    }
+function btnStatus(id, novo){
+  return `<button class="ghost" onclick="mudarStatus('${id}','${novo}')">${novo}</button>`;
+}
 
-    if(isPast(data, hora)){
-      saidaMsgEl && (saidaMsgEl.textContent = "Escolha uma data/hora futura.");
-      return false;
-    }
+function btnWhats(r){
+  const d = String(r.Telefone||'').replace(/\D/g,'');
+  if(d.length<10) return '';
+  const msg = `Olá, ${r.Nome||''}! Aqui é do Mercatto Delícia confirmando sua reserva de aniversário para ${r.Data||''} às ${r.Hora||''}. Qualquer dúvida estamos à disposição.`;
+  const href = `https://wa.me/55${d}?text=${encodeURIComponent(msg)}`;
+  return `<a class="ghost" href="${href}" target="_blank" rel="noopener">WhatsApp</a>`;
+}
 
-    const payload = {
-      Nome: String(nome||'').trim(),
-      Email: String(email||'').trim(),
-      Telefone: String(telefone||'').trim(),
-      Pessoas: String(pessoas||'').trim(),
-      Mesa: String(mesa||'').trim(),
-      DataHora: `${data} ${hora}`,
-      Observacoes: String(observacoes||'').trim(),
-      origem: origem || 'site'
-    };
-
-    try{
-      setBtnLoading(btn, true);
-      const r = await fetch(CONFIG.SHEET_ENDPOINT, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      const j = await r.json().catch(()=>({}));
-      if(!r.ok || !j.ok){
-        throw new Error(j && j.error ? j.error : 'Falha ao enviar');
-      }
-      const idTexto = j.id ? ` ID: ${j.id}` : '';
-      saidaMsgEl && (saidaMsgEl.textContent = `Reserva enviada com sucesso!${idTexto}`);
-      confetti();
-      return true;
-    }catch(e){
-      console.error(e);
-      saidaMsgEl && (saidaMsgEl.textContent = "Erro ao enviar. Tente novamente.");
-      return false;
-    } finally {
-      setBtnLoading(btn, false);
-    }
+async function mudarStatus(id, novo){
+  try{
+    const r = await fetch(`${CONFIG.SHEET_ENDPOINT}?acao=status&id=${encodeURIComponent(id)}&novo=${encodeURIComponent(novo)}&autor=Painel`, { method:'GET' });
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.error||'Falha');
+    await listar(); // reload
+  }catch(e){
+    alert('Erro ao alterar status: '+e.message);
   }
+}
 
-  /* ===== Submit MOBILE ===== */
-  $('#formReservaMobile')?.addEventListener('submit',async(ev)=>{
-    ev.preventDefault();
-    const ok = await enviarReserva({
-      nome: $('#m_nome').value.trim(),
-      email: $('#m_email').value.trim(),
-      telefone: $('#m_telefone').value.trim(),
-      pessoas: $('#m_pessoas').value.trim(),
-      mesa: $('#m_mesa').value.trim(),
-      data: $('#m_data').value,
-      hora: $('#m_hora').value,
-      observacoes: $('#m_observacoes').value.trim(),
-      saidaMsgEl: $('#m_msg'),
-      btn: $('#btnEnviarMobile'),
-      origem: 'mobile'
-    });
-    if(ok){ ev.target.reset(); $('#modalReserva').classList.remove('active'); }
-  });
+function imprimir(rec){
+  const w = window.open('', '_blank');
+  const html = `
+    <html><head><meta charset="utf-8"><title>Reserva ${rec.ID}</title>
+      <style>
+        body{font-family:Arial, sans-serif;padding:20px}
+        h1{font-size:18px;margin:0 0 10px}
+        .b{font-weight:bold}
+        .box{border:1px solid #ccc;border-radius:8px;padding:12px}
+        .row{margin:6px 0}
+      </style>
+    </head>
+    <body onload="window.print();">
+      <h1>Mercatto Delícia — Reserva</h1>
+      <div class="box">
+        <div class="row"><span class="b">ID:</span> ${rec.ID||''}</div>
+        <div class="row"><span class="b">Nome:</span> ${escapeHtml(rec.Nome||'')}</div>
+        <div class="row"><span class="b">Telefone:</span> ${escapeHtml(rec.Telefone||'')}</div>
+        <div class="row"><span class="b">Pessoas:</span> ${rec.Pessoas||''}</div>
+        <div class="row"><span class="b">Data/Hora:</span> ${rec.Data||''} ${rec.Hora||''}</div>
+        <div class="row"><span class="b">Mesa:</span> ${escapeHtml(rec.Mesa||'')}</div>
+        <div class="row"><span class="b">Status:</span> ${escapeHtml(rec.Status||'')}</div>
+        <div class="row"><span class="b">Obs.:</span> ${escapeHtml(rec.Observacoes||'')}</div>
+      </div>
+    </body></html>
+  `;
+  w.document.write(html); w.document.close();
+}
 
-  /* ===== Submit DESKTOP ===== */
-  $('#formReservaDesk')?.addEventListener('submit',async(ev)=>{
-    ev.preventDefault();
-    const ok = await enviarReserva({
-      nome: $('#d_nome').value.trim(),
-      email: $('#d_email').value.trim(),
-      telefone: $('#d_telefone').value.trim(),
-      pessoas: $('#d_pessoas').value.trim(),
-      mesa: $('#d_mesa').value.trim(),
-      data: $('#d_data').value,
-      hora: $('#d_hora').value,
-      observacoes: $('#d_observacoes').value.trim(),
-      saidaMsgEl: $('#d_msg'),
-      btn: $('#btnEnviarDesk'),
-      origem: 'desktop'
-    });
-    if(ok){ ev.target.reset(); }
-  });
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
 
-  /* ===== Pop-up (desktop) — Reserva rápida usando a MESMA lógica ===== */
-  const quickModal = $('#quickModal');
-  const fabQuick = $('#fabQuick');
+$('#btnBuscar').addEventListener('click', listar);
 
-  fabQuick?.addEventListener('click', ()=>{
-    // preencher data/hora com agora (local)
-    const now = new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
-    $('#q_data').value = now.toISOString().slice(0,10);
-    $('#q_hora').value = now.toISOString().slice(11,16);
-    $('#q_msg').textContent = '';
-    quickModal.classList.add('active');
-    $('#q_nome').focus();
-  });
-  $('#closeQuick')?.addEventListener('click', ()=> quickModal.classList.remove('active'));
-  $('#btnCancelQuick')?.addEventListener('click', ()=> quickModal.classList.remove('active'));
-  window.addEventListener('click', (e)=>{ if(e.target===quickModal) quickModal.classList.remove('active'); });
+// Export CSV
+$('#btnCSV').addEventListener('click', async ()=>{
+  const de=$('#fDe').value, ate=$('#fAte').value, status=$('#fStatus').value, origem=$('#fOrigem').value, q=$('#fBusca').value.trim();
+  const query = qs({acao:'listar', de, ate, status, origem, q, lim:2000});
+  try{
+    const r = await fetch(`${CONFIG.SHEET_ENDPOINT}?${query}`);
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.error||'Falha');
+    const rows = j.rows||[];
+    const headers = ['ID','Status','Origem','Nome','Email','Telefone','Pessoas','Mesa','Data','Hora','DataHora','Observacoes','Timestamp'];
+    const csv = [headers.join(';')].concat(rows.map(r=>[
+      r.ID,r.Status,r.Origem,r.Nome,r.Email,r.Telefone,r.Pessoas,r.Mesa,r.Data,r.Hora,r.DataHora,(r.Observacoes||'').replace(/\r?\n/g,' '),r.Timestamp
+    ].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';'))).join('\n');
 
-  $('#quickForm')?.addEventListener('submit', async (ev)=>{
-    ev.preventDefault();
-    const ok = await enviarReserva({
-      nome: $('#q_nome').value.trim(),
-      email: $('#q_email').value.trim(),
-      telefone: $('#q_telefone').value.trim(),
-      pessoas: $('#q_pessoas').value.trim(),
-      mesa: $('#q_mesa').value.trim(),
-      data: $('#q_data').value,
-      hora: $('#q_hora').value,
-      observacoes: $('#q_obs').value.trim(),
-      saidaMsgEl: $('#q_msg'),
-      btn: $('#sendQuick'),
-      origem: 'desktop-quick'
-    });
-    if(ok){
-      ev.target.reset();
-      quickModal.classList.remove('active');
-    }
-  });
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=`reservas_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+    URL.revokeObjectURL(url);
+  }catch(e){ alert('Falha ao exportar: '+e.message); }
+});
+
+// inicialização
+getInfo().then(listar);
 </script>
 </body>
 </html>
