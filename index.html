@@ -60,21 +60,21 @@
 
   <header>
     <div class="hero">
-      <!-- sua imagem, sem escurecer -->
+      <!-- Imagem clara, sem overlay -->
       <img
         class="hero-img"
         src="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true"
         alt="Mercatto Delícia - Aniversário">
     </div>
 
-    <!-- apenas os dois botões -->
+    <!-- Apenas os dois botões -->
     <div class="actions">
       <button id="btnReservar" class="btn reserve" type="button">🗓️ Reservar</button>
       <a id="btnAtendente" class="btn whatsapp">💬 Falar com atendente</a>
     </div>
   </header>
 
-  <!-- Modal (só os campos solicitados) -->
+  <!-- Modal (somente os campos solicitados) -->
   <dialog id="modalReserva">
     <div class="modal-head">
       <h3>📅 Nova Reserva</h3>
@@ -115,7 +115,7 @@
           <textarea name="Observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
         </div>
 
-        <!-- OCULTOS: todas as outras colunas exigidas -->
+        <!-- OCULTOS: todas as outras colunas exigidas (vazias por padrão) -->
         <input type="hidden" name="ID" value="">
         <input type="hidden" name="Carimbo" value="">
         <input type="hidden" name="Mesa" value="">
@@ -172,17 +172,16 @@
       e.preventDefault();
       spinner.classList.add("show");
 
-      // 1) Coleta todos campos do form
+      // 1) Coleta todos os campos do form
       const fd = new FormData(form);
       const all = {};
       for (const [k,v] of fd.entries()) all[k] = typeof v === 'string' ? v.trim() : v;
 
-      // 2) Aliases p/ compatibilidade com o GAS original
+      // 2) Aliases p/ compatibilidade com o GAS original (minúsculos + datahora[])
       all["nome"]      = all["Nome"];
-      all["email"]     = all["Email"];      // também minúsculo
+      all["email"]     = all["Email"];
       all["telefone"]  = all["Telefone"];
       all["pessoas"]   = all["Pessoas"];
-      all["datahora[]"]= all["DataHora"] ? [all["DataHora"]] : [];
 
       // 3) Validação rápida
       if (!isValidEmail(all["Email"])) {
@@ -191,24 +190,24 @@
         return;
       }
 
-      // ORDEM DAS COLUNAS NA PLANILHA
-const HEADERS_IN_ORDER = [
-  "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
-  "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
-  "NomeArquivo","ArquivoURL"
-];
+      // 4) ORDEM DAS COLUNAS NA PLANILHA (fixa por cabeçalho)
+      const HEADERS_IN_ORDER = [
+        "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
+        "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
+        "NomeArquivo","ArquivoURL"
+      ];
 
-// Monta os parâmetros na ordem
-const params = new URLSearchParams();
-HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
-
-// Compatibilidade com GAS antigo
-params.append("acao", "cadastrar");
-params.append("nome", all["Nome"] ?? "");
-params.append("email", all["Email"] ?? "");
-params.append("telefone", all["Telefone"] ?? "");
-params.append("pessoas", all["Pessoas"] ?? "");
-if (all["DataHora"]) params.append("datahora[]", all["DataHora"]);
+      // 5) Monta os parâmetros na ORDEM exata + compatibilidade
+      const params = new URLSearchParams();
+      // ordem oficial (colunas)
+      HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
+      // compat com GAS antigo
+      params.append("acao", "cadastrar");
+      params.append("nome",      all["Nome"] ?? "");
+      params.append("email",     all["Email"] ?? "");
+      params.append("telefone",  all["Telefone"] ?? "");
+      params.append("pessoas",   all["Pessoas"] ?? "");
+      if (all["DataHora"]) params.append("datahora[]", all["DataHora"]); // mantém compatibilidade
 
       try {
         const res = await fetch(GAS_ENDPOINT, { method:"POST", body: params });
