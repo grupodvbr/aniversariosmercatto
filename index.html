@@ -7,270 +7,116 @@
   <meta name="color-scheme" content="dark" />
   <style>
     :root{
-      --brand:#22c55e;
-      --brand-2:#16a34a;
-      --danger:#ef4444;
-      --text:#f5f7fb;
-      --muted:#c9ced8;
-      --panel:rgba(10,12,16,.72);
-      --line:rgba(255,255,255,.12);
-      --bg:#0b0e13;
-      /* Troque a imagem abaixo, se quiser, por uma foto do seu salão/ambiente */
-      --bg-image: url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true');
+      --brand:#22c55e; --brand-2:#16a34a; --text:#f5f7fb; --muted:#c9ced8;
+      --panel:rgba(10,12,16,.72); --line:rgba(255,255,255,.12); --bg:#0b0e13;
+      --bg-image:url('https://images.unsplash.com/photo-1541542684-4a7a40e85b36?q=80&w=1600&auto=format&fit=crop');
     }
-
-    *{box-sizing: border-box}
-    html, body{height:100%}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background: var(--bg) fixed no-repeat center/cover;
-      position: relative;
+      font-family:system-ui,Arial,sans-serif;color:var(--text);
+      background:var(--bg) no-repeat center/cover fixed;
     }
-    /* Fundo com imagem + overlay escuro para contraste */
     body::before{
-      content:"";
-      position:fixed; inset:0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.65)),
-        var(--bg-image) center/cover no-repeat;
-      filter:saturate(1.05);
-      z-index:-1;
+      content:"";position:fixed;inset:0;z-index:-1;
+      background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65)),var(--bg-image) center/cover no-repeat;
     }
-
-    header{
-      display:flex; align-items:center; justify-content:center;
-      padding:24px 16px;
-    }
-    .logo{
-      display:flex; align-items:center; gap:12px;
-      padding:10px 16px; border:1px solid var(--line);
-      background:var(--panel); border-radius:16px; backdrop-filter: blur(6px);
-    }
-    .logo img{ width:28px; height:28px; border-radius:6px; object-fit:cover }
-    .logo h1{ margin:0; font-size:16px; letter-spacing:.3px; font-weight:700 }
-
-    .wrap{
-      display:grid; place-items:center;
-      min-height:calc(100% - 96px);
-      padding:24px;
-    }
-
-    .card{
-      width:100%; max-width:680px;
-      background:var(--panel); border:1px solid var(--line);
-      border-radius:20px; padding:28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-    }
-
-    .title{
-      margin:0 0 6px 0; font-size:22px; font-weight:800; letter-spacing:.2px;
-    }
-    .subtitle{
-      margin:0 0 22px 0; color:var(--muted); font-size:14px;
-    }
-
-    .actions{
-      display:grid; gap:14px; grid-template-columns: 1fr 1fr;
-    }
-    @media (max-width:560px){
-      .actions{ grid-template-columns: 1fr }
-    }
+    header{padding:24px;text-align:center}
+    .logo img{width:160px;height:auto;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+    .actions{display:grid;gap:14px;grid-template-columns:1fr 1fr;max-width:420px;margin:20px auto}
+    @media(max-width:560px){.actions{grid-template-columns:1fr}}
     .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      width:100%; padding:16px 18px; border-radius:14px; border:1px solid var(--line);
-      color:var(--text); text-decoration:none; font-weight:700; font-size:16px;
-      transition: transform .06s ease, background .2s ease, border-color .2s ease;
-      background: rgba(255,255,255,.04);
-      cursor:pointer; user-select:none;
+      padding:16px;border-radius:14px;font-weight:700;font-size:16px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      cursor:pointer;text-decoration:none;color:var(--text);border:1px solid var(--line);
+      background:rgba(255,255,255,.06);transition:.2s;
     }
-    .btn:active{ transform: translateY(1px) }
-    .btn i{ font-style:normal; opacity:.9 }
-
-    .btn.whatsapp{ background:linear-gradient(180deg, var(--brand), var(--brand-2)); border-color:transparent }
-    .btn.whatsapp:hover{ filter:brightness(1.02) }
-    .btn.reserve{ background:rgba(255,255,255,.06) }
-    .btn.reserve:hover{ background:rgba(255,255,255,.10) }
-
-    /* Modal */
-    dialog{
-      width:min(760px, 96vw); border:none; padding:0; border-radius:18px;
-      background:#0c0f14; color:var(--text);
-      box-shadow: 0 20px 60px rgba(0,0,0,.5);
-    }
-    dialog::backdrop{ background:rgba(0,0,0,.55) }
-    .modal-head{
-      padding:16px 18px; border-bottom:1px solid var(--line);
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      background:rgba(255,255,255,.03); border-top-left-radius:18px; border-top-right-radius:18px;
-    }
-    .modal-head h3{ margin:0; font-size:16px; letter-spacing:.2px }
-    .close{
-      appearance:none; border:1px solid var(--line); background:transparent; color:var(--text);
-      border-radius:10px; padding:8px 12px; cursor:pointer; font-weight:700
-    }
-    .modal-body{ padding:18px; }
-
-    form{
-      display:grid; gap:14px;
-    }
-    label{ font-weight:700; font-size:13px }
-    input, select, textarea, button{
-      width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--line);
-      background:#0f131a; color:var(--text); font-size:15px;
-    }
-    input::file-selector-button{
-      border:none; background:#11161e; color:var(--text); padding:10px 12px; border-radius:10px; margin-right:10px;
-    }
-    .row{ display:grid; gap:14px; grid-template-columns: 1fr 1fr }
-    @media (max-width:720px){ .row{ grid-template-columns: 1fr } }
-
-    .submit{
-      background:linear-gradient(180deg, var(--brand), var(--brand-2)); border:none; font-weight:800;
-      padding:14px 16px; cursor:pointer;
-    }
-
-    .spinner{
-      display:none; text-align:center; color:var(--muted); font-size:14px;
-    }
-    .spinner.show{ display:block }
-
-    .note{
-      margin-top:6px; color:var(--muted); font-size:12px;
-    }
-
-    .foot{
-      margin-top:18px; display:flex; gap:10px; align-items:center; justify-content:center;
-      color:var(--muted); font-size:12px;
-    }
+    .btn:hover{background:rgba(255,255,255,.12)}
+    .btn.whatsapp{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none}
+    .btn.whatsapp:hover{filter:brightness(1.05)}
+    dialog{width:min(560px,96vw);border:none;padding:0;border-radius:18px;background:#0c0f14;color:var(--text)}
+    dialog::backdrop{background:rgba(0,0,0,.55)}
+    .modal-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+    .modal-head button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:10px;padding:8px 12px;cursor:pointer}
+    .modal-body{padding:18px}
+    form{display:grid;gap:14px}
+    label{font-weight:700;font-size:13px}
+    input,select,textarea,button{padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f131a;color:var(--text);font-size:15px}
+    .row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+    @media(max-width:640px){.row{grid-template-columns:1fr}}
+    .submit{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none;font-weight:800;cursor:pointer}
+    .spinner{display:none;color:var(--muted);font-size:14px;text-align:center}
+    .spinner.show{display:block}
   </style>
 </head>
 <body>
 
   <header>
+    <!-- Foto/Logo -->
     <div class="logo">
-      <!-- Troque pela sua logo, se quiser -->
-      <img src="https://images.unsplash.com/photo-1562059390-a761a084768e?w=256&q=80" alt="Logo">
-      <h1>Mercatto Delícia • Reservas</h1>
+      <img src="https://images.unsplash.com/photo-1562059390-a761a084768e?w=600&q=80" alt="Logo Mercatto">
+    </div>
+
+    <!-- Botões embaixo da foto -->
+    <div class="actions">
+      <a id="btnAtendente" class="btn whatsapp"><span>💬</span> Falar com atendente</a>
+      <button id="btnReservar" class="btn reserve" type="button"><span>🗓️</span> Reservar</button>
     </div>
   </header>
 
-  <div class="wrap">
-    <div class="card">
-      <h2 class="title">Faça sua reserva em poucos passos</h2>
-      <p class="subtitle">Escolha uma opção abaixo. Se preferir, fale direto com o atendente.</p>
-
-      <div class="actions">
-        <!-- BOTÃO 1: Falar com atendente -->
-        <a id="btnAtendente" class="btn whatsapp" href="#" rel="noopener">
-          <i>💬</i> Falar com atendente
-        </a>
-
-        <!-- BOTÃO 2: Reservar (abre modal) -->
-        <button id="btnReservar" class="btn reserve" type="button">
-          <i>🗓️</i> Reservar
-        </button>
-      </div>
-
-      <div class="foot">Ao reservar, você concorda com nossos termos e horários de funcionamento.</div>
-    </div>
-  </div>
-
-  <!-- MODAL DE RESERVA -->
+  <!-- Modal de Reserva (somente os campos pedidos) -->
   <dialog id="modalReserva">
     <div class="modal-head">
-      <h3>📅 Nova Reserva</h3>
-      <button class="close" id="fecharModal" type="button">Fechar</button>
+      <h3 style="margin:0">📅 Nova Reserva</h3>
+      <button id="fecharModal" type="button">Fechar</button>
     </div>
     <div class="modal-body">
       <form id="reservaForm" autocomplete="on">
+        <!-- Ocultos para manter o mapeamento por cabeçalho na planilha -->
+        <input type="hidden" name="ID" value="">
+        <input type="hidden" name="Carimbo" value="">
+        <input type="hidden" name="Mesa" value="">
+        <input type="hidden" name="Cardapio" value="">
+        <input type="hidden" name="ValorEstimado" value="">
+        <input type="hidden" name="PagamentoAntecipado" value="">
+        <input type="hidden" name="Banco" value="">
+        <input type="hidden" name="ValorFinalPago" value="">
+        <input type="hidden" name="Status" value="Pendente">
+        <input type="hidden" name="NomeArquivo" value="">
+        <input type="hidden" name="ArquivoURL" value="">
+        <!-- Compatibilidade com seu GAS -->
         <input type="hidden" name="acao" value="cadastrar">
-        <input type="hidden" name="status" value="Pendente">
 
         <div class="row">
           <div>
-            <label>Nome Completo</label>
-            <input type="text" name="nome" required placeholder="Seu nome completo">
+            <label>Nome</label>
+            <input type="text" name="Nome" required placeholder="Seu nome completo">
           </div>
           <div>
-            <label>E-mail</label>
-            <input type="email" name="email" required placeholder="seu@email.com">
+            <label>Email</label>
+            <input type="email" name="Email" required placeholder="seu@email.com">
           </div>
         </div>
 
         <div class="row">
           <div>
             <label>Telefone</label>
-            <input type="tel" name="telefone" required inputmode="tel" placeholder="(DDD) 9 0000-0000">
+            <input type="tel" name="Telefone" required inputmode="tel" placeholder="(DDD) 9 0000-0000">
           </div>
           <div>
             <label>Pessoas</label>
-            <input type="number" name="pessoas" min="1" required placeholder="Qtd. de pessoas">
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Local da Reserva</label>
-            <select name="mesa" required>
-              <option value="">Selecione o local</option>
-              <option>SALA VIP</option>
-              <option>SALA VIP 2</option>
-              <option>SACADA</option>
-            </select>
-          </div>
-          <div>
-            <label>Data e Hora da Reserva</label>
-            <input type="datetime-local" name="datahora[]" required>
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Valor Estimado (R$)</label>
-            <input type="text" name="valorEstimado" inputmode="decimal" placeholder="Ex.: 400,00">
-          </div>
-          <div>
-            <label>Pagamento Antecipado (R$)</label>
-            <input type="text" name="pagamentoAntecipado" inputmode="decimal" placeholder="Ex.: 100,00">
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <label>Banco</label>
-            <select name="banco">
-              <option value="">Selecione</option>
-              <option>SICREDI</option>
-              <option>ITAÚ</option>
-              <option>CRÉDITO POS</option>
-              <option>DÉBITO POS</option>
-            </select>
-          </div>
-          <div>
-            <label>Cardápio</label>
-            <select name="cardapio">
-              <option value="">Selecione</option>
-              <option>Buffet Básico</option>
-              <option>Buffet Premium</option>
-              <option>Rodízio</option>
-              <option>À la carte</option>
-              <option>Outro</option>
-            </select>
+            <input type="number" name="Pessoas" min="1" required placeholder="Qtd. de pessoas">
           </div>
         </div>
 
         <div>
-          <label>Observações</label>
-          <textarea name="observacoes" rows="3" placeholder="Ex.: Preferência por mesa na sacada, levar bolo..."></textarea>
+          <label>DataHora</label>
+          <input type="datetime-local" name="DataHora" required>
         </div>
 
         <div>
-          <label>Comprovante (PDF, JPG ou PNG)</label>
-          <input type="file" id="arquivo" accept=".pdf,.jpg,.jpeg,.png">
-          <div class="note">Opcional. Tamanho máx. recomendado: 10MB.</div>
+          <label>Observacoes</label>
+          <textarea name="Observacoes" rows="3" placeholder="Ex.: preferências, observações..."></textarea>
         </div>
 
         <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
@@ -280,13 +126,9 @@
   </dialog>
 
   <script>
-    /* ======= CONFIGURAÇÕES RÁPIDAS ======= */
-    // Coloque aqui o número do WhatsApp do atendente (somente dígitos, com DDI 55)
-    const WHATSAPP_NUMBER = "5599999999999"; // ex.: 55 71 98888-7777 -> "5571988887777"
-    // Mensagem padrão ao abrir o WhatsApp
+    /* ======= CONFIG ======= */
+    const WHATSAPP_NUMBER = "5599999999999"; // Coloque o número com DDI 55
     const WHATSAPP_MSG = "Olá! Quero fazer uma reserva no Mercatto Delícia.";
-
-    // Seu endpoint Apps Script (mantive o que você usou)
     const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyEwDBfRr28pade5vW2wtvxNXVNTvaSCLqWiWlid_7HyFN7CmhXz4nclWLvNs8hSIwC/exec";
 
     /* ======= ELEMENTOS ======= */
@@ -296,59 +138,35 @@
     const fecharModal = document.getElementById('fecharModal');
     const form = document.getElementById('reservaForm');
     const spinner = document.getElementById('spinner');
-    const inputArquivo = document.getElementById('arquivo');
 
-    /* ======= ABRIR / FECHAR MODAL ======= */
+    /* ======= AÇÕES ======= */
     btnReservar.addEventListener('click', () => modal.showModal());
     fecharModal.addEventListener('click', () => modal.close());
-    // Fecha com ESC
     modal.addEventListener('cancel', (e)=>{ e.preventDefault(); modal.close(); });
 
-    /* ======= FALAR COM ATENDENTE (WhatsApp) ======= */
     btnAtendente.addEventListener('click', (e) => {
       e.preventDefault();
       const texto = encodeURIComponent(WHATSAPP_MSG + "\n\nPágina: " + location.href);
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`;
-      window.open(url, "_blank", "noopener");
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank", "noopener");
     });
 
-    /* ======= ENVIO DO FORMULÁRIO ======= */
+    /* ======= ENVIO ======= */
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       spinner.classList.add("show");
 
-      // Coleta os dados mantendo o array de datas como "datahora[]"
-      const formData = new FormData(form);
+      // Constrói o payload com os nomes EXATOS dos cabeçalhos
+      const fd = new FormData(form);
       const dados = {};
-      for (const [key, value] of formData.entries()) {
-        if (key === "datahora[]") {
-          if (!dados["datahora[]"]) dados["datahora[]"] = [];
-          dados["datahora[]"].push(value);
-        } else {
-          dados[key] = value;
-        }
-      }
-
-      // Upload opcional em Base64
-      const file = inputArquivo.files[0];
-      if (file) {
-        try{
-          const base64 = await toBase64(file);
-          dados["arquivo"] = base64.split(',')[1];
-          dados["nomeArquivo"] = file.name;
-        }catch(err){
-          console.error("Falha ao ler arquivo:", err);
-          alert("Não foi possível anexar o arquivo. Tente novamente ou envie sem anexo.");
-        }
-      }
+      for (const [k, v] of fd.entries()) dados[k] = v;
 
       try {
         const res = await fetch(GAS_ENDPOINT, {
           method: "POST",
           body: new URLSearchParams(dados)
         });
-        const text = await res.text();
-        alert(text || "Reserva enviada com sucesso!");
+        const texto = await res.text();
+        alert(texto || "Reserva enviada com sucesso!");
         form.reset();
         modal.close();
       } catch (err) {
@@ -358,15 +176,6 @@
         spinner.classList.remove("show");
       }
     });
-
-    function toBase64(file){
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
   </script>
 </body>
 </html>
