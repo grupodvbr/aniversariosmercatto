@@ -8,81 +8,73 @@
   <style>
     :root{
       --brand:#22c55e; --brand-2:#16a34a; --text:#f5f7fb; --muted:#c9ced8;
-      --panel:rgba(10,12,16,.72); --line:rgba(255,255,255,.12); --bg:#0b0e13;
-      --bg-image:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true');
+      --line:rgba(255,255,255,.14);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{
-      font-family:system-ui,Arial,sans-serif;color:var(--text);
-      background:var(--bg) no-repeat center/cover fixed;
-    }
-    body::before{
-      content:"";position:fixed;inset:0;z-index:-1;
-      background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65)),var(--bg-image) center/cover no-repeat;
+    html,body{margin:0}
+    body{font-family:system-ui,Arial,sans-serif;background:#0b0e13;color:var(--text)}
+    header{padding:16px}
+
+    /* Imagem sem escurecer */
+    .hero{max-width:840px;margin:0 auto}
+    .hero-img{
+      display:block;width:100%;height:auto;border-radius:18px;
+      box-shadow:0 10px 32px rgba(0,0,0,.45);object-fit:cover;
     }
 
-    header{padding:24px 16px}
-    /* ===== HERO (imagem + botões flutuando) ===== */
-    .hero{position:relative;max-width:780px;margin:0 auto}
-    .hero-img{display:block;width:100%;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.35);object-fit:cover}
-    .hero-actions{
-      position:absolute; left:50%; bottom:12px; transform:translateX(-50%);
-      display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
-      width:calc(100% - 24px); /* um respiro nas bordas */
-      z-index:2;
+    /* Botões embaixo da imagem */
+    .actions{
+      max-width:840px;margin:12px auto 0;display:flex;gap:12px;flex-wrap:wrap;justify-content:center
     }
     .btn{
-      padding:14px 18px; border-radius:14px; font-weight:800; font-size:15px;
-      display:flex; align-items:center; justify-content:center; gap:8px;
-      cursor:pointer; text-decoration:none; user-select:none; border:1px solid var(--line);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 6px 20px rgba(0,0,0,.25);
-      transition:transform .06s ease, filter .2s ease, background .2s ease;
+      padding:14px 18px;border-radius:14px;font-weight:800;font-size:15px;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      border:1px solid var(--line);cursor:pointer;text-decoration:none;color:#fff;
+      background:rgba(255,255,255,.08);transition:filter .2s ease,transform .06s ease;
     }
     .btn:active{transform:translateY(1px)}
-    .btn.whatsapp{background:linear-gradient(180deg,var(--brand),var(--brand-2)); color:#fff; border:none}
-    .btn.reserve{background:rgba(255,255,255,.10); color:#fff}
-    .btn.reserve:hover{background:rgba(255,255,255,.18)}
-    @media(max-width:520px){
-      .hero-actions{bottom:10px}
-      .btn{width:100%}
-    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn.whatsapp{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none}
+    @media (max-width:560px){ .btn{width:100%} }
 
-    /* ===== Modal ===== */
-    dialog{width:min(560px,96vw);border:none;padding:0;border-radius:18px;background:#0c0f14;color:var(--text)}
+    /* Modal */
+    dialog{width:min(560px,96vw);border:none;padding:0;border-radius:18px;background:#0c0f14;color:#fff}
     dialog::backdrop{background:rgba(0,0,0,.55)}
-    .modal-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+    .modal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
     .modal-head h3{margin:0;font-size:16px}
-    .modal-head button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:10px;padding:8px 12px;cursor:pointer}
-    .modal-body{padding:18px}
+    .modal-head button{border:1px solid var(--line);background:transparent;color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .modal-body{padding:16px}
     form{display:grid;gap:14px}
     label{font-weight:700;font-size:13px}
     input,textarea,button{
-      padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f131a;color:var(--text);font-size:15px
+      padding:12px;border-radius:12px;border:1px solid var(--line);background:#0f131a;color:#fff;font-size:15px
     }
     .row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
     @media(max-width:640px){.row{grid-template-columns:1fr}}
     .submit{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none;font-weight:800;cursor:pointer}
     .spinner{display:none;color:var(--muted);font-size:14px;text-align:center}
     .spinner.show{display:block}
-    .note{color:var(--muted);text-align:center;margin-top:10px;font-size:12px}
   </style>
 </head>
 <body>
 
   <header>
     <div class="hero">
-      <!-- TROQUE A URL ABAIXO PELO SEU BANNER/IMAGEM -->
-      <img class="hero-img" src="https://images.unsplash.com/photo-1562059390-a761a084768e?w=1400&q=80" alt="Mercatto Delícia - Banner">
-      <div class="hero-actions">
-        <a id="btnAtendente" class="btn whatsapp">💬 Falar com atendente</a>
-        <button id="btnReservar" class="btn reserve" type="button">🗓️ Reservar</button>
-      </div>
+      <!-- sua imagem, sem escurecer -->
+      <img
+        class="hero-img"
+        src="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true"
+        alt="Mercatto Delícia - Aniversário">
+    </div>
+
+    <!-- apenas os dois botões -->
+    <div class="actions">
+      <button id="btnReservar" class="btn reserve" type="button">🗓️ Reservar</button>
+      <a id="btnAtendente" class="btn whatsapp">💬 Falar com atendente</a>
     </div>
   </header>
 
-  <!-- Modal de Reserva -->
+  <!-- Modal (só os campos solicitados) -->
   <dialog id="modalReserva">
     <div class="modal-head">
       <h3>📅 Nova Reserva</h3>
@@ -90,7 +82,7 @@
     </div>
     <div class="modal-body">
       <form id="reservaForm" autocomplete="on">
-        <!-- Somente os campos solicitados -->
+        <!-- VISÍVEIS -->
         <div class="row">
           <div>
             <label>Nome</label>
@@ -123,35 +115,35 @@
           <textarea name="Observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
         </div>
 
-        <!-- Ocultos/compatibilidade -->
-        <input type="hidden" name="Status" value="Pendente">
+        <!-- OCULTOS: todas as outras colunas exigidas -->
         <input type="hidden" name="ID" value="">
         <input type="hidden" name="Carimbo" value="">
-        <input type="hidden" name="ArquivoURL" value="">
-        <input type="hidden" name="ValorFinalPago" value="">
-        <input type="hidden" name="NomeArquivo" value="">
-        <!-- Compatibilidade com seu GAS original -->
-        <input type="hidden" name="acao" value="cadastrar">
         <input type="hidden" name="Mesa" value="">
         <input type="hidden" name="Cardapio" value="">
         <input type="hidden" name="ValorEstimado" value="">
         <input type="hidden" name="PagamentoAntecipado" value="">
         <input type="hidden" name="Banco" value="">
+        <input type="hidden" name="ValorFinalPago" value="">
+        <input type="hidden" name="Status" value="Pendente">
+        <input type="hidden" name="NomeArquivo" value="">
+        <input type="hidden" name="ArquivoURL" value="">
+
+        <!-- Compatibilidade com seu GAS original -->
+        <input type="hidden" name="acao" value="cadastrar">
 
         <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
         <button class="submit" type="submit">Enviar Reserva</button>
-        <div class="note">Ao enviar, você concorda com nossos termos e horários de funcionamento.</div>
       </form>
     </div>
   </dialog>
 
   <script>
-    /* ======= CONFIG ======= */
+    /* ===== CONFIG ===== */
     const WHATSAPP_NUMBER = "5571999999999"; // DDI55 + DDD + número (só dígitos)
     const WHATSAPP_MSG    = "Olá! Quero fazer uma reserva no Mercatto Delícia.";
     const GAS_ENDPOINT    = "https://script.google.com/macros/s/AKfycbyEwDBfRr28pade5vW2wtvxNXVNTvaSCLqWiWlid_7HyFN7CmhXz4nclWLvNs8hSIwC/exec";
 
-    /* ======= ELEMENTOS ======= */
+    /* ===== ELEMENTOS ===== */
     const modal        = document.getElementById('modalReserva');
     const btnReservar  = document.getElementById('btnReservar');
     const btnAtendente = document.getElementById('btnAtendente');
@@ -159,7 +151,7 @@
     const form         = document.getElementById('reservaForm');
     const spinner      = document.getElementById('spinner');
 
-    /* ======= UI ======= */
+    /* ===== UI ===== */
     btnReservar.addEventListener('click', () => modal.showModal());
     fecharModal.addEventListener('click', () => modal.close());
     modal.addEventListener('cancel', (e)=>{ e.preventDefault(); modal.close(); });
@@ -170,43 +162,60 @@
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank", "noopener");
     });
 
-    /* ======= HELPERS ======= */
+    /* ===== HELPERS ===== */
     function isValidEmail(s){
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s||"").trim());
     }
 
-    /* ======= ENVIO ======= */
+    /* ===== ENVIO ===== */
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       spinner.classList.add("show");
 
-      // 1) Monta payload com os nomes das COLUNAS
+      // 1) Coleta todos campos do form
       const fd = new FormData(form);
-      const dados = {};
-      for (const [k,v] of fd.entries()) dados[k] = typeof v === 'string' ? v.trim() : v;
+      const all = {};
+      for (const [k,v] of fd.entries()) all[k] = typeof v === 'string' ? v.trim() : v;
 
       // 2) Aliases p/ compatibilidade com o GAS original
-      dados["nome"]      = dados["Nome"];
-      dados["email"]     = dados["Email"];    // <- envia também em minúsculo
-      dados["telefone"]  = dados["Telefone"];
-      dados["pessoas"]   = dados["Pessoas"];
-      dados["datahora[]"]= dados["DataHora"] ? [dados["DataHora"]] : [];
+      all["nome"]      = all["Nome"];
+      all["email"]     = all["Email"];      // também minúsculo
+      all["telefone"]  = all["Telefone"];
+      all["pessoas"]   = all["Pessoas"];
+      all["datahora[]"]= all["DataHora"] ? [all["DataHora"]] : [];
 
-      // 3) Campos padrão
-      dados["acao"] = "cadastrar";
-
-      // 4) Validação local do e-mail (evita "sem destinatário")
-      if (!isValidEmail(dados["Email"])) {
+      // 3) Validação rápida
+      if (!isValidEmail(all["Email"])) {
         alert("Informe um e-mail válido.");
         spinner.classList.remove("show");
         return;
       }
 
+      // 4) ORDEM DE ENVIO EXATA DA PLANILHA
+      const HEADERS_IN_ORDER = [
+        "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
+        "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
+        "NomeArquivo","ArquivoURL"
+      ];
+
+      // 5) Monta URLSearchParams NA ORDEM especificada e inclui compatibilidade
+      const params = new URLSearchParams();
+      // ordem oficial
+      HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
+      // campos de compatibilidade do GAS antigo
+      params.append("acao", "cadastrar");
+      params.append("nome",      all["Nome"] ?? "");
+      params.append("email",     all["Email"] ?? "");
+      params.append("telefone",  all["Telefone"] ?? "");
+      params.append("pessoas",   all["Pessoas"] ?? "");
+      if (Array.isArray(all["datahora[]"])) {
+        all["datahora[]"].forEach(v => params.append("datahora[]", v));
+      } else if (all["DataHora"]) {
+        params.append("datahora[]", all["DataHora"]);
+      }
+
       try {
-        const res = await fetch(GAS_ENDPOINT, {
-          method: "POST",
-          body: new URLSearchParams(serializeForUrl_(dados))
-        });
+        const res = await fetch(GAS_ENDPOINT, { method:"POST", body: params });
         const texto = await res.text();
         alert(texto || "Reserva enviada com sucesso!");
         form.reset();
@@ -218,20 +227,6 @@
         spinner.classList.remove("show");
       }
     });
-
-    // Converte objeto em pares para URLSearchParams; expande arrays (datahora[])
-    function serializeForUrl_(obj){
-      const params = new URLSearchParams();
-      for (const k in obj){
-        const v = obj[k];
-        if (Array.isArray(v)){
-          v.forEach(item => params.append(k, item));
-        }else{
-          params.append(k, v ?? "");
-        }
-      }
-      return params;
-    }
   </script>
 </body>
 </html>
