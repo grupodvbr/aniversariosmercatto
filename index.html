@@ -2,226 +2,517 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Acessível (sem bloquear zoom) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reserva de Aniversário • Mercatto Delícia</title>
+
+  <!-- ===================== COMPARTILHAMENTO (PREVIEW) ===================== -->
+  <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+  <meta property="og:title" content="Reserva de Aniversário • Mercatto Delícia" />
+  <meta property="og:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://grupodvbr.github.io/aniversariosmercatto/" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Reserva de Aniversário • Mercatto Delícia" />
+  <meta name="twitter:description" content="Garanta sua reserva e aproveite benefícios especiais de aniversário." />
+  <meta name="twitter:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+
+  <link rel="image_src" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true" />
+  <!-- ===================================================================== -->
+
   <style>
     :root{
-      --brand:#d4af37; --brand-2:#f5d26a; --bg:#0a0a0a; --card:#111214;
-      --text:#f8f7f4; --muted:#cfc8b0; --line:#262626;
+      --brand:#d4af37;
+      --brand-2:#f5d26a;
+      --text:#f8f7f4;
+      --muted:#cfc8b0;
+      --line:#292929;
+      --bg:#000;
+      --panel:#111214;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .wrap{max-width:920px;margin:0 auto;padding:24px}
-    h1{margin:0 0 12px;font-size:22px;color:var(--brand-2)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-    label{display:block;margin:6px 0 6px;color:var(--muted);font-size:14px}
-    input,textarea,button{
-      width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);
-      background:#0c0d0f;color:var(--text);font-size:15px;outline:none
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);background:var(--bg)}
+    a{color:inherit;text-decoration:none}
+
+    /* ========= MOBILE/TABLET ========= */
+    .hero{
+      background:url('https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true') no-repeat center center;
+      background-size:cover; min-height:100vh; position:relative;
     }
-    textarea{min-height:100px;resize:vertical}
-    .grid{display:grid;gap:12px}
-    @media(min-width:840px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
-    .btn{cursor:pointer;border:0;background:linear-gradient(180deg,var(--brand),#c79b1d);color:#1a1500;font-weight:800}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .muted{color:var(--muted);font-size:13px}
-    .ok{color:#22c55e}
-    .err{color:#f87171}
-    .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .brand{font-weight:800;color:var(--brand-2)}
-    .whats{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--text);text-decoration:none}
-    /* Modal para mobile (também funciona no desktop) */
-    .actions{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;display:flex;gap:12px;z-index:20}
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:12px;z-index:30}
-    .modal.show{display:flex}
-    .sheet{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:520px;width:100%;padding:18px}
-    .close{background:#0000;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;cursor:pointer}
-    /* Desktop: formulário fixo na página; Mobile: usa modal */
-    @media(min-width:840px){
-      .mobile-only{display:none}
+    .actions{
+      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+      display:flex; gap:16px; z-index:100;
     }
-    @media(max-width:839px){
-      .desktop-only{display:none}
+    .btn{
+      cursor:pointer; border:0; border-radius:999px; padding:14px 22px;
+      font-weight:700; font-size:15px; color:#1a1500;
+      background:linear-gradient(180deg,var(--brand),#c79b1d);
+      border:1px solid #d0a62d; box-shadow:0 0 8px rgba(212,175,55,.6);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn:hover{transform:scale(1.05); box-shadow:0 0 14px rgba(245,210,106,.9)}
+    .btn[disabled]{opacity:.6; cursor:not-allowed}
+
+    .modal{
+      position:fixed; inset:0; background:rgba(0,0,0,.7);
+      display:none; align-items:center; justify-content:center; z-index:999; padding:10px;
+    }
+    .modal.active{display:flex}
+    .modal-content{
+      background:rgba(17,18,20,.95); padding:20px; border-radius:14px;
+      max-width:420px; width:100%; color:var(--text); font-size:18px;
+      max-height:90vh; overflow-y:auto;
+    }
+    .close{background:none;border:0;color:var(--text);font-size:26px;float:right;cursor:pointer}
+    form{display:grid;gap:12px;margin-top:10px}
+    label{font-size:16px;color:var(--brand-2)}
+    input,textarea{
+      width:100%; padding:12px; border-radius:8px;
+      border:1px solid var(--line); background:#0c0d0f; color:var(--text); font-size:16px;
+    }
+    textarea{min-height:70px; resize:vertical}
+    #msg{margin-top:6px;color:var(--muted)}
+
+    /* Confetes */
+    #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2000}
+
+    /* ========= DESKTOP (>=1024px) ========= */
+    @media (min-width:1024px){
+      .hero{display:none}
+      .actions{display:none}
+      body{background:#0a0a0a}
+
+      .desktop{max-width:1100px;margin:0 auto;padding:28px 20px 48px;}
+      header.site{
+        display:flex;align-items:center;justify-content:space-between;gap:16px;
+        margin-bottom:18px;border-bottom:1px solid #1c1c1c;padding-bottom:12px;
+      }
+      .brand{font-weight:800;letter-spacing:.3px;color:var(--brand-2);font-size:22px;}
+      .contact-mini a{
+        display:inline-flex;gap:8px;align-items:center;
+        border:1px solid #2a2a2a;border-radius:999px;padding:8px 12px;color:var(--text);
+      }
+      .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;}
+      .card{background:rgba(17,18,20,.95);border:1px solid #1f1f1f;border-radius:16px;padding:18px;}
+      .card h2{margin:0 0 10px 0;font-size:18px;font-weight:800;color:var(--brand-2);}
+      .note{color:var(--muted);font-size:14px}
+      .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .form-grid .full{grid-column:1/-1}
+      .form-grid label{font-size:13px;color:var(--muted)}
+      .form-grid input,.form-grid textarea,.form-grid button{
+        width:100%;padding:12px;border-radius:10px;border:1px solid #2a2a2a;background:#0c0d0f;color:var(--text);font-size:15px;
+      }
+      .form-grid textarea{min-height:90px}
+      .btn-primary{
+        background:linear-gradient(180deg,var(--brand),#c79b1d);
+        color:#1a1500;border:1px solid #d0a62d;font-weight:800;border-radius:999px;cursor:pointer
+      }
+      ul.clean{margin:8px 0 0 20px}
+      ul.clean li{margin:6px 0}
+    }
+
+    /* FAB só no desktop */
+    #fabQuick{ display:none }
+    @media (min-width:1024px){
+      #fabQuick{
+        display:inline-flex; align-items:center; gap:8px;
+        position:fixed; right:18px; bottom:18px; z-index:1000;
+        padding:14px 18px; border-radius:999px; border:0;
+        background:linear-gradient(180deg,var(--brand),#c79b1d); color:#1a1500; font-weight:800;
+        box-shadow:0 8px 20px rgba(0,0,0,.25); cursor:pointer;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
+  <!-- ========= MOBILE/TABLET: IMAGEM + BOTÕES + MODAL ========= -->
+  <section class="hero" aria-label="Fundo promocional de aniversário"></section>
+
+  <div class="actions" aria-label="Ações rápidas">
+    <button class="btn" id="abrirReserva" type="button">Reservar</button>
+    <a class="btn" id="btnAtendente" href="#" target="_blank" rel="noopener">Atendente</a>
+  </div>
+
+  <div class="modal" id="modalReserva" role="dialog" aria-modal="true" aria-labelledby="tituloReservaMobile">
+    <div class="modal-content">
+      <button class="close" id="fecharReserva" aria-label="Fechar">&times;</button>
+      <h2 id="tituloReservaMobile">Faça sua reserva</h2>
+      <form id="formReservaMobile" novalidate>
+        <div hidden aria-hidden="true">
+          <label for="hp_field">Não preencha</label>
+          <input id="hp_field" name="hp_field" autocomplete="off" tabindex="-1">
+        </div>
+
+        <div>
+          <label for="m_nome">Nome completo</label>
+          <input id="m_nome" name="nome" required autocomplete="name">
+        </div>
+        <div>
+          <label for="m_email">Email</label>
+          <input id="m_email" name="email" type="email" autocomplete="email">
+        </div>
+        <div>
+          <label for="m_telefone">Telefone (com DDD)</label>
+          <input id="m_telefone" name="telefone" required inputmode="tel" autocomplete="tel">
+        </div>
+        <div>
+          <label for="m_pessoas">Qtd. Pessoas</label>
+          <input id="m_pessoas" name="pessoas" type="number" min="1" max="1000" required>
+        </div>
+        <div>
+          <label for="m_data">Data</label>
+          <input id="m_data" name="data" type="date" required>
+        </div>
+        <div>
+          <label for="m_hora">Hora</label>
+          <input id="m_hora" name="hora" type="time" required>
+        </div>
+        <div>
+          <label for="m_mesa">Nº da mesa (opcional)</label>
+          <input id="m_mesa" name="mesa">
+        </div>
+        <div>
+          <label for="m_observacoes">Observações</label>
+          <textarea id="m_observacoes" name="observacoes" placeholder="Preferências, levar bolo, etc."></textarea>
+        </div>
+
+        <button type="submit" class="btn" id="btnEnviarMobile">Enviar reserva</button>
+        <div id="m_msg" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========= DESKTOP ========= -->
+  <div class="desktop">
+    <header class="site">
       <div class="brand">Mercatto Delícia — Reserva de Aniversário</div>
-      <a class="whats" id="linkAtendente" target="_blank" rel="noopener">Falar com atendente</a>
-    </div>
-
-    <!-- FORM DESKTOP (fixo) -->
-    <section class="card desktop-only">
-      <h1>Faça sua reserva</h1>
-      <p class="muted">Preencha os dados abaixo. Entraremos em contato para confirmar.</p>
-      <form id="formDesk" class="grid cols-2" novalidate>
-        <div><label for="d_nome">Nome completo *</label><input id="d_nome" required autocomplete="name"></div>
-        <div><label for="d_email">Email</label><input id="d_email" type="email" autocomplete="email"></div>
-        <div><label for="d_telefone">Telefone (com DDD) *</label><input id="d_telefone" required inputmode="tel" placeholder="(99) 99999-9999"></div>
-        <div><label for="d_pessoas">Qtd. pessoas *</label><input id="d_pessoas" type="number" min="1" max="1000" required></div>
-        <div><label for="d_data">Data *</label><input id="d_data" type="date" required></div>
-        <div><label for="d_hora">Hora *</label><input id="d_hora" type="time" required></div>
-        <div class="grid" style="grid-template-columns:1fr"><label for="d_mesa">Nº da mesa (opcional)</label><input id="d_mesa"></div>
-        <div class="grid" style="grid-template-columns:1fr"><label for="d_obs">Observações</label><textarea id="d_obs" placeholder="Preferências, levar bolo, etc."></textarea></div>
-        <div class="row" style="grid-column:1/-1;justify-content:flex-end">
-          <span id="d_msg" class="muted"></span>
-          <button id="btnDesk" class="btn" type="submit" style="min-width:160px">Enviar reserva</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- BOTÕES MOBILE -->
-    <div class="actions mobile-only">
-      <button class="btn" id="abrirMobile" type="button">Reservar</button>
-    </div>
-  </div>
-
-  <!-- MODAL MOBILE -->
-  <div class="modal" id="modalMobile" aria-hidden="true">
-    <div class="sheet">
-      <div class="row" style="justify-content:space-between;margin-bottom:8px">
-        <h1 style="margin:0">Faça sua reserva</h1>
-        <button class="close" id="fecharMobile">Fechar</button>
+      <div class="contact-mini">
+        <a id="deskAtendente" href="#" target="_blank" rel="noopener">Falar com atendente</a>
       </div>
-      <form id="formMobile" class="grid" novalidate>
-        <input id="hp" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
-        <div><label for="m_nome">Nome completo *</label><input id="m_nome" required autocomplete="name"></div>
-        <div><label for="m_email">Email</label><input id="m_email" type="email" autocomplete="email"></div>
-        <div><label for="m_telefone">Telefone (com DDD) *</label><input id="m_telefone" required inputmode="tel" placeholder="(99) 99999-9999"></div>
-        <div class="grid cols-2">
-          <div><label for="m_pessoas">Qtd. pessoas *</label><input id="m_pessoas" type="number" min="1" max="1000" required></div>
-          <div><label for="m_mesa">Mesa (opcional)</label><input id="m_mesa"></div>
+    </header>
+
+    <div class="grid">
+      <!-- Formulário -->
+      <section class="card" aria-labelledby="tituloReservaDesk">
+        <h2 id="tituloReservaDesk">Faça sua reserva</h2>
+        <p class="note">Preencha os dados abaixo. Entraremos em contato para confirmar.</p>
+        <form id="formReservaDesk" class="form-grid" novalidate>
+          <div>
+            <label for="d_nome">Nome completo</label>
+            <input id="d_nome" name="nome" required autocomplete="name">
+          </div>
+          <div>
+            <label for="d_email">Email</label>
+            <input id="d_email" name="email" type="email" autocomplete="email">
+          </div>
+          <div>
+            <label for="d_telefone">Telefone (com DDD)</label>
+            <input id="d_telefone" name="telefone" required inputmode="tel" autocomplete="tel">
+          </div>
+          <div>
+            <label for="d_pessoas">Qtd. Pessoas</label>
+            <input id="d_pessoas" name="pessoas" type="number" min="1" max="1000" required>
+          </div>
+          <div>
+            <label for="d_data">Data</label>
+            <input id="d_data" name="data" type="date" required>
+          </div>
+          <div>
+            <label for="d_hora">Hora</label>
+            <input id="d_hora" name="hora" type="time" required>
+          </div>
+          <div class="full">
+            <label for="d_mesa">Nº da mesa (opcional)</label>
+            <input id="d_mesa" name="mesa">
+          </div>
+          <div class="full">
+            <label for="d_observacoes">Observações</label>
+            <textarea id="d_observacoes" name="observacoes" placeholder="Preferência por mesa externa, levar bolo, etc."></textarea>
+          </div>
+          <div class="full">
+            <button class="btn-primary" id="btnEnviarDesk" type="submit">Enviar reserva</button>
+            <span id="d_msg" style="margin-left:10px;color:var(--muted)" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Informações -->
+      <aside class="card">
+        <h2>Benefícios & Informações</h2>
+        <p class="note">Celebre com a gente! Veja como funciona a reserva de aniversário.</p>
+        <ul class="clean">
+          <li>Válido apenas no mês do aniversário (com documento).</li>
+          <li>Exclusivo para consumo no local.</li>
+          <li>Um benefício por aniversariante.</li>
+          <li>Desconto aplicado em múltiplos de R$ 20 até o limite de R$ 100.</li>
+        </ul>
+
+        <h2 style="margin-top:16px">Exemplos de valores</h2>
+        <ul class="clean">
+          <li>R$ 100 → R$ 20 de desconto</li>
+          <li>R$ 200 → R$ 40 de desconto</li>
+          <li>R$ 300 → R$ 60 de desconto</li>
+          <li>R$ 500 ou mais → R$ 100 de desconto (limite)</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- FAB (desktop) + Modal de Reserva Rápida -->
+  <button id="fabQuick">＋ Reserva rápida</button>
+  <div class="modal" id="quickModal" aria-hidden="true">
+    <div class="modal-content" style="max-width:520px">
+      <button class="close" id="closeQuick" aria-label="Fechar">&times;</button>
+      <h2>Reserva rápida</h2>
+      <form id="quickForm" novalidate>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_nome">Nome completo</label>
+            <input id="q_nome" required autocomplete="name" />
+          </div>
+          <div>
+            <label for="q_email">E-mail</label>
+            <input id="q_email" type="email" autocomplete="email" />
+          </div>
         </div>
-        <div class="grid cols-2">
-          <div><label for="m_data">Data *</label><input id="m_data" type="date" required></div>
-          <div><label for="m_hora">Hora *</label><input id="m_hora" type="time" required></div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_telefone">Telefone (com DDD)</label>
+            <input id="q_telefone" required inputmode="tel" placeholder="(99) 99999-9999" />
+          </div>
+          <div>
+            <label for="q_pessoas">Qtd. pessoas</label>
+            <input id="q_pessoas" type="number" min="1" required />
+          </div>
         </div>
-        <div><label for="m_obs">Observações</label><textarea id="m_obs"></textarea></div>
-        <div class="row" style="justify-content:flex-end">
-          <span id="m_msg" class="muted"></span>
-          <button id="btnMobile" class="btn" type="submit" style="min-width:160px">Enviar</button>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+          <div>
+            <label for="q_data">Data</label>
+            <input id="q_data" type="date" required />
+          </div>
+          <div>
+            <label for="q_hora">Hora</label>
+            <input id="q_hora" type="time" required />
+          </div>
         </div>
+
+        <div>
+          <label for="q_mesa">Nº da mesa (opcional)</label>
+          <input id="q_mesa" />
+        </div>
+
+        <div>
+          <label for="q_obs">Observações</label>
+          <textarea id="q_obs" rows="3" placeholder="Preferências, levar bolo, etc."></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:6px">
+          <button type="button" class="btn" id="btnCancelQuick" style="background:#0000;border:1px solid var(--line);color:var(--text)">Cancelar</button>
+          <button type="submit" class="btn" id="sendQuick">Enviar</button>
+        </div>
+        <div id="q_msg" style="margin-top:6px;color:var(--muted)"></div>
       </form>
     </div>
   </div>
 
-  <!-- Confete -->
-  <canvas id="boom" style="position:fixed;inset:0;pointer-events:none"></canvas>
+  <canvas id="confetti-canvas"></canvas>
 
 <script>
-  // ======= CONFIG =========
+  /* =================== CONFIG =================== */
   const CONFIG = {
-    SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbzayt_VYGArc27xm29KwwmcLysleze_bISUQOEMRmNLY2Koo-u1ge4sv-_cuQWi8y7u/exec", // <= Cole aqui a URL do seu Apps Script (Web App)
+    // Cole aqui a URL do Apps Script (Web App) que retorna { ok:true, id:"..." }
+    SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycby3URHEGOBWu2_GrF4lwdJSpPdgPtfZjonleDVDhTylrdphzjsK_tFlUDkz31WpnAH4/exec",
     ATENDENTE_WHATS: "557736135148",
     ATENDENTE_MSG: "Olá! Gostaria de falar com um atendente sobre reserva de aniversário."
   };
 
-  // ======= HELPERS =======
   const $ = sel => document.querySelector(sel);
-  const setBtn = (btn, on, txt='Enviando...')=>{
+  const setBtnLoading = (btn, loading=true, txt='Enviando...') => {
     if(!btn) return;
-    if(on){ btn.dataset.old=btn.textContent; btn.textContent=txt; btn.disabled=true; }
-    else { btn.textContent=btn.dataset.old||'Enviar'; btn.disabled=false; }
+    if(loading){
+      btn.dataset._old = btn.textContent;
+      btn.textContent = txt;
+      btn.disabled = true;
+    } else {
+      btn.textContent = btn.dataset._old || 'Enviar';
+      btn.disabled = false;
+    }
   };
-  const maskPhone = v => {
-    const d = String(v).replace(/\D/g,'').slice(0,11);
-    return d.length<=10 ? d.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3")
-                        : d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/,"($1) $2-$3");
-  };
-  function confetti3s(){
-    const c=$('#boom'),x=c.getContext('2d');
-    const fit=()=>{c.width=innerWidth;c.height=innerHeight}; fit(); addEventListener('resize',fit);
-    const dots=Array.from({length:120},()=>({x:Math.random()*c.width,y:0,r:Math.random()*5+3,s:Math.random()*3+2,h:Math.random()*360}));
-    const id=setInterval(()=>{ x.clearRect(0,0,c.width,c.height);
-      dots.forEach(d=>{ x.beginPath(); x.arc(d.x,d.y,d.r,0,2*Math.PI); x.fillStyle=`hsl(${d.h} 100% 50%)`; x.fill();
-        d.y+=d.s; if(d.y>c.height){ d.y=0; d.x=Math.random()*c.width; d.h=Math.random()*360; }});
+  const buildWhats = (phone,text) => `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+  // Links WhatsApp (mobile/desk)
+  $('#btnAtendente').href  = buildWhats(CONFIG.ATENDENTE_WHATS, CONFIG.ATENDENTE_MSG);
+  $('#deskAtendente').href = buildWhats(CONFIG.ATENDENTE_WHATS, CONFIG.ATENDENTE_MSG);
+
+  /* ===== Mobile modal ===== */
+  $('#abrirReserva')?.addEventListener('click',()=>$('#modalReserva').classList.add('active'));
+  $('#fecharReserva')?.addEventListener('click',()=>$('#modalReserva').classList.remove('active'));
+  window.addEventListener('click',(e)=>{ if(e.target===$('#modalReserva')) $('#modalReserva').classList.remove('active') });
+
+  /* ===== Confetes ===== */
+  function confetti(){
+    const canvas=$('#confetti-canvas'),ctx=canvas.getContext('2d');
+    const resize=()=>{canvas.width=innerWidth;canvas.height=innerHeight}; resize();
+    addEventListener('resize',resize);
+    const confs=Array.from({length:120}).map(()=>({
+      x:Math.random()*canvas.width,y:-Math.random()*canvas.height,
+      r:Math.random()*6+4,d:Math.random()*0.5+0.5,
+      color:`hsl(${Math.random()*360},100%,50%)`
+    }));
+    const id=setInterval(()=>{
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      confs.forEach(c=>{
+        ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,2*Math.PI);
+        ctx.fillStyle=c.color;ctx.fill();
+        c.y+=c.d*4;if(c.y>canvas.height){c.y=0;c.x=Math.random()*canvas.width;}
+      });
     },20);
-    setTimeout(()=>{clearInterval(id);x.clearRect(0,0,c.width,c.height)},3000);
+    setTimeout(()=>{clearInterval(id);ctx.clearRect(0,0,canvas.width,canvas.height)},3000);
   }
 
-  // WhatsApp link
-  $('#linkAtendente').href = `https://wa.me/${CONFIG.ATENDENTE_WHATS}?text=${encodeURIComponent(CONFIG.ATENDENTE_MSG)}`;
+  // máscara simples de telefone (reutilizável)
+  function maskPhone(v){ const d=String(v||'').replace(/\D/g,'').slice(0,11); return d.length<=10? d.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3") : d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/,"($1) $2-$3"); }
 
-  // ======= ENVIO (cliente) — só campos do formulário =======
-  async function enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,btn,msgEl}){
+  // aplica máscara aos 3 campos de telefone (mobile, desk, quick)
+  ['#m_telefone','#d_telefone','#q_telefone'].forEach(sel=>{
+    const el=$(sel); if(!el) return; el.addEventListener('input', e=> e.target.value = maskPhone(e.target.value));
+  });
+
+  // validação data/hora no futuro
+  function isPast(data, hora){
+    const dh = new Date(`${data}T${hora||'00:00'}:00`);
+    return isFinite(dh) && dh < new Date();
+  }
+
+  /* ===== Envio (payload mínimo que o Apps Script espera) ===== */
+  async function enviarReserva({nome,email,telefone,pessoas,mesa,data,hora,observacoes,saidaMsgEl,btn, origem}){
+    // honeypot anti-bot (apenas no mobile)
+    if($('#hp_field') && $('#hp_field').value) return false;
+
     if(!nome || !telefone || !pessoas || !data || !hora){
-      msgEl && (msgEl.textContent='Preencha os obrigatórios.'); return false;
+      saidaMsgEl && (saidaMsgEl.textContent = "Preencha os campos obrigatórios.");
+      return false;
     }
-    // valida telefone simples
-    const telDigits = telefone.replace(/\D/g,''); if(telDigits.length<10){ msgEl&&(msgEl.textContent='Telefone incompleto.'); return false; }
-    // proíbe passado
-    const dh = new Date(`${data}T${hora}:00`);
-    if(isFinite(dh) && dh < new Date()){ msgEl&&(msgEl.textContent='Data/hora no passado.'); return false; }
+
+    if(isPast(data, hora)){
+      saidaMsgEl && (saidaMsgEl.textContent = "Escolha uma data/hora futura.");
+      return false;
+    }
 
     const payload = {
-      // Apenas os campos da planilha:
-      Nome:nome.trim(),
-      Email:(email||'').trim(),
-      Telefone:telefone.trim(),
-      Pessoas:String(pessoas).trim(),
-      Mesa:(mesa||'').trim(),
-      DataHora:`${data} ${hora}`,
-      Observacoes:(observacoes||'').trim()
-      // ID, Carimbo e Status são gerados no servidor
+      Nome: String(nome||'').trim(),
+      Email: String(email||'').trim(),
+      Telefone: String(telefone||'').trim(),
+      Pessoas: String(pessoas||'').trim(),
+      Mesa: String(mesa||'').trim(),
+      DataHora: `${data} ${hora}`,
+      Observacoes: String(observacoes||'').trim(),
+      origem: origem || 'site'
     };
 
     try{
-      setBtn(btn, true);
+      setBtnLoading(btn, true);
       const r = await fetch(CONFIG.SHEET_ENDPOINT, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify(payload)
       });
       const j = await r.json().catch(()=>({}));
-      if(!r.ok || !j.ok){ throw new Error((j && j.error) || 'Falha ao salvar'); }
-      msgEl && (msgEl.innerHTML = `<span class="ok">Reserva enviada! ID: ${j.id||'—'}</span>`);
-      confetti3s();
+      if(!r.ok || !j.ok){
+        throw new Error(j && j.error ? j.error : 'Falha ao enviar');
+      }
+      const idTexto = j.id ? ` ID: ${j.id}` : '';
+      saidaMsgEl && (saidaMsgEl.textContent = `Reserva enviada com sucesso!${idTexto}`);
+      confetti();
       return true;
     }catch(e){
       console.error(e);
-      msgEl && (msgEl.innerHTML = `<span class="err">Erro ao enviar. Tente novamente.</span>`);
+      saidaMsgEl && (saidaMsgEl.textContent = "Erro ao enviar. Tente novamente.");
       return false;
-    }finally{
-      setBtn(btn, false);
+    } finally {
+      setBtnLoading(btn, false);
     }
   }
 
-  // ======= DESKTOP form =======
-  $('#d_telefone').addEventListener('input', e=> e.target.value = maskPhone(e.target.value));
-  $('#formDesk').addEventListener('submit', async (ev)=>{
+  /* ===== Submit MOBILE ===== */
+  $('#formReservaMobile')?.addEventListener('submit',async(ev)=>{
     ev.preventDefault();
     const ok = await enviarReserva({
-      nome: $('#d_nome').value, email: $('#d_email').value, telefone: $('#d_telefone').value,
-      pessoas: $('#d_pessoas').value, mesa: $('#d_mesa').value, data: $('#d_data').value,
-      hora: $('#d_hora').value, observacoes: $('#d_obs').value,
-      btn: $('#btnDesk'), msgEl: $('#d_msg')
+      nome: $('#m_nome').value.trim(),
+      email: $('#m_email').value.trim(),
+      telefone: $('#m_telefone').value.trim(),
+      pessoas: $('#m_pessoas').value.trim(),
+      mesa: $('#m_mesa').value.trim(),
+      data: $('#m_data').value,
+      hora: $('#m_hora').value,
+      observacoes: $('#m_observacoes').value.trim(),
+      saidaMsgEl: $('#m_msg'),
+      btn: $('#btnEnviarMobile'),
+      origem: 'mobile'
     });
-    if(ok) ev.target.reset();
+    if(ok){ ev.target.reset(); $('#modalReserva').classList.remove('active'); }
   });
 
-  // ======= MOBILE modal =======
-  const modal = $('#modalMobile');
-  $('#abrirMobile').addEventListener('click', ()=>{
-    $('#m_msg').textContent='';
-    modal.classList.add('show');
-  });
-  $('#fecharMobile').addEventListener('click', ()=> modal.classList.remove('show'));
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('show'); });
-
-  $('#m_telefone').addEventListener('input', e=> e.target.value = maskPhone(e.target.value));
-  $('#formMobile').addEventListener('submit', async (ev)=>{
+  /* ===== Submit DESKTOP ===== */
+  $('#formReservaDesk')?.addEventListener('submit',async(ev)=>{
     ev.preventDefault();
-    if($('#hp').value) return; // honeypot
     const ok = await enviarReserva({
-      nome: $('#m_nome').value, email: $('#m_email').value, telefone: $('#m_telefone').value,
-      pessoas: $('#m_pessoas').value, mesa: $('#m_mesa').value, data: $('#m_data').value,
-      hora: $('#m_hora').value, observacoes: $('#m_obs').value,
-      btn: $('#btnMobile'), msgEl: $('#m_msg')
+      nome: $('#d_nome').value.trim(),
+      email: $('#d_email').value.trim(),
+      telefone: $('#d_telefone').value.trim(),
+      pessoas: $('#d_pessoas').value.trim(),
+      mesa: $('#d_mesa').value.trim(),
+      data: $('#d_data').value,
+      hora: $('#d_hora').value,
+      observacoes: $('#d_observacoes').value.trim(),
+      saidaMsgEl: $('#d_msg'),
+      btn: $('#btnEnviarDesk'),
+      origem: 'desktop'
     });
-    if(ok){ ev.target.reset(); modal.classList.remove('show'); }
+    if(ok){ ev.target.reset(); }
+  });
+
+  /* ===== Pop-up (desktop) — Reserva rápida usando a MESMA lógica ===== */
+  const quickModal = $('#quickModal');
+  const fabQuick = $('#fabQuick');
+
+  fabQuick?.addEventListener('click', ()=>{
+    // preencher data/hora com agora (local)
+    const now = new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+    $('#q_data').value = now.toISOString().slice(0,10);
+    $('#q_hora').value = now.toISOString().slice(11,16);
+    $('#q_msg').textContent = '';
+    quickModal.classList.add('active');
+    $('#q_nome').focus();
+  });
+  $('#closeQuick')?.addEventListener('click', ()=> quickModal.classList.remove('active'));
+  $('#btnCancelQuick')?.addEventListener('click', ()=> quickModal.classList.remove('active'));
+  window.addEventListener('click', (e)=>{ if(e.target===quickModal) quickModal.classList.remove('active'); });
+
+  $('#quickForm')?.addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    const ok = await enviarReserva({
+      nome: $('#q_nome').value.trim(),
+      email: $('#q_email').value.trim(),
+      telefone: $('#q_telefone').value.trim(),
+      pessoas: $('#q_pessoas').value.trim(),
+      mesa: $('#q_mesa').value.trim(),
+      data: $('#q_data').value,
+      hora: $('#q_hora').value,
+      observacoes: $('#q_obs').value.trim(),
+      saidaMsgEl: $('#q_msg'),
+      btn: $('#sendQuick'),
+      origem: 'desktop-quick'
+    });
+    if(ok){
+      ev.target.reset();
+      quickModal.classList.remove('active');
+    }
   });
 </script>
 </body>
