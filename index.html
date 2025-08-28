@@ -191,28 +191,24 @@
         return;
       }
 
-      // 4) ORDEM DE ENVIO EXATA DA PLANILHA
-      const HEADERS_IN_ORDER = [
-        "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
-        "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
-        "NomeArquivo","ArquivoURL"
-      ];
+      // ORDEM DAS COLUNAS NA PLANILHA
+const HEADERS_IN_ORDER = [
+  "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
+  "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
+  "NomeArquivo","ArquivoURL"
+];
 
-      // 5) Monta URLSearchParams NA ORDEM especificada e inclui compatibilidade
-      const params = new URLSearchParams();
-      // ordem oficial
-      HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
-      // campos de compatibilidade do GAS antigo
-      params.append("acao", "cadastrar");
-      params.append("nome",      all["Nome"] ?? "");
-      params.append("email",     all["Email"] ?? "");
-      params.append("telefone",  all["Telefone"] ?? "");
-      params.append("pessoas",   all["Pessoas"] ?? "");
-      if (Array.isArray(all["datahora[]"])) {
-        all["datahora[]"].forEach(v => params.append("datahora[]", v));
-      } else if (all["DataHora"]) {
-        params.append("datahora[]", all["DataHora"]);
-      }
+// Monta os parâmetros na ordem
+const params = new URLSearchParams();
+HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
+
+// Compatibilidade com GAS antigo
+params.append("acao", "cadastrar");
+params.append("nome", all["Nome"] ?? "");
+params.append("email", all["Email"] ?? "");
+params.append("telefone", all["Telefone"] ?? "");
+params.append("pessoas", all["Pessoas"] ?? "");
+if (all["DataHora"]) params.append("datahora[]", all["DataHora"]);
 
       try {
         const res = await fetch(GAS_ENDPOINT, { method:"POST", body: params });
