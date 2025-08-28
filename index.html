@@ -115,22 +115,7 @@
           <textarea name="Observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
         </div>
 
-        <!-- OCULTOS: todas as outras colunas exigidas (vazias por padrão) -->
-        <input type="hidden" name="ID" value="">
-        <input type="hidden" name="Carimbo" value="">
-        <input type="hidden" name="Mesa" value="">
-        <input type="hidden" name="Cardapio" value="">
-        <input type="hidden" name="ValorEstimado" value="">
-        <input type="hidden" name="PagamentoAntecipado" value="">
-        <input type="hidden" name="Banco" value="">
-        <input type="hidden" name="ValorFinalPago" value="">
-        <input type="hidden" name="Status" value="Pendente">
-        <input type="hidden" name="NomeArquivo" value="">
-        <input type="hidden" name="ArquivoURL" value="">
-
-        <!-- Compatibilidade com seu GAS original -->
-        <input type="hidden" name="acao" value="cadastrar">
-
+        <!-- Nada mais visível; os demais campos serão enviados em branco para manter a ordem -->
         <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
         <button class="submit" type="submit">Enviar Reserva</button>
       </form>
@@ -167,47 +152,51 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s||"").trim());
     }
 
-    /* ===== ENVIO ===== */
+    /* ===== ENVIO (formato esperado pelo seu GAS ORIGINAL) ===== */
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       spinner.classList.add("show");
 
-      // 1) Coleta todos os campos do form
+      // 1) Pegamos os valores visíveis
       const fd = new FormData(form);
-      const all = {};
-      for (const [k,v] of fd.entries()) all[k] = typeof v === 'string' ? v.trim() : v;
+      const Nome         = (fd.get("Nome")||"").trim();
+      const Email        = (fd.get("Email")||"").trim();
+      const Telefone     = (fd.get("Telefone")||"").trim();
+      const Pessoas      = (fd.get("Pessoas")||"").trim();
+      const DataHora     = (fd.get("DataHora")||"").trim();
+      const Observacoes  = (fd.get("Observacoes")||"").trim();
 
-      // 2) Aliases p/ compatibilidade com o GAS original (minúsculos + datahora[])
-      all["nome"]      = all["Nome"];
-      all["email"]     = all["Email"];
-      all["telefone"]  = all["Telefone"];
-      all["pessoas"]   = all["Pessoas"];
-
-      // 3) Validação rápida
-      if (!isValidEmail(all["Email"])) {
+      // 2) Validação de e-mail (evita erro "sem destinatário" no GAS)
+      if (!isValidEmail(Email)) {
         alert("Informe um e-mail válido.");
         spinner.classList.remove("show");
         return;
       }
 
-      // 4) ORDEM DAS COLUNAS NA PLANILHA (fixa por cabeçalho)
-      const HEADERS_IN_ORDER = [
-        "ID","Carimbo","Nome","Email","Telefone","Pessoas","Mesa","Cardapio","DataHora",
-        "ValorEstimado","PagamentoAntecipado","Banco","ValorFinalPago","Status","Observacoes",
-        "NomeArquivo","ArquivoURL"
-      ];
-
-      // 5) Monta os parâmetros na ORDEM exata + compatibilidade
+      // 3) Montamos o payload EXATAMENTE como seu GAS espera (minúsculo + datahora[])
       const params = new URLSearchParams();
-      // ordem oficial (colunas)
-      HEADERS_IN_ORDER.forEach(h => params.append(h, all[h] ?? ""));
-      // compat com GAS antigo
       params.append("acao", "cadastrar");
-      params.append("nome",      all["Nome"] ?? "");
-      params.append("email",     all["Email"] ?? "");
-      params.append("telefone",  all["Telefone"] ?? "");
-      params.append("pessoas",   all["Pessoas"] ?? "");
-      if (all["DataHora"]) params.append("datahora[]", all["DataHora"]); // mantém compatibilidade
+      params.append("status", "Pendente");
+
+      params.append("nome", Nome);
+      params.append("email", Email);
+      params.append("telefone", Telefone);
+      params.append("pessoas", Pessoas);
+
+      // Campos que você não pede ficam vazios, mas são enviados para manter a ordem da linha no GAS
+      params.append("mesa", "");
+      params.append("cardapio", "");
+
+      // O seu GAS original usa "datahora[]" (array). Enviamos 1 ocorrência.
+      params.append("datahora[]", DataHora);
+
+      params.append("valorEstimado", "");
+      params.append("pagamentoAntecipado", "");
+      params.append("banco", "");
+      params.append("valorFinalPago", "");
+      params.append("observacoes", Observacoes);
+      params.append("nomeArquivo", "");
+      params.append("arquivoURL", "");
 
       try {
         const res = await fetch(GAS_ENDPOINT, { method:"POST", body: params });
