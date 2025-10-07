@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Reservas de Aniversários • Mercatto Delícia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+
+<!-- FullCalendar -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0b0e13;--card:#12161d;--ink:#f5f7fb;--muted:#9aa0ad;
+    --green:#16a34a;--red:#dc2626;--blue:#2563eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,Arial;background:var(--bg);color:var(--ink)}
+  header{
+    text-align:center;padding:16px;font-size:22px;font-weight:700;
+    background:#11151d;box-shadow:0 2px 6px rgba(0,0,0,.3);
+  }
+  #calendar{max-width:1200px;margin:20px auto;padding:10px;background:var(--card);border-radius:12px}
+  .fc-toolbar-title{color:var(--ink)}
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.7);
+    display:none;align-items:center;justify-content:center;
+  }
+  .modal.show{display:flex}
+  .card{
+    background:var(--card);color:var(--ink);padding:20px;border-radius:12px;max-width:460px;width:90%;
+  }
+  .card h2{margin-top:0;text-align:center}
+  .row{margin:8px 0}
+  .btns{display:flex;justify-content:space-between;margin-top:18px}
+  button{
+    flex:1;margin:0 4px;padding:12px;border:none;border-radius:8px;
+    font-weight:700;cursor:pointer;color:#fff;
+  }
+  .accept{background:var(--green)}
+  .finish{background:var(--blue)}
+  .close{background:var(--red)}
+</style>
+</head>
+<body>
+<header>🎉 Reservas de Aniversários • Mercatto Delícia</header>
+<div id="calendar"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="card">
+    <h2>🎂 Detalhes da Reserva</h2>
+    <div id="detalhes"></div>
+    <div class="btns">
+      <button class="accept" id="btnAceitar">Aceitar</button>
+      <button class="finish" id="btnFinalizar">Finalizar</button>
+      <button class="close" id="btnFechar">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwzaNIGpjl9SryU0vHXShOw6roP4VmFCMPY8XAOk1QvOnVq9x0Rz8YiJ-mYoHw6u67BsA/exec";
+
+let reservas = [];
+let reservaAtual = null;
+
+async function carregarReservas(){
+  const res = await fetch(GAS_ENDPOINT + "?acao=listar");
+  reservas = await res.json();
+
+  const eventos = reservas.map(r => ({
+    title: r.Nome,
+    start: r["Data/Hora"],
+    backgroundColor: r.Status === "Aceita" ? "#16a34a" : "#facc15",
+    borderColor: "#000",
+    extendedProps: r
+  }));
+
+  const calendarEl = document.getElementById("calendar");
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: "dayGridMonth",
+    locale: "pt-br",
+    events: eventos,
+    eventClick: (info) => abrirModal(info.event.extendedProps)
+  });
+  calendar.render();
+}
+
+function abrirModal(reserva){
+  reservaAtual = reserva;
+  const d = document.getElementById("detalhes");
+  d.innerHTML = `
+    <div class="row"><b>Nome:</b> ${reserva.Nome}</div>
+    <div class="row"><b>E-mail:</b> ${reserva["E-mail"]}</div>
+    <div class="row"><b>Telefone:</b> ${reserva.Telefone}</div>
+    <div class="row"><b>Pessoas:</b> ${reserva.Pessoas}</div>
+    <div class="row"><b>Data/Hora:</b> ${reserva["Data/Hora"]}</div>
+    <div class="row"><b>Observações:</b> ${reserva.Observações || "-"}</div>
+    <div class="row"><b>Status:</b> ${reserva.Status}</div>
+  `;
+  document.getElementById("modal").classList.add("show");
+}
+
+document.getElementById("btnFechar").onclick = () => {
+  document.getElementById("modal").classList.remove("show");
+  reservaAtual = null;
+};
+
+// ✅ Aceitar reserva → e-mail de confirmação
+document.getElementById("btnAceitar").onclick = async () => {
+  if(!reservaAtual) return;
+  await fetch(GAS_ENDPOINT, {
+    method: "POST",
+    body: new URLSearchParams({
+      acao: "atualizarStatus",
+      status: "Aceita",
+      email: reservaAtual["E-mail"],
+      nome: reservaAtual.Nome,
+      telefone: reservaAtual.Telefone,
+      pessoas: reservaAtual.Pessoas,
+      datahora: reservaAtual["Data/Hora"],
+      observacoes: reservaAtual.Observações || ""
+    })
+  });
+  alert("✅ Reserva aceita e e-mail de confirmação enviado!");
+  document.location.reload();
+};
+
+// ✅ Finalizar reserva → e-mail de agradecimento
+document.getElementById("btnFinalizar").onclick = async () => {
+  if(!reservaAtual) return;
+  await fetch(GAS_ENDPOINT, {
+    method: "POST",
+    body: new URLSearchParams({
+      acao: "finalizarReserva",
+      status: "Finalizada",
+      email: reservaAtual["E-mail"],
+      nome: reservaAtual.Nome
+    })
+  });
+  alert("🎉 E-mail de agradecimento enviado ao cliente!");
+  document.location.reload();
+};
+
+carregarReservas();
+</script>
+</body>
+</html>
