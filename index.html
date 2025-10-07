@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
   <link rel="apple-touch-icon" href="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
 
-  <!-- 🔹 METADADOS DE COMPARTILHAMENTO (WhatsApp, Facebook, Instagram, etc) -->
+  <!-- 🔹 METADADOS DE COMPARTILHAMENTO -->
   <meta property="og:title" content="Reservas • Mercatto Delícia">
   <meta property="og:description" content="Garanta sua reserva no Mercatto Delícia e viva uma experiência inesquecível!">
   <meta property="og:image" content="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true">
@@ -31,14 +31,14 @@
     body{font-family:system-ui,Arial,sans-serif;background:#0b0e13;color:var(--text)}
     header{padding:16px}
 
-    /* Imagem sem escurecer */
+    /* Imagem da capa */
     .hero{max-width:840px;margin:0 auto}
     .hero-img{
       display:block;width:100%;height:auto;border-radius:18px;
       box-shadow:0 10px 32px rgba(0,0,0,.45);object-fit:cover;
     }
 
-    /* Botões embaixo da imagem */
+    /* Botões */
     .actions{
       max-width:840px;margin:12px auto 0;display:flex;gap:12px;flex-wrap:wrap;justify-content:center
     }
@@ -82,14 +82,12 @@
         alt="Mercatto Delícia - Capa de Reservas">
     </div>
 
-    <!-- Botões principais -->
     <div class="actions">
       <button id="btnReservar" class="btn reserve" type="button">🗓️ Reservar</button>
       <a id="btnAtendente" class="btn whatsapp">💬 Falar com atendente</a>
     </div>
   </header>
 
-  <!-- Modal de Reserva -->
   <dialog id="modalReserva">
     <div class="modal-head">
       <h3>📅 Nova Reserva</h3>
@@ -100,33 +98,33 @@
         <div class="row">
           <div>
             <label>Nome</label>
-            <input type="text" name="Nome" required placeholder="Seu nome completo">
+            <input type="text" name="nome" required placeholder="Seu nome completo">
           </div>
           <div>
             <label>Email</label>
-            <input type="text" name="Email" required placeholder="seu@email.com">
+            <input type="email" name="email" required placeholder="seu@email.com">
           </div>
         </div>
 
         <div class="row">
           <div>
             <label>Telefone</label>
-            <input type="tel" name="Telefone" required inputmode="tel" placeholder="(DDD) 9 0000-0000">
+            <input type="tel" name="telefone" required inputmode="tel" placeholder="(DDD) 9 0000-0000">
           </div>
           <div>
             <label>Pessoas</label>
-            <input type="number" name="Pessoas" min="1" required placeholder="Qtd. de pessoas">
+            <input type="number" name="pessoas" min="1" required placeholder="Qtd. de pessoas">
           </div>
         </div>
 
         <div>
-          <label>DataHora</label>
-          <input type="datetime-local" name="DataHora" required>
+          <label>Data e Hora</label>
+          <input type="datetime-local" name="datahora" required>
         </div>
 
         <div>
           <label>Observações</label>
-          <textarea name="Observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
+          <textarea name="observacoes" rows="3" placeholder="Preferências, observações..."></textarea>
         </div>
 
         <div class="spinner" id="spinner">⬤ Enviando reserva...</div>
@@ -136,25 +134,25 @@
   </dialog>
 
   <script>
+    const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbzl7UY_bsvQS9TSIWUOSfTrKQuKC16ZuMciH28DDronruka4167Dgo04X2VZhiO_dmO/exec";
     const WHATSAPP_NUMBER = "557736135148";
     const WHATSAPP_MSG = "Olá! Quero fazer uma reserva no Mercatto Delícia.";
-    const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwFdzSyszOSW_VWMcIAZa1sLlKLw-ZeCOs3st6VFEtN3tk3VkjFVOMtsTA9DeUZl4UDAA/exec";
 
-    const modal = document.getElementById('modalReserva');
-    const btnReservar = document.getElementById('btnReservar');
-    const btnAtendente = document.getElementById('btnAtendente');
-    const fecharModal = document.getElementById('fecharModal');
-    const form = document.getElementById('reservaForm');
-    const spinner = document.getElementById('spinner');
+    const modal = document.getElementById("modalReserva");
+    const btnReservar = document.getElementById("btnReservar");
+    const btnAtendente = document.getElementById("btnAtendente");
+    const fecharModal = document.getElementById("fecharModal");
+    const form = document.getElementById("reservaForm");
+    const spinner = document.getElementById("spinner");
 
-    btnReservar.addEventListener('click', () => modal.showModal());
-    fecharModal.addEventListener('click', () => modal.close());
-    modal.addEventListener('cancel', (e) => { e.preventDefault(); modal.close(); });
+    btnReservar.addEventListener("click", () => modal.showModal());
+    fecharModal.addEventListener("click", () => modal.close());
+    modal.addEventListener("cancel", e => { e.preventDefault(); modal.close(); });
 
-    btnAtendente.addEventListener('click', (e) => {
+    btnAtendente.addEventListener("click", e => {
       e.preventDefault();
       const texto = encodeURIComponent(WHATSAPP_MSG + "\n\nPágina: " + location.href);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank", "noopener");
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${texto}`, "_blank");
     });
 
     function isValidEmail(email) {
@@ -162,46 +160,37 @@
       return regex.test(email.trim());
     }
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async e => {
       e.preventDefault();
       spinner.classList.add("show");
 
       const fd = new FormData(form);
-      const Nome = fd.get("Nome")?.trim() || "";
-      const Email = fd.get("Email")?.trim() || "";
-      const Telefone = fd.get("Telefone")?.trim() || "";
-      const Pessoas = fd.get("Pessoas")?.trim() || "";
-      const DataHora = fd.get("DataHora")?.trim() || "";
-      const Observacoes = fd.get("Observacoes")?.trim() || "";
+      const nome = fd.get("nome")?.trim() || "";
+      const email = fd.get("email")?.trim() || "";
+      const telefone = fd.get("telefone")?.trim() || "";
+      const pessoas = fd.get("pessoas")?.trim() || "";
+      const datahora = fd.get("datahora")?.trim() || "";
+      const observacoes = fd.get("observacoes")?.trim() || "";
 
-      if (!isValidEmail(Email)) {
-        alert("❗ Informe um e-mail válido, ex: nome@dominio.com");
+      if (!isValidEmail(email)) {
+        alert("❗ Informe um e-mail válido.");
         spinner.classList.remove("show");
         return;
       }
 
       const params = new URLSearchParams();
-      params.append("acao", "cadastrar");
+      params.append("nome", nome);
+      params.append("email", email);
+      params.append("telefone", telefone);
+      params.append("pessoas", pessoas);
+      params.append("datahora", datahora);
+      params.append("observacoes", observacoes);
       params.append("status", "Pendente");
-      params.append("nome", Nome);
-      params.append("email", Email);
-      params.append("telefone", Telefone);
-      params.append("pessoas", Pessoas);
-      params.append("mesa", "");
-      params.append("cardapio", "");
-      params.append("datahora[]", DataHora);
-      params.append("valorEstimado", "");
-      params.append("pagamentoAntecipado", "");
-      params.append("banco", "");
-      params.append("valorFinalPago", "");
-      params.append("observacoes", Observacoes);
-      params.append("nomeArquivo", "");
-      params.append("arquivoURL", "");
 
       try {
         const res = await fetch(GAS_ENDPOINT, { method: "POST", body: params });
         const texto = await res.text();
-        alert(texto || "✅ Reserva enviada com sucesso!");
+        alert(texto || "✅ Reserva registrada e e-mail enviado com sucesso!");
         form.reset();
         modal.close();
       } catch (err) {
