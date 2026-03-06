@@ -750,23 +750,27 @@ useCORS:true,
 backgroundColor:"#000"
 });
 
-const imagem=canvas.toDataURL("image/png");
+botao.innerText="Preparando download...";
 
-botao.innerText="⬇️ Baixar Cupom";
+canvas.toBlob(function(blob){
 
-/* DESKTOP DOWNLOAD */
-
-if(!/Android|iPhone|iPad/i.test(navigator.userAgent)){
+const url=URL.createObjectURL(blob);
 
 const link=document.createElement("a");
-link.href=imagem;
+link.href=url;
 link.download="cupom-mercatto.png";
 
 document.body.appendChild(link);
 link.click();
-document.body.removeChild(link);
 
-}
+setTimeout(()=>{
+document.body.removeChild(link);
+URL.revokeObjectURL(url);
+},100);
+
+});
+
+/* MOBILE - ABRIR IMAGEM */
 
 /* MOBILE - ABRIR IMAGEM */
 
