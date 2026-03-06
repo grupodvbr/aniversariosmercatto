@@ -776,14 +776,17 @@ a.remove();
 setTimeout(()=>{
 
 if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
-
 window.open(imagem,"_blank");
-
 }
 
 },300);
 
-});
+}catch(err){
+
+console.error(err);
+alert("Erro ao gerar cupom");
+
+}
 
 });
 function fecharCupom(e){
