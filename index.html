@@ -676,6 +676,42 @@ Termos da Reserva
 </div>
       <button class="submit" type="submit">Confirmar Reserva</button>
     </form>
+
+<div id="overlayLoading" style="
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.92);
+backdrop-filter:blur(6px);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+">
+
+<div style="text-align:center">
+<div style="
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #ffd700;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto">
+</div>
+
+<p style="
+margin-top:18px;
+font-weight:700;
+color:#fff">
+Registrando sua reserva...
+</p>
+</div>
+
+</div>
+
   </div>
 </dialog>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
@@ -706,9 +742,7 @@ alert("Você precisa aceitar os termos da reserva.");
 return;
 }
 
-
-document.getElementById("overlayLoading").style.display="flex";
-
+document.getElementById("overlayLoading").style.display="block";
 const data=new FormData(form);
 
 const nome=data.get("nome");
@@ -877,7 +911,6 @@ btnTermos.onclick = ()=>{
 
   
 </script>
-<div id="overlayLoading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:99999;">
 <div style="text-align:center">
 <div style="width:60px;height:60px;border:5px solid rgba(255,255,255,.2);border-top:5px solid #ffd700;border-radius:50%;animation:spin 1s linear infinite;margin:auto"></div>
 <p style="margin-top:18px;font-weight:700;color:#fff">
