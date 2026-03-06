@@ -772,12 +772,7 @@ document.body.removeChild(link);
 
 else{
 
-const novaJanela=window.open();
-
-novaJanela.document.write(`
-<html>
-<head>
-<title>Salvar Cupom</title>
+document.body.innerHTML=`
 <style>
 body{
 margin:0;
@@ -786,28 +781,25 @@ display:flex;
 align-items:center;
 justify-content:center;
 height:100vh;
+flex-direction:column;
+font-family:sans-serif;
 }
 img{
 max-width:100%;
 height:auto;
 }
 p{
-position:fixed;
-bottom:20px;
 color:#fff;
-font-family:sans-serif;
-font-size:14px;
+font-size:16px;
+margin-top:20px;
 text-align:center;
-width:100%;
+padding:0 20px;
 }
 </style>
-</head>
-<body>
+
 <img src="${imagem}">
-<p>Segure a imagem e toque em "Salvar na galeria"</p>
-</body>
-</html>
-`);
+<p>Segure a imagem e toque em <b>Salvar na galeria</b></p>
+`;
 
 }
 
