@@ -748,12 +748,25 @@ botao.innerText="Gerando imagem...";
 
 await document.fonts.ready;
 
+/* GARANTE QUE TODAS AS IMAGENS DO CUPOM CARREGARAM */
+
+const imgs = cupom.querySelectorAll("img");
+
+await Promise.all(
+[...imgs].map(img=>{
+if(img.complete) return Promise.resolve();
+return new Promise(res=>{
+img.onload = img.onerror = res;
+});
+})
+);
+
+/* AGORA RENDERIZA */
+
 const canvas = await html2canvas(cupom,{
 backgroundColor:"#0b0b0b",
 scale:3,
-useCORS:true,
-windowWidth:cupom.scrollWidth,
-windowHeight:cupom.scrollHeight
+useCORS:true
 });
 
 const link=document.createElement("a");
@@ -807,6 +820,8 @@ onclick="document.getElementById('popupCupom').style.display='none'">
 
 <img class="logoCupom"
 crossorigin="anonymous"
+width="110"
+height="110"
 src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg">
 <h2>ANIVERSÁRIO</h2>
 
