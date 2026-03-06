@@ -742,15 +742,10 @@ const cupom=document.getElementById("cupom");
 
 botao.innerText="Gerando imagem...";
 
-/* remover efeitos pesados temporariamente */
-
-cupom.style.boxShadow="none";
-cupom.style.overflow="visible";
-
 await new Promise(r=>setTimeout(r,200));
 
 const canvas=await html2canvas(cupom,{
-scale:2,
+scale:3,
 useCORS:true,
 backgroundColor:"#000"
 });
@@ -759,30 +754,62 @@ const imagem=canvas.toDataURL("image/png");
 
 botao.innerText="⬇️ Baixar Cupom";
 
-/* download */
+/* DESKTOP DOWNLOAD */
+
+if(!/Android|iPhone|iPad/i.test(navigator.userAgent)){
 
 const link=document.createElement("a");
-
 link.href=imagem;
 link.download="cupom-mercatto.png";
 
 document.body.appendChild(link);
-
 link.click();
-
 document.body.removeChild(link);
-
-/* fallback celular */
-
-setTimeout(()=>{
-
-if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
-
-window.open(imagem,"_blank");
 
 }
 
-},300);
+/* MOBILE - ABRIR IMAGEM */
+
+else{
+
+const novaJanela=window.open();
+
+novaJanela.document.write(`
+<html>
+<head>
+<title>Salvar Cupom</title>
+<style>
+body{
+margin:0;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+img{
+max-width:100%;
+height:auto;
+}
+p{
+position:fixed;
+bottom:20px;
+color:#fff;
+font-family:sans-serif;
+font-size:14px;
+text-align:center;
+width:100%;
+}
+</style>
+</head>
+<body>
+<img src="${imagem}">
+<p>Segure a imagem e toque em "Salvar na galeria"</p>
+</body>
+</html>
+`);
+
+}
 
 });
 
