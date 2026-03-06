@@ -688,7 +688,6 @@ const btnReservar=document.getElementById("btnReservar");
 const btnAtendente=document.getElementById("btnAtendente");
 const fecharModal=document.getElementById("fecharModal");
 const form=document.getElementById("reservaForm");
-const spinner=document.getElementById("spinner");
 
 btnReservar.onclick=()=>modal.showModal();
 fecharModal.onclick=()=>modal.close();
@@ -709,7 +708,6 @@ return;
 
 
 document.getElementById("overlayLoading").style.display="flex";
-spinner.classList.add("show");
 
 const data=new FormData(form);
 
@@ -764,7 +762,6 @@ alert("Erro ao enviar reserva");
 
 }
 
-spinner.classList.remove("show");
 
 document.getElementById("overlayLoading").style.display="none";
 };
