@@ -476,13 +476,15 @@ margin-bottom:18px;
 }
 
 .valor{
-font-size:32px;
+font-size:36px;
 font-weight:900;
-margin:10px 0;
+margin:14px 0;
 
 color:#ffd700;
--webkit-background-clip:text;
-color:transparent;
+
+text-shadow:
+0 0 12px rgba(255,215,0,.4),
+0 0 20px rgba(255,215,0,.2);
 }
 
 .info{
@@ -731,10 +733,28 @@ document.body.appendChild(area);
 
 /* GERA IMAGEM */
 
+/* AGUARDA TODAS AS IMAGENS DO CUPOM CARREGAREM */
+
+const imagens=clone.querySelectorAll("img");
+
+await Promise.all(
+  [...imagens].map(img=>{
+    if(img.complete) return Promise.resolve();
+
+    return new Promise(resolve=>{
+      img.onload=resolve;
+      img.onerror=resolve;
+    });
+  })
+);
+
+/* GERA IMAGEM EM ALTA QUALIDADE */
+
 const canvas=await html2canvas(clone,{
-scale:3,
-backgroundColor:"#000",
-useCORS:true
+  scale:5,
+  backgroundColor:"#000",
+  useCORS:true,
+  allowTaint:true
 });
 
 document.body.removeChild(area);
@@ -772,9 +792,8 @@ onclick="document.getElementById('popupCupom').style.display='none'">
 
 <img class="logoCupom"
 crossorigin="anonymous"
-width="110"
-height="110"
-src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/refs/heads/main/logo.png">
+width="130"
+src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/logo.png">
 <h2>ANIVERSÁRIO</h2>
 
 <div class="linha"></div>
