@@ -352,6 +352,119 @@ cursor:pointer;
 .baixar:hover{
 transform:scale(1.05);
 }
+
+
+/* POPUP CUPOM */
+
+.popupCupom{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.popupContainer{
+text-align:center;
+}
+
+.cupom{
+width:420px;
+max-width:92vw;
+padding:34px;
+border-radius:22px;
+
+background:
+linear-gradient(180deg,#000,#0f0f0f);
+
+border:1px solid rgba(255,215,0,.4);
+
+box-shadow:
+0 0 60px rgba(0,0,0,.9),
+0 0 25px rgba(255,215,0,.35);
+
+text-align:center;
+}
+
+.logoCupom{
+width:160px;
+margin-bottom:14px;
+}
+
+.cupom h2{
+font-size:38px;
+color:#d4af37;
+letter-spacing:3px;
+margin-bottom:10px;
+}
+
+.linha{
+height:1px;
+background:linear-gradient(90deg,transparent,#d4af37,transparent);
+margin:14px 0;
+}
+
+.nome{
+font-size:18px;
+font-weight:700;
+color:#fff;
+margin-bottom:6px;
+}
+
+.reservaInfo{
+font-size:14px;
+color:#aaa;
+margin-bottom:16px;
+}
+
+.valor{
+font-size:42px;
+font-weight:900;
+margin:12px 0;
+
+background:linear-gradient(90deg,#ffd700,#ffb700,#ffd700);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.info{
+font-size:15px;
+color:#eee;
+margin-bottom:16px;
+}
+
+.codigo{
+font-size:18px;
+letter-spacing:3px;
+font-weight:800;
+
+background:#111;
+border:1px dashed #d4af37;
+padding:12px;
+border-radius:10px;
+}
+
+.baixar{
+margin-top:18px;
+
+background:linear-gradient(145deg,#ffd700,#ffb700);
+border:none;
+
+padding:14px 22px;
+
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+}
+
+.baixar:hover{
+transform:scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -437,10 +550,17 @@ window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
 };
 
 form.onsubmit=async e=>{
+
 e.preventDefault();
+
 spinner.classList.add("show");
 
 const data=new FormData(form);
+
+const nome=data.get("nome");
+
+const dataHora=data.get("datahora");
+
 const params=new URLSearchParams(data);
 
 try{
@@ -448,26 +568,35 @@ try{
 await fetch(GAS_ENDPOINT,{method:"POST",body:params});
 
 modal.close();
-form.reset();
 
-/* gerar código do cupom */
+form.reset();
 
 const codigo="MERCATTO-"+Math.floor(100000+Math.random()*900000);
 
 document.getElementById("codigoCupom").innerText=codigo;
 
-document.getElementById("cupomBox").style.display="flex";
+document.getElementById("cupomNome").innerText=nome;
 
-alert("Reserva confirmada! Seu cupom foi gerado 🎉");
+const dataFormatada=new Date(dataHora);
+
+const textoData=dataFormatada.toLocaleDateString("pt-BR")+" • "+dataFormatada.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+
+document.getElementById("cupomData").innerText="Reserva: "+textoData;
+
+document.getElementById("popupCupom").style.display="flex";
 
 }catch{
 
-alert("Erro ao enviar reserva.");
+alert("Erro ao enviar reserva");
 
 }
 
 spinner.classList.remove("show");
+
 };
+
+
+  
 setTimeout(()=>{
 
 const botaoBaixar=document.getElementById("baixarCupom");
@@ -494,7 +623,9 @@ link.click();
 
 },500);
 </script>
-<div id="cupomBox" style="display:none;justify-content:center;margin-top:30px">
+<div id="popupCupom" class="popupCupom">
+
+<div class="popupContainer">
 
 <div id="cupom" class="cupom">
 
@@ -503,24 +634,22 @@ src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/paste
 
 <h2>ANIVERSÁRIO</h2>
 
-<p class="desc">
-Comemore no <b>Mercatto Delícia</b><br>
-e ganhe até
-</p>
+<div class="linha"></div>
+
+<p class="nome" id="cupomNome"></p>
+
+<p class="reservaInfo" id="cupomData"></p>
 
 <div class="valor">R$100 OFF</div>
 
 <p class="info">
 Consuma a partir de <b>R$100</b><br>
-e ganhe <b>20% de desconto</b>
-</p>
-
-<p class="regras">
-Desconto aplicado em múltiplos de R$20<br>
-limite máximo de R$100
+ganhe <b>20% de desconto</b>
 </p>
 
 <div id="codigoCupom" class="codigo"></div>
+
+</div>
 
 <button id="baixarCupom" class="baixar">
 ⬇️ Baixar Cupom
