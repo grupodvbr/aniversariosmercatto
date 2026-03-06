@@ -434,14 +434,15 @@ margin:14px 0;
 }
 
 .nome{
-font-size:20px;
-font-weight:800;
+font-size:22px;
+font-weight:900;
 
 color:#ffd700;
 
 margin-bottom:8px;
 
-letter-spacing:.5px;
+letter-spacing:.8px;
+text-transform:uppercase;
 }
 .reservaInfo{
 font-size:14px;
@@ -658,17 +659,16 @@ botaoBaixar.style.display="none";
 
 const canvas=await html2canvas(cupom,{
 scale:3,
+useCORS:true,
 backgroundColor:null
 });
-
 botaoBaixar.style.display="block";
 
 const link=document.createElement("a");
 
 link.download="cupom-mercatto.png";
 
-link.href=canvas.toDataURL("image/png");
-
+link.href=canvas.toDataURL("image/png",1.0);
 link.click();
 
 };
@@ -688,9 +688,12 @@ document.getElementById("popupCupom").style.display="none";
 }
 </script>
 <div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
-  
-<div class="popupContainer">
 
+<button class="fecharCupom"
+onclick="document.getElementById('popupCupom').style.display='none'">
+✕
+</button>  
+<div class="popupContainer" onclick="event.stopPropagation()">
 <div id="cupom" class="cupom">
 
 <img class="logoCupom"
