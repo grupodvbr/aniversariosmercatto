@@ -740,6 +740,8 @@ const botao=document.getElementById("baixarCupom");
 
 botao.addEventListener("click",async()=>{
 
+try{
+
 const cupom=document.getElementById("cupom");
 
 botao.innerText="Gerando imagem...";
@@ -750,7 +752,7 @@ const canvas=await html2canvas(cupom,{
 scale:4,
 useCORS:true,
 allowTaint:false,
-backgroundColor:"#000"
+backgroundColor:null
 });
 
 const imagem=canvas.toDataURL("image/png");
@@ -760,9 +762,14 @@ botao.innerText="⬇️ Baixar Cupom";
 const a=document.createElement("a");
 a.href=imagem;
 a.download="cupom-mercatto.png";
+a.target="_blank";
+
 document.body.appendChild(a);
 a.click();
+
+setTimeout(()=>{
 a.remove();
+},100);
 
 /* fallback celular */
 
