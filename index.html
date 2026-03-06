@@ -577,9 +577,10 @@ cursor:pointer;
 
 <header>
   <div class="hero">
-    <img class="hero-img"
-    src="https://github.com/grupodvbr/aniversariosmercatto/blob/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg?raw=true"
-    alt="Mercatto Delícia">
+<img class="hero-img"
+crossorigin="anonymous"
+src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/paste/Imagem%20do%20WhatsApp%20de%202025-08-27%20%C3%A0(s)%2010.13.55_d0cbe205.jpg"
+alt="Mercatto Delícia">
   </div>
 
   <div class="actions">
@@ -743,9 +744,12 @@ const cupom=document.getElementById("cupom");
 
 botao.innerText="Gerando imagem...";
 
+await document.fonts.ready;
+
 const canvas=await html2canvas(cupom,{
-scale:3,
+scale:4,
 useCORS:true,
+allowTaint:false,
 backgroundColor:"#000"
 });
 
@@ -753,25 +757,20 @@ const imagem=canvas.toDataURL("image/png");
 
 botao.innerText="⬇️ Baixar Cupom";
 
-/* tentar download direto */
+const a=document.createElement("a");
+a.href=imagem;
+a.download="cupom-mercatto.png";
+document.body.appendChild(a);
+a.click();
+a.remove();
 
-const link=document.createElement("a");
-link.href=imagem;
-link.download="cupom-mercatto.png";
-
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-
-/* fallback para celulares que bloqueiam download */
+/* fallback celular */
 
 setTimeout(()=>{
 
 if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
 
 window.open(imagem,"_blank");
-
-alert("Se o download não iniciar, pressione e segure a imagem para salvar.");
 
 }
 
@@ -800,8 +799,8 @@ onclick="document.getElementById('popupCupom').style.display='none'">
 <div id="cupom" class="cupom">
 
 <img class="logoCupom"
+crossorigin="anonymous"
 src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/paste/logo.png">
-
 <h2>ANIVERSÁRIO</h2>
 
 <div class="linha"></div>
