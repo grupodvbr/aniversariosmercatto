@@ -277,19 +277,7 @@ textarea{resize:none}
 
 /* CUPOM */
 
-.cupom{
-width:420px;
-max-width:92vw;
-padding:30px;
-border-radius:20px;
-background:
-linear-gradient(180deg,#000,#0f0f0f);
-border:1px solid rgba(255,215,0,.35);
-text-align:center;
-box-shadow:
-0 0 40px rgba(0,0,0,.8),
-0 0 20px rgba(255,215,0,.25);
-}
+
 
 .logoCupom{
 width:140px;
@@ -446,12 +434,15 @@ margin:14px 0;
 }
 
 .nome{
-font-size:18px;
-font-weight:700;
-color:#fff;
-margin-bottom:6px;
-}
+font-size:20px;
+font-weight:800;
 
+color:#ffd700;
+
+margin-bottom:8px;
+
+letter-spacing:.5px;
+}
 .reservaInfo{
 font-size:14px;
 color:#aaa;
@@ -500,6 +491,25 @@ cursor:pointer;
 
 .baixar:hover{
 transform:scale(1.05);
+}
+
+.fecharCupom{
+position:absolute;
+top:25px;
+right:25px;
+
+background:rgba(0,0,0,.6);
+border:1px solid rgba(255,255,255,.2);
+
+width:36px;
+height:36px;
+
+border-radius:50%;
+
+color:#fff;
+font-size:18px;
+
+cursor:pointer;
 }
 </style>
 </head>
@@ -617,8 +627,9 @@ const dataFormatada=new Date(dataHora);
 
 const textoData=dataFormatada.toLocaleDateString("pt-BR")+" • "+dataFormatada.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
 
-document.getElementById("cupomData").innerText="Reserva: "+textoData;
-
+document.getElementById("cupomData").innerHTML=
+"📅 "+textoData;
+  
 document.getElementById("popupCupom").style.display="flex";
 
 }catch{
@@ -665,9 +676,19 @@ link.click();
 }
 
 },500);
-</script>
-<div id="popupCupom" class="popupCupom">
 
+function fecharCupom(e){
+
+if(e.target.id==="popupCupom"){
+
+document.getElementById("popupCupom").style.display="none";
+
+}
+
+}
+</script>
+<div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
+  
 <div class="popupContainer">
 
 <div id="cupom" class="cupom">
