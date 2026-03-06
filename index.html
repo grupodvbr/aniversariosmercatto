@@ -415,45 +415,85 @@ radial-gradient(circle at top,rgba(255,215,0,.12),transparent 60%);
 pointer-events:none;
 }
 
+/* CUPOM PREMIUM */
+
+.cupom{
+width:420px;
+max-width:92vw;
+
+padding:44px 34px;
+
+border-radius:26px;
+
+background:
+linear-gradient(180deg,#020202,#0c0c0c);
+
+border:1px solid rgba(255,215,0,.6);
+
+box-shadow:
+0 40px 90px rgba(0,0,0,.95),
+0 0 40px rgba(255,215,0,.35),
+inset 0 0 40px rgba(255,215,0,.08);
+
+text-align:center;
+
+position:relative;
+overflow:hidden;
+}
+
+.cupom:after{
+content:"";
+position:absolute;
+top:-40%;
+left:-40%;
+width:180%;
+height:180%;
+
+background:
+radial-gradient(circle,
+rgba(255,215,0,.08),
+transparent 60%);
+
+pointer-events:none;
+}
+
 .logoCupom{
-width:160px;
-margin-bottom:14px;
+width:150px;
+margin-bottom:16px;
 }
 
 .cupom h2{
-font-size:38px;
+font-size:40px;
 color:#d4af37;
-letter-spacing:3px;
-margin-bottom:10px;
+letter-spacing:4px;
+margin-bottom:14px;
 }
 
 .linha{
 height:1px;
 background:linear-gradient(90deg,transparent,#d4af37,transparent);
-margin:14px 0;
+margin:16px 0;
 }
 
 .nome{
 font-size:22px;
 font-weight:900;
-
 color:#ffd700;
-
-margin-bottom:8px;
-
+margin-bottom:10px;
 letter-spacing:.8px;
 text-transform:uppercase;
 }
+
 .reservaInfo{
 font-size:14px;
 color:#aaa;
-margin-bottom:16px;
+margin-bottom:18px;
 }
 
 .valor{
-font-size:42px;
+font-size:46px;
 font-weight:900;
-margin:12px 0;
+margin:14px 0;
 
 background:linear-gradient(90deg,#ffd700,#ffb700,#ffd700);
 -webkit-background-clip:text;
@@ -461,37 +501,42 @@ color:transparent;
 }
 
 .info{
-font-size:15px;
+font-size:16px;
 color:#eee;
-margin-bottom:16px;
+margin-bottom:18px;
 }
 
 .codigo{
-font-size:18px;
-letter-spacing:3px;
-font-weight:800;
+font-size:20px;
+letter-spacing:4px;
+font-weight:900;
 
-background:#111;
-border:1px dashed #d4af37;
-padding:12px;
-border-radius:10px;
+background:#0c0c0c;
+border:2px dashed #d4af37;
+padding:14px;
+border-radius:12px;
 }
 
 .baixar{
-margin-top:18px;
+margin-top:20px;
 
 background:linear-gradient(145deg,#ffd700,#ffb700);
 border:none;
 
-padding:14px 22px;
+padding:16px 26px;
 
-border-radius:12px;
-font-weight:800;
+border-radius:14px;
+
+font-weight:900;
+font-size:15px;
+
 cursor:pointer;
+
+box-shadow:0 0 18px rgba(255,215,0,.4);
 }
 
 .baixar:hover{
-transform:scale(1.05);
+transform:scale(1.06);
 }
 
 .fecharCupom{
