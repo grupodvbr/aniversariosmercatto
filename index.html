@@ -748,6 +748,53 @@ const data=new FormData(form);
 const nome=data.get("nome");
 
 const dataHora=data.get("datahora");
+const dataReserva = new Date(dataHora);
+
+const dia = dataReserva.getDay(); 
+// 0=domingo 1=segunda 2=terça 3=quarta 4=quinta 5=sexta 6=sábado
+
+const hora = dataReserva.getHours();
+const minuto = dataReserva.getMinutes();
+const horario = hora + minuto/60;
+
+let permitido = false;
+
+/* SEGUNDA A QUINTA */
+if(dia >=1 && dia <=4){
+
+  if(
+    (horario >= 11 && horario <= 15) ||
+    (horario >= 17 && horario <= 23.99)
+  ){
+    permitido = true;
+  }
+
+}
+
+/* SEXTA SABADO DOMINGO */
+
+if(dia == 5 || dia == 6 || dia == 0){
+
+  if(horario >= 11 && horario <= 19){
+    permitido = true;
+  }
+
+}
+
+if(!permitido){
+
+alert(
+"⚠️ Horário fora do funcionamento.\n\n"+
+"Segunda a Quinta\n"+
+"11:00 às 15:00\n"+
+"17:00 em diante\n\n"+
+"Sexta, Sábado e Domingo\n"+
+"11:00 às 19:00"
+);
+
+return;
+
+}
 const pessoas=data.get("pessoas");
 const observacoes=data.get("observacoes");
 const params=new URLSearchParams(data);
