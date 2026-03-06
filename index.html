@@ -738,65 +738,25 @@ document.getElementById("popupCupom").style.display="flex";
 
 const botao=document.getElementById("baixarCupom");
 
-botao.addEventListener("click",async()=>{
-
-try{
+botao.onclick=function(){
 
 const cupom=document.getElementById("cupom");
 
-botao.innerText="Gerando imagem...";
-
-await document.fonts.ready;
-
-/* GARANTE QUE TODAS AS IMAGENS DO CUPOM CARREGARAM */
-
-const imgs = cupom.querySelectorAll("img");
-
-await Promise.all(
-[...imgs].map(img=>{
-if(img.complete) return Promise.resolve();
-return new Promise(res=>{
-img.onload = img.onerror = res;
-});
-})
-);
-
-/* AGORA RENDERIZA */
-
-const canvas = await html2canvas(cupom,{
-backgroundColor:"#0b0b0b",
-scale:3,
+html2canvas(cupom,{
+scale:2,
 useCORS:true
-});
+}).then(canvas=>{
 
 const link=document.createElement("a");
+
 link.download="cupom-mercatto.png";
-link.href=canvas.toDataURL("image/png",1.0);
+link.href=canvas.toDataURL("image/png");
 
-document.body.appendChild(link);
 link.click();
-
-setTimeout(()=>{
-link.remove();
-},100);
-
-/* fallback celular */
-
-setTimeout(()=>{
-if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
-window.open(canvas.toDataURL("image/png"),"_blank");
-}
-},300);
-
-}catch(err){
-
-console.error(err);
-alert("Erro ao gerar cupom");
-
-}
 
 });
 
+};
 }); // ← FECHA O DOMContentLoaded
 
 function fecharCupom(e){
