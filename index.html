@@ -709,14 +709,37 @@ document.getElementById("popupCupom").style.display="flex";
 
 const botao=document.getElementById("baixarCupom");
 
-botao.onclick=function(){
+botao.onclick=async function(){
 
 const cupom=document.getElementById("cupom");
 
-html2canvas(cupom,{
-scale:2,
+/* CLONA O CUPOM */
+const clone=cupom.cloneNode(true);
+
+/* CONTAINER LIMPO */
+const area=document.createElement("div");
+
+area.style.position="fixed";
+area.style.left="-9999px";
+area.style.top="0";
+area.style.background="#000";
+area.style.padding="20px";
+
+area.appendChild(clone);
+
+document.body.appendChild(area);
+
+/* GERA IMAGEM */
+
+const canvas=await html2canvas(clone,{
+scale:3,
+backgroundColor:"#000",
 useCORS:true
-}).then(canvas=>{
+});
+
+document.body.removeChild(area);
+
+/* DOWNLOAD */
 
 const link=document.createElement("a");
 
@@ -724,8 +747,6 @@ link.download="cupom-mercatto.png";
 link.href=canvas.toDataURL("image/png");
 
 link.click();
-
-});
 
 };
 }); // ← FECHA O DOMContentLoaded
