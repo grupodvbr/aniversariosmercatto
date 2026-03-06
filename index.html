@@ -600,6 +600,7 @@ form.onsubmit=async e=>{
 
 e.preventDefault();
 
+document.getElementById("overlayLoading").style.display="flex";
 spinner.classList.add("show");
 
 const data=new FormData(form);
@@ -612,8 +613,12 @@ const params=new URLSearchParams(data);
 
 try{
 
-await fetch(GAS_ENDPOINT,{method:"POST",body:params});
-
+await fetch(GAS_ENDPOINT,{
+method:"POST",
+body:params,
+mode:"no-cors"
+});
+  
 modal.close();
 
 form.reset();
@@ -632,7 +637,12 @@ document.getElementById("cupomData").innerHTML=
 "📅 "+textoData;
   
 document.getElementById("popupCupom").style.display="flex";
-
+// salvar último cupom
+localStorage.setItem("ultimoCupom",JSON.stringify({
+nome:nome,
+data:textoData,
+codigo:codigo
+}));
 }catch{
 
 alert("Erro ao enviar reserva");
@@ -641,40 +651,25 @@ alert("Erro ao enviar reserva");
 
 spinner.classList.remove("show");
 
+document.getElementById("overlayLoading").style.display="none";
 };
 
 
   
 document.addEventListener("DOMContentLoaded",()=>{
+const ultimo=localStorage.getItem("ultimoCupom");
 
-const botao=document.getElementById("baixarCupom");
+if(ultimo){
 
-botao.addEventListener("click",async()=>{
+const cupom=JSON.parse(ultimo);
 
-const cupom=document.getElementById("cupom");
+document.getElementById("codigoCupom").innerText=cupom.codigo;
+document.getElementById("cupomNome").innerText=cupom.nome;
+document.getElementById("cupomData").innerHTML="📅 "+cupom.data;
 
-botao.style.display="none";
+document.getElementById("popupCupom").style.display="flex";
 
-const canvas=await html2canvas(cupom,{
-scale:3,
-useCORS:true,
-backgroundColor:null
-});
-
-botao.style.display="block";
-
-const link=document.createElement("a");
-
-link.download="cupom-mercatto.png";
-
-link.href=canvas.toDataURL("image/png",1.0);
-
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-
-});
-
+}
 });
 
 function fecharCupom(e){
@@ -690,7 +685,6 @@ document.getElementById("popupCupom").style.display="none";
 document.getElementById("baixarCupom").addEventListener("click",async()=>{
 
 const cupom=document.getElementById("cupom");
-
 const botao=document.getElementById("baixarCupom");
 
 botao.style.display="none";
@@ -703,13 +697,18 @@ backgroundColor:null
 
 botao.style.display="block";
 
+const imagem=canvas.toDataURL("image/png",1.0);
+
+// salvar ultimo cupom em imagem
+localStorage.setItem("imagemCupom",imagem);
+
 const link=document.createElement("a");
-
 link.download="cupom-mercatto.png";
+link.href=imagem;
 
-link.href=canvas.toDataURL("image/png",1.0);
-
+document.body.appendChild(link);
 link.click();
+document.body.removeChild(link);
 
 });
 </script>
@@ -750,5 +749,50 @@ ganhe <b>20% de desconto</b>
 
 </div>
 </div>
+
+
+<div id="overlayLoading" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.92);
+backdrop-filter:blur(6px);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99999;
+transition:opacity .25s ease;
+">
+
+<div style="text-align:center">
+
+<div style="
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #ffd700;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto">
+</div>
+
+<p style="
+margin-top:18px;
+font-weight:700;
+color:#fff">
+Registrando sua reserva...
+</p>
+
+</div>
+</div>
+
+<style>
+@keyframes spin{
+0%{transform:rotate(0)}
+100%{transform:rotate(360deg)}
+}
+</style>
 </body>
 </html>
