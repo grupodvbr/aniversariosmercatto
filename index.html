@@ -559,6 +559,13 @@ color:#000;
 letter-spacing:1px;
 text-align:center;
 }
+
+.reservaInfo{
+font-size:14px;
+color:#aaa;
+margin-bottom:6px;
+}
+  
 </style>
 </head>
 <body>
@@ -656,7 +663,8 @@ const data=new FormData(form);
 const nome=data.get("nome");
 
 const dataHora=data.get("datahora");
-
+const pessoas=data.get("pessoas");
+const observacoes=data.get("observacoes");
 const params=new URLSearchParams(data);
 
 try{
@@ -685,7 +693,11 @@ const textoData=dataFormatada.toLocaleDateString("pt-BR")+" • "+dataFormatada.
 
 document.getElementById("cupomData").innerHTML=
 "📅 "+textoData;
-  
+document.getElementById("cupomPessoas").innerHTML=
+"👥 "+pessoas+" pessoas";
+
+document.getElementById("cupomObs").innerHTML=
+observacoes ? "📝 "+observacoes : "";
 document.getElementById("popupCupom").style.display="flex";
 // salvar último cupom
 localStorage.setItem("ultimoCupom",JSON.stringify({
@@ -816,7 +828,8 @@ src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/logo.
 <p class="nome" id="cupomNome"></p>
 
 <p class="reservaInfo" id="cupomData"></p>
-
+<p class="reservaInfo" id="cupomPessoas"></p>
+<p class="reservaInfo" id="cupomObs"></p>
 <div class="faixa">
   <div class="valor">ATÉ R$100 OFF</div>
 </div>
