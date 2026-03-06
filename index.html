@@ -759,19 +759,20 @@ windowHeight:cupom.scrollHeight
 const link=document.createElement("a");
 link.download="cupom-mercatto.png";
 link.href=canvas.toDataURL("image/png",1.0);
+
+document.body.appendChild(link);
 link.click();
+
 setTimeout(()=>{
-a.remove();
+link.remove();
 },100);
 
 /* fallback celular */
 
 setTimeout(()=>{
-
 if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
-window.open(imagem,"_blank");
+window.open(canvas.toDataURL("image/png"),"_blank");
 }
-
 },300);
 
 }catch(err){
