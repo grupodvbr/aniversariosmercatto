@@ -877,6 +877,15 @@ btnTermos.onclick = ()=>{
 
   
 </script>
+<div id="overlayLoading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:99999;">
+<div style="text-align:center">
+<div style="width:60px;height:60px;border:5px solid rgba(255,255,255,.2);border-top:5px solid #ffd700;border-radius:50%;animation:spin 1s linear infinite;margin:auto"></div>
+<p style="margin-top:18px;font-weight:700;color:#fff">
+Registrando sua reserva...
+</p>
+</div>
+</div>
+  
 <div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
 
 <button class="fecharCupom"
@@ -917,42 +926,7 @@ para <b>participar</b>
 
 </div>
 </div>
-<div id="overlayLoading" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.92);
-backdrop-filter:blur(6px);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:99999;
-">
 
-<div style="text-align:center">
-
-<div style="
-width:60px;
-height:60px;
-border:5px solid rgba(255,255,255,.2);
-border-top:5px solid #ffd700;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto">
-</div>
-
-<p style="
-margin-top:18px;
-font-weight:700;
-color:#fff">
-Registrando sua reserva...
-</p>
-
-</div>
-
-</div>
 
 <style>
 @keyframes spin{
