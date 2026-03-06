@@ -645,37 +645,37 @@ spinner.classList.remove("show");
 
 
   
-setTimeout(()=>{
+document.addEventListener("DOMContentLoaded",()=>{
 
-const botaoBaixar=document.getElementById("baixarCupom");
+const botao=document.getElementById("baixarCupom");
 
-if(botaoBaixar){
-
-botaoBaixar.onclick=async()=>{
+botao.addEventListener("click",async()=>{
 
 const cupom=document.getElementById("cupom");
 
-botaoBaixar.style.display="none";
+botao.style.display="none";
 
 const canvas=await html2canvas(cupom,{
 scale:3,
 useCORS:true,
 backgroundColor:null
 });
-botaoBaixar.style.display="block";
+
+botao.style.display="block";
 
 const link=document.createElement("a");
 
 link.download="cupom-mercatto.png";
 
 link.href=canvas.toDataURL("image/png",1.0);
+
+document.body.appendChild(link);
 link.click();
+document.body.removeChild(link);
 
-};
+});
 
-}
-
-},500);
+});
 
 function fecharCupom(e){
 
@@ -686,6 +686,32 @@ document.getElementById("popupCupom").style.display="none";
 }
 
 }
+
+document.getElementById("baixarCupom").addEventListener("click",async()=>{
+
+const cupom=document.getElementById("cupom");
+
+const botao=document.getElementById("baixarCupom");
+
+botao.style.display="none";
+
+const canvas=await html2canvas(cupom,{
+scale:3,
+useCORS:true,
+backgroundColor:null
+});
+
+botao.style.display="block";
+
+const link=document.createElement("a");
+
+link.download="cupom-mercatto.png";
+
+link.href=canvas.toDataURL("image/png",1.0);
+
+link.click();
+
+});
 </script>
 <div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
 
