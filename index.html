@@ -760,11 +760,12 @@ const horario = hora + minuto/60;
 let permitido = false;
 
 /* SEGUNDA A QUINTA */
+/* SEGUNDA A QUINTA */
 if(dia >=1 && dia <=4){
 
   if(
     (horario >= 11 && horario <= 15) ||
-    (horario >= 17 && horario <= 23.99)
+    (horario >= 17 && horario <= 19)
   ){
     permitido = true;
   }
@@ -973,11 +974,12 @@ const horario = hora + minuto/60;
 let permitido = false;
 
 /* SEGUNDA A QUINTA */
+/* SEGUNDA A QUINTA */
 if(dia >=1 && dia <=4){
 
 if(
 (horario >= 11 && horario <= 15) ||
-(horario >= 17 && horario <= 23.99)
+(horario >= 17 && horario <= 19)
 ){
 permitido = true;
 }
@@ -999,7 +1001,7 @@ alert(
 "Horário inválido.\n\n"+
 "Segunda a Quinta\n"+
 "11:00 às 15:00\n"+
-"17:00 em diante\n\n"+
+"17:00 às 19:00\n\n"+
 "Sexta, Sábado e Domingo\n"+
 "11:00 às 19:00"
 );
