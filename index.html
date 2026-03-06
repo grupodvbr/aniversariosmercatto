@@ -565,7 +565,40 @@ font-size:14px;
 color:#aaa;
 margin-bottom:6px;
 }
-  
+  .termosBox{
+margin-top:4px;
+}
+
+.checkboxTermos{
+display:flex;
+align-items:flex-start;
+gap:10px;
+font-size:13px;
+color:#ddd;
+cursor:pointer;
+}
+
+.checkboxTermos input{
+width:18px;
+height:18px;
+cursor:pointer;
+accent-color:#22c55e;
+}
+
+.linkTermos{
+background:none;
+border:none;
+color:#ffd700;
+font-weight:800;
+cursor:pointer;
+padding:0;
+margin-left:4px;
+text-decoration:underline;
+}
+
+.linkTermos:hover{
+opacity:.8;
+}
 </style>
 </head>
 <body>
@@ -625,8 +658,22 @@ alt="Mercatto Delícia">
         <textarea name="observacoes" rows="3" placeholder="Preferências, aniversários, mesa específica..."></textarea>
       </div>
 
-      <div id="spinner" class="spinner">Enviando reserva...</div>
+<div class="termosBox">
 
+<label class="checkboxTermos">
+
+<input type="checkbox" id="aceitarTermos">
+
+<span>
+Li e concordo com os
+<button type="button" id="abrirTermos" class="linkTermos">
+Termos da Reserva
+</button>
+</span>
+
+</label>
+
+</div>
       <button class="submit" type="submit">Confirmar Reserva</button>
     </form>
   </div>
@@ -654,6 +701,12 @@ window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
 form.onsubmit=async e=>{
 
 e.preventDefault();
+
+if(!document.getElementById("aceitarTermos").checked){
+alert("Você precisa aceitar os termos da reserva.");
+return;
+}
+
 
 document.getElementById("overlayLoading").style.display="flex";
 spinner.classList.add("show");
@@ -807,6 +860,8 @@ document.getElementById("popupCupom").style.display="none";
 }
 
 }
+
+
 </script>
 <div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
 
@@ -893,5 +948,42 @@ Registrando sua reserva...
 100%{transform:rotate(360deg)}
 }
 </style>
+
+<dialog id="modalTermos">
+
+<div class="modal-head">
+📜 Termos da Reserva
+<button onclick="document.getElementById('modalTermos').close()">
+Fechar
+</button>
+</div>
+
+<div class="modal-body">
+
+<h3>Regras de Reserva</h3>
+
+<p>
+• A reserva será mantida por até <b>15 minutos</b> após o horário marcado.
+</p>
+
+<p>
+• Caso não compareça, a mesa poderá ser liberada para outros clientes.
+</p>
+
+<p>
+• Em caso de aniversário, o desconto ou benefício será válido apenas mediante consumo mínimo.
+</p>
+
+<p>
+• O Mercatto Delícia poderá reorganizar mesas conforme disponibilidade do salão.
+</p>
+
+<p>
+• Ao confirmar a reserva você concorda com estas condições.
+</p>
+
+</div>
+
+</dialog>
 </body>
 </html>
