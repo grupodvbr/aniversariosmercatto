@@ -274,6 +274,84 @@ textarea{resize:none}
 }
 
 .spinner.show{display:block}
+
+/* CUPOM */
+
+.cupom{
+width:420px;
+max-width:92vw;
+padding:30px;
+border-radius:20px;
+background:
+linear-gradient(180deg,#000,#0f0f0f);
+border:1px solid rgba(255,215,0,.35);
+text-align:center;
+box-shadow:
+0 0 40px rgba(0,0,0,.8),
+0 0 20px rgba(255,215,0,.25);
+}
+
+.logoCupom{
+width:140px;
+margin-bottom:12px;
+}
+
+.cupom h2{
+margin:6px 0 16px;
+font-size:36px;
+color:#d4af37;
+letter-spacing:2px;
+}
+
+.desc{
+color:#ddd;
+font-size:15px;
+}
+
+.valor{
+font-size:40px;
+font-weight:900;
+margin:14px 0;
+background:linear-gradient(90deg,#ffd700,#ffb700,#ffd700);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.info{
+font-size:15px;
+color:#fff;
+margin-bottom:14px;
+}
+
+.regras{
+font-size:12px;
+color:#aaa;
+margin-bottom:18px;
+}
+
+.codigo{
+font-size:18px;
+letter-spacing:3px;
+font-weight:800;
+background:#111;
+border:1px dashed #d4af37;
+padding:12px;
+border-radius:10px;
+margin-bottom:18px;
+}
+
+.baixar{
+background:linear-gradient(145deg,#ffd700,#ffb700);
+border:none;
+padding:12px 18px;
+border-radius:10px;
+font-weight:800;
+cursor:pointer;
+}
+
+.baixar:hover{
+transform:scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -338,7 +416,7 @@ textarea{resize:none}
     </form>
   </div>
 </dialog>
-
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
 const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbzl7UY_bsvQS9TSIWUOSfTrKQuKC16ZuMciH28DDronruka4167Dgo04X2VZhiO_dmO/exec";
 const WHATSAPP_NUMBER="557736135148";
@@ -366,16 +444,89 @@ const data=new FormData(form);
 const params=new URLSearchParams(data);
 
 try{
+
 await fetch(GAS_ENDPOINT,{method:"POST",body:params});
-alert("Reserva enviada com sucesso!");
-form.reset();
+
 modal.close();
+form.reset();
+
+/* gerar código do cupom */
+
+const codigo="MERCATTO-"+Math.floor(100000+Math.random()*900000);
+
+document.getElementById("codigoCupom").innerText=codigo;
+
+document.getElementById("cupomBox").style.display="flex";
+
+alert("Reserva confirmada! Seu cupom foi gerado 🎉");
+
 }catch{
+
 alert("Erro ao enviar reserva.");
+
 }
+
 spinner.classList.remove("show");
 };
-</script>
+setTimeout(()=>{
 
+const botaoBaixar=document.getElementById("baixarCupom");
+
+if(botaoBaixar){
+
+botaoBaixar.onclick=async()=>{
+
+const cupom=document.getElementById("cupom");
+
+const canvas=await html2canvas(cupom);
+
+const link=document.createElement("a");
+
+link.download="cupom-mercatto.png";
+
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+};
+
+}
+
+},500);
+</script>
+<div id="cupomBox" style="display:none;justify-content:center;margin-top:30px">
+
+<div id="cupom" class="cupom">
+
+<img class="logoCupom"
+src="https://raw.githubusercontent.com/grupodvbr/aniversariosmercatto/main/paste/logo.png">
+
+<h2>ANIVERSÁRIO</h2>
+
+<p class="desc">
+Comemore no <b>Mercatto Delícia</b><br>
+e ganhe até
+</p>
+
+<div class="valor">R$100 OFF</div>
+
+<p class="info">
+Consuma a partir de <b>R$100</b><br>
+e ganhe <b>20% de desconto</b>
+</p>
+
+<p class="regras">
+Desconto aplicado em múltiplos de R$20<br>
+limite máximo de R$100
+</p>
+
+<div id="codigoCupom" class="codigo"></div>
+
+<button id="baixarCupom" class="baixar">
+⬇️ Baixar Cupom
+</button>
+
+</div>
+</div>
 </body>
 </html>
