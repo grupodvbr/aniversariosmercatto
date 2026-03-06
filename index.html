@@ -748,25 +748,18 @@ botao.innerText="Gerando imagem...";
 
 await document.fonts.ready;
 
-const canvas=await html2canvas(cupom,{
-scale:4,
+const canvas = await html2canvas(cupom,{
+backgroundColor:"#0b0b0b",
+scale:3,
 useCORS:true,
-allowTaint:false,
-backgroundColor:null
+windowWidth:cupom.scrollWidth,
+windowHeight:cupom.scrollHeight
 });
 
-const imagem=canvas.toDataURL("image/png");
-
-botao.innerText="⬇️ Baixar Cupom";
-
-const a=document.createElement("a");
-a.href=imagem;
-a.download="cupom-mercatto.png";
-a.target="_blank";
-
-document.body.appendChild(a);
-a.click();
-
+const link=document.createElement("a");
+link.download="cupom-mercatto.png";
+link.href=canvas.toDataURL("image/png",1.0);
+link.click();
 setTimeout(()=>{
 a.remove();
 },100);
@@ -789,6 +782,9 @@ alert("Erro ao gerar cupom");
 }
 
 });
+
+}); // ← FECHA O DOMContentLoaded
+
 function fecharCupom(e){
 
 if(e.target.id==="popupCupom"){
