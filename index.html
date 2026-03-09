@@ -843,7 +843,8 @@ status:"Pendente",
 mesa:"Site Aniversário",
 cardapio:"Promo Aniversário",
 valorEstimado:0,
-pagamentoAntecipado:0
+pagamentoAntecipado:0,
+origem:"Landing Aniversário"
 });
 
 if(error){
@@ -882,16 +883,17 @@ codigo:codigo
 }));
 }catch(err){
 
-console.error(err);
+console.error("Erro Supabase:",err);
 
-alert("Erro ao enviar reserva");
+alert(
+"⚠️ Não foi possível registrar sua reserva.\n\n"+
+"Tente novamente ou fale conosco no WhatsApp."
+);
 
 document.getElementById("overlayLoading").style.display="none";
 
 }
-
-document.getElementById("overlayLoading").style.display="none";
-};
+;
 
 
   
