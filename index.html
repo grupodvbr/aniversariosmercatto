@@ -731,9 +731,19 @@ Registrando sua reserva...
   </div>
 </dialog>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const GAS_ENDPOINT="https://script.google.com/macros/s/AKfycbzl7UY_bsvQS9TSIWUOSfTrKQuKC16ZuMciH28DDronruka4167Dgo04X2VZhiO_dmO/exec";
-const WHATSAPP_NUMBER="557736135148";
+  const SUPABASE_URL = "https://dxkszikemntfusfyrzos.supabase.co"
+const SUPABASE_KEY = "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+)
+  
+  
+  const WHATSAPP_NUMBER="557736135148";
 
 const modal=document.getElementById("modalReserva");
 const btnReservar=document.getElementById("btnReservar");
@@ -809,6 +819,8 @@ alert(
 "11:00 às 19:00"
 );
 
+document.getElementById("overlayLoading").style.display="none";
+
 return;
 
 }
@@ -818,11 +830,25 @@ const params=new URLSearchParams(data);
 
 try{
 
-await fetch(GAS_ENDPOINT,{
-method:"POST",
-body:params,
-mode:"no-cors"
+const { error } = await supabaseClient
+.from("reservas_mercatto")
+.insert({
+nome:data.get("nome"),
+email:data.get("email"),
+telefone:data.get("telefone"),
+pessoas:Number(data.get("pessoas")),
+datahora:data.get("datahora"),
+observacoes:data.get("observacoes") || "",
+status:"Pendente",
+mesa:"Site Aniversário",
+cardapio:"Promo Aniversário",
+valorEstimado:0,
+pagamentoAntecipado:0
 });
+
+if(error){
+throw error;
+}
 
 await new Promise(r=>setTimeout(r,1200));
   
@@ -854,12 +880,15 @@ nome:nome,
 data:textoData,
 codigo:codigo
 }));
-}catch{
+}catch(err){
+
+console.error(err);
 
 alert("Erro ao enviar reserva");
 
-}
+document.getElementById("overlayLoading").style.display="none";
 
+}
 
 document.getElementById("overlayLoading").style.display="none";
 };
@@ -963,7 +992,12 @@ document.getElementById("popupCupom").style.display="none";
   /* ================= ABRIR TERMOS ================= */
 
 document.addEventListener("DOMContentLoaded",()=>{
+const campo = document.getElementById("campoDataHora")
 
+const agora = new Date()
+agora.setMinutes(agora.getMinutes()-agora.getTimezoneOffset())
+
+campo.min = agora.toISOString().slice(0,16)
 const btnTermos = document.getElementById("abrirTermos");
 const modalTermos = document.getElementById("modalTermos");
 
