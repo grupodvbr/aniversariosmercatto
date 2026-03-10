@@ -908,10 +908,33 @@ const params=new URLSearchParams(data);
 
 try{
 
+const { error } = await supabaseClient
+.from("reservas_mercatto")
+.insert({
+  nome:data.get("nome"),
+  email:data.get("email"),
+  telefone:data.get("telefone"),
+  pessoas:Number(data.get("pessoas")),
+  datahora:dataReserva.toISOString(),
+  observacoes:data.get("observacoes") || "",
+  status:"Pendente",
+  mesa:"Site Aniversário",
+  cardapio:"Promo Aniversário",
+  valorEstimado:0,
+  pagamentoAntecipado:0,
+  origem:"Landing Aniversário"
+});
+
+if(error){
+throw error;
+}
+
+btn.disabled = false;
+texto.style.display = "inline";
+spinner.style.display = "none";
 
 await new Promise(r=>setTimeout(r,1200));
-
-
+  
 modal.close();
 form.reset();
 
@@ -1042,71 +1065,6 @@ const modalTermos = document.getElementById("modalTermos");
 btnTermos.onclick = ()=>{
 modalTermos.showModal();
 };
-
-});
-  /* ================= CONTROLE DE HORÁRIO ================= */
-
-/* ================= CONTROLE INTELIGENTE DE HORÁRIO ================= */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-const campoDataHora = document.getElementById("campoDataHora");
-
-if(!campoDataHora) return;
-
-campoDataHora.addEventListener("change", ()=>{
-
-const dataSelecionada = new Date(campoDataHora.value);
-
-if(!campoDataHora.value) return;
-
-const dia = dataSelecionada.getDay();
-const hora = dataSelecionada.getHours();
-const minuto = dataSelecionada.getMinutes();
-
-const horario = hora + minuto/60;
-
-let permitido = false;
-
-/* SEGUNDA A QUINTA */
-
-if(dia >= 1 && dia <= 4){
-
-if(
-(horario >= 11 && horario <= 15) ||
-(horario >= 17 && horario <= 22)
-){
-permitido = true;
-}
-
-}
-
-/* SEXTA SABADO DOMINGO */
-
-if(dia == 5 || dia == 6 || dia == 0){
-
-if(horario >= 11 && horario <= 22){
-permitido = true;
-}
-
-}
-
-if(!permitido){
-
-alert(
-"⚠️ Horário fora do funcionamento.\n\n"+
-"Segunda a Quinta\n"+
-"11:00 às 15:00\n"+
-"17:00 às 22:00\n\n"+
-"Sexta, Sábado e Domingo\n"+
-"11:00 às 22:00"
-);
-
-campoDataHora.value="";
-
-}
-
-});
 
 });
 
