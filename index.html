@@ -926,30 +926,7 @@ document.getElementById("overlayLoading").style.display="none";
 
 }
 
-  
-document.addEventListener("DOMContentLoaded",()=>{
 
-const ultimo=localStorage.getItem("ultimoCupom");
-
-if(ultimo){
-
-const cupom=JSON.parse(ultimo);
-
-document.getElementById("codigoCupom").innerText=cupom.codigo;
-document.getElementById("cupomNome").innerText=cupom.nome;
-document.getElementById("cupomData").innerHTML="📅 "+cupom.data;
-
-document.getElementById("popupCupom").style.display="flex";
-
-}
-
-/* DOWNLOAD DO CUPOM */
-
-const botao=document.getElementById("baixarCupom");
-
-botao.onclick=async function(){
-
-const cupom=document.getElementById("cupom");
 
 /* CLONA O CUPOM */
 const clone=cupom.cloneNode(true);
@@ -1005,7 +982,6 @@ link.href=canvas.toDataURL("image/png");
 link.click();
 
 };
-}); // ← FECHA O DOMContentLoaded
 
 function fecharCupom(e){
 
