@@ -1237,15 +1237,21 @@ e.target.value = v;
 
 });
 
-/* ================= ABRIR TERMOS ================= */
+document.addEventListener("DOMContentLoaded",()=>{
 
-document.getElementById("abrirTermos").addEventListener("click",function(e){
+const btnTermos = document.getElementById("abrirTermos")
+const modalTermos = document.getElementById("modalTermos")
 
-e.preventDefault();
+if(btnTermos && modalTermos){
 
-document.getElementById("modalTermos").showModal();
+btnTermos.onclick = (e)=>{
+e.preventDefault()
+modalTermos.showModal()
+}
 
-});
+}
+
+})
 </script>
 
   
