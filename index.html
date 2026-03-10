@@ -941,9 +941,11 @@ alert(
 
 document.getElementById("overlayLoading").style.display="none";
 
+return;   // 🔴 IMPORTANTE
+
 }
 
-
+/* CUPOM SÓ EXECUTA SE NÃO HOUVE ERRO */
 
 const cupom = document.getElementById("cupom");
 const clone = cupom.cloneNode(true);
