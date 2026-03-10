@@ -746,19 +746,6 @@ Termos da Reserva
     </form>
 
     
-<div id="overlayLoading" style="
-position:fixed;
-top:0;
-left:0;
-width:100vw;
-height:100vh;
-background:rgba(0,0,0,.92);
-backdrop-filter:blur(6px);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:999999;
-">
 
 <div style="text-align:center">
 <div style="
@@ -825,7 +812,8 @@ alert("Você precisa aceitar os termos da reserva.");
 return;
 }
 
-document.getElementById("overlayLoading").style.display="block";
+modal.close();
+document.getElementById("overlayLoading").style.display="flex";
 const data=new FormData(form);
 
 const nome=data.get("nome");
@@ -1310,5 +1298,30 @@ Fechar
 </div>
 
 </dialog>
+
+<div id="overlayLoading">
+
+<div style="text-align:center">
+
+<div style="
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #ffd700;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto">
+</div>
+
+<p style="
+margin-top:18px;
+font-weight:700;
+color:#fff">
+Registrando sua reserva...
+</p>
+
+</div>
+
+</div>
 </body>
 </html>
