@@ -1237,16 +1237,13 @@ e.target.value = v;
 
 });
 
+/* ================= ABRIR TERMOS ================= */
 
-const pessoasInput = document.getElementById("pessoas");
+document.getElementById("abrirTermos").addEventListener("click",function(e){
 
-pessoasInput.addEventListener("input", function(e){
+e.preventDefault();
 
-let v = e.target.value.replace(/\D/g,"");
-
-if(v.length > 2) v = v.slice(0,2);
-
-e.target.value = v;
+document.getElementById("modalTermos").showModal();
 
 });
 </script>
