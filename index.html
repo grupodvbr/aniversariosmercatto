@@ -743,6 +743,7 @@ required
 <label>Horário</label>
 <select
 id="horaReserva"
+name="horaReserva"
 required
 style="
 width:100%;
@@ -1101,15 +1102,6 @@ await Promise.all(
 );
 
 
-if(e.target.id==="popupCupom"){
-
-document.getElementById("popupCupom").style.display="none";
-
-}
-
-}
-
-
 
 
 
@@ -1222,7 +1214,11 @@ e.target.value = v;
 
 /* ================= SOMENTE NUMERO EM PESSOAS ================= */
 
+document.addEventListener("DOMContentLoaded",()=>{
+
 const pessoasInput = document.getElementById("pessoas");
+
+if(pessoasInput){
 
 pessoasInput.addEventListener("input", function(e){
 
@@ -1233,6 +1229,11 @@ if(v.length > 2) v = v.slice(0,2);
 e.target.value = v;
 
 });
+
+}
+
+});
+
 
 document.addEventListener("DOMContentLoaded",()=>{
 
