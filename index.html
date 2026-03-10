@@ -751,8 +751,11 @@ const btnAtendente=document.getElementById("btnAtendente");
 const fecharModal=document.getElementById("fecharModal");
 const form=document.getElementById("reservaForm");
 
-btnReservar.onclick=()=>modal.showModal();
-fecharModal.onclick=()=>modal.close();
+btnReservar.addEventListener("click",()=>{
+modal.showModal();
+});
+  
+  fecharModal.onclick=()=>modal.close();
 
 btnAtendente.onclick=()=>{
 const msg=encodeURIComponent("Olá! Quero fazer uma reserva no Mercatto Delícia.");
@@ -1038,10 +1041,14 @@ btnTermos.onclick = ()=>{
 
   /* ================= CONTROLE DE HORÁRIO ================= */
 
+document.addEventListener("DOMContentLoaded",()=>{
+
 const campoDataHora = document.getElementById("campoDataHora");
 
-campoDataHora.addEventListener("change", ()=>{
+if(!campoDataHora) return;
 
+campoDataHora.addEventListener("change", ()=>{
+  
 const dataSelecionada = new Date(campoDataHora.value);
 
 const dia = dataSelecionada.getDay();
@@ -1052,7 +1059,6 @@ const horario = hora + minuto/60;
 
 let permitido = false;
 
-/* SEGUNDA A QUINTA */
 /* SEGUNDA A QUINTA */
 if(dia >=1 && dia <=4){
 
@@ -1090,6 +1096,9 @@ campoDataHora.value="";
 }
 
 });
+
+});   // ← FECHAMENTO 1
+      // ← FECHAMENTO 2
 </script>
 
   
