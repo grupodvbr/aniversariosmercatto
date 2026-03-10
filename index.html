@@ -12,12 +12,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <title>Reservas • Mercatto Delícia</title>
 
-<meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no,
-viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <meta name="color-scheme" content="dark" />
 
@@ -174,8 +169,9 @@ color:#fff;
 overflow:hidden;
 
 position:fixed;
-margin:auto;
-
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
 animation:fadeIn .25s ease;
 }
 
@@ -638,6 +634,15 @@ text-decoration:underline;
 opacity:.8;
 }
 
+
+
+html{
+touch-action:manipulation;
+}
+
+button{
+touch-action:manipulation;
+}
 </style>
 </head>
 <body>
