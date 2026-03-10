@@ -812,7 +812,15 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 )
-  
+  function fecharCupom(e){
+
+if(e.target.id==="popupCupom"){
+
+document.getElementById("popupCupom").style.display="none";
+
+}
+
+}
   
   const WHATSAPP_NUMBER="557736135148";
 const modal = document.getElementById("modalReserva");
@@ -863,7 +871,6 @@ return;
 }
 
 
-const form = document.getElementById("reservaForm");
 const data = new FormData(form);
 const email = data.get("email");
 
@@ -914,7 +921,20 @@ dataPart[2],
 horaPart[0],
 horaPart[1]
 );
+const hoje = new Date();
+hoje.setHours(0,0,0,0);
 
+if(dataReserva < hoje){
+
+alert("Escolha uma data futura.");
+
+btn.disabled=false;
+texto.style.display="inline";
+spinner.style.display="none";
+
+return;
+
+}
 const dia = dataReserva.getDay();
 
 const hora = dataReserva.getHours();
@@ -1080,21 +1100,6 @@ await Promise.all(
   })
 );
 
-/* GERA IMAGEM EM ALTA QUALIDADE */
-
-const canvas=await html2canvas(clone,{
-  scale:5,
-  backgroundColor:"#000",
-  useCORS:true,
-  allowTaint:true
-});
-
-document.body.removeChild(area);
-
-/* DOWNLOAD */
-
-
-function fecharCupom(e){
 
 if(e.target.id==="popupCupom"){
 
