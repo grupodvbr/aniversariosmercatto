@@ -818,13 +818,19 @@ const spinner = document.getElementById("spinnerBtn");
 btn.disabled = true;
 texto.style.display = "none";
 spinner.style.display = "inline-block";
+  
 if(!document.getElementById("aceitarTermos").checked){
+
+btn.disabled = false;
+texto.style.display = "inline";
+spinner.style.display = "none";
+
 alert("Você precisa aceitar os termos da reserva.");
 return;
+
 }
 
-modal.close();
-document.getElementById("overlayLoading").style.display="flex";
+
 const data=new FormData(form);
 
 const nome=data.get("nome");
@@ -889,7 +895,6 @@ alert(
 "11:00 às 22:00"
 );
 
-document.getElementById("overlayLoading").style.display="none";
 btn.disabled = false;
 texto.style.display = "inline";
 spinner.style.display = "none";
@@ -903,55 +908,9 @@ const params=new URLSearchParams(data);
 
 try{
 
-/* ================= VERIFICA SE JÁ EXISTE RESERVA ================= */
-
-const inicio = new Date(data.get("datahora"));
-const fim = new Date(inicio);
-fim.setMinutes(fim.getMinutes() + 1);
-
-const { data:existente } = await supabaseClient
-.from("reservas_mercatto")
-.select("id")
-.gte("datahora", inicio.toISOString())
-.lt("datahora", fim.toISOString())
-.limit(1);
-
-if(existente && existente.length){
-
-alert("⚠️ Já existe uma reserva nesse horário.");
-
-document.getElementById("overlayLoading").style.display="none";
-
-return;
-
-}
-
-/* ================= INSERE RESERVA ================= */
-
-const { error } = await supabaseClient
-.from("reservas_mercatto")
-.insert({
-nome:data.get("nome"),
-email:data.get("email"),
-telefone:data.get("telefone"),
-pessoas:Number(data.get("pessoas")),
-datahora: dataReserva.toISOString(),
-observacoes:data.get("observacoes") || "",
-status:"Pendente",
-mesa:"Site Aniversário",
-cardapio:"Promo Aniversário",
-valorEstimado:0,
-pagamentoAntecipado:0,
-origem:"Landing Aniversário"
-});
-
-if(error){
-throw error;
-}
 
 await new Promise(r=>setTimeout(r,1200));
 
-document.getElementById("overlayLoading").style.display="none";
 
 modal.close();
 form.reset();
@@ -997,7 +956,6 @@ alert(
 "Tente novamente ou fale conosco no WhatsApp."
 );
 
-document.getElementById("overlayLoading").style.display="none";
 
 return;   // 🔴 IMPORTANTE
 
