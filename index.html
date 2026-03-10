@@ -1046,24 +1046,18 @@ document.getElementById("popupCupom").style.display="none";
 
 
 
-  /* ================= ABRIR TERMOS ================= */
+/* ================= ABRIR TERMOS ================= */
 
 document.addEventListener("DOMContentLoaded",()=>{
-const campo = document.getElementById("campoDataHora")
 
-const agora = new Date()
-agora.setMinutes(agora.getMinutes()-agora.getTimezoneOffset())
-
-campo.min = agora.toISOString().slice(0,16)
 const btnTermos = document.getElementById("abrirTermos");
 const modalTermos = document.getElementById("modalTermos");
 
 btnTermos.onclick = ()=>{
-  modalTermos.showModal();
+modalTermos.showModal();
 };
 
 });
-
   /* ================= CONTROLE DE HORÁRIO ================= */
 
 /* ================= CONTROLE INTELIGENTE DE HORÁRIO ================= */
