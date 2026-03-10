@@ -208,7 +208,7 @@ dialog::backdrop{
 }
 
 .modal-body{
-padding:22px;
+padding:22px 22px 10px 22px;
 
 max-height:calc(100vh - 120px);
 
@@ -229,8 +229,9 @@ overscroll-behavior:contain;
 
 /* FORM */
 form{
-  display:grid;
-  gap:16px;
+display:grid;
+gap:16px;
+padding-bottom:80px;
 }
 
 .row{
@@ -270,14 +271,28 @@ input:focus,textarea:focus{
 textarea{resize:none}
 
 .submit{
-  background:linear-gradient(180deg,var(--brand),var(--brand-dark));
-  border:none;
-  padding:15px;
-  font-weight:900;
-  font-size:15px;
-  border-radius:16px;
-  cursor:pointer;
-  transition:.2s;
+position:sticky;
+bottom:0;
+
+background:linear-gradient(180deg,var(--brand),var(--brand-dark));
+
+border:none;
+
+padding:18px;
+
+font-weight:900;
+
+font-size:16px;
+
+border-radius:14px;
+
+cursor:pointer;
+
+margin-top:10px;
+
+z-index:5;
+
+box-shadow:0 -8px 20px rgba(0,0,0,.6);
 }
 
 .submit:hover{
