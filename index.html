@@ -830,6 +830,26 @@ const params=new URLSearchParams(data);
 
 try{
 
+/* ================= VERIFICA SE JÁ EXISTE RESERVA ================= */
+
+const { data:existente } = await supabaseClient
+.from("reservas_mercatto")
+.select("id")
+.eq("datahora",data.get("datahora"))
+.limit(1);
+
+if(existente && existente.length){
+
+alert("⚠️ Já existe uma reserva nesse horário.");
+
+document.getElementById("overlayLoading").style.display="none";
+
+return;
+
+}
+
+/* ================= INSERE RESERVA ================= */
+
 const { error } = await supabaseClient
 .from("reservas_mercatto")
 .insert({
@@ -837,7 +857,7 @@ nome:data.get("nome"),
 email:data.get("email"),
 telefone:data.get("telefone"),
 pessoas:Number(data.get("pessoas")),
-datahora:data.get("datahora"),
+datahora:new Date(data.get("datahora")).toISOString(),
 observacoes:data.get("observacoes") || "",
 status:"Pendente",
 mesa:"Site Aniversário",
@@ -852,9 +872,10 @@ throw error;
 }
 
 await new Promise(r=>setTimeout(r,1200));
-  
-modal.close();
 
+document.getElementById("overlayLoading").style.display="none";
+
+modal.close();
 form.reset();
 
 const codigo="MERCATTO-"+Math.floor(100000+Math.random()*900000);
@@ -865,22 +886,30 @@ document.getElementById("cupomNome").innerText=nome;
 
 const dataFormatada=new Date(dataHora);
 
-const textoData=dataFormatada.toLocaleDateString("pt-BR")+" • "+dataFormatada.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+const textoData=
+dataFormatada.toLocaleDateString("pt-BR")+
+" • "+
+dataFormatada.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
 
 document.getElementById("cupomData").innerHTML=
 "📅 "+textoData;
+
 document.getElementById("cupomPessoas").innerHTML=
 "👥 "+pessoas+" pessoas";
 
 document.getElementById("cupomObs").innerHTML=
 observacoes ? "📝 "+observacoes : "";
+
 document.getElementById("popupCupom").style.display="flex";
-// salvar último cupom
+
+/* ================= SALVA ÚLTIMO CUPOM ================= */
+
 localStorage.setItem("ultimoCupom",JSON.stringify({
 nome:nome,
 data:textoData,
 codigo:codigo
 }));
+
 }catch(err){
 
 console.error("Erro Supabase:",err);
@@ -893,8 +922,6 @@ alert(
 document.getElementById("overlayLoading").style.display="none";
 
 }
-;
-
 
   
 document.addEventListener("DOMContentLoaded",()=>{
@@ -1064,13 +1091,7 @@ campoDataHora.value="";
 
 });
 </script>
-<div style="text-align:center">
-<div style="width:60px;height:60px;border:5px solid rgba(255,255,255,.2);border-top:5px solid #ffd700;border-radius:50%;animation:spin 1s linear infinite;margin:auto"></div>
-<p style="margin-top:18px;font-weight:700;color:#fff">
-Registrando sua reserva...
-</p>
-</div>
-</div>
+
   
 <div id="popupCupom" class="popupCupom" onclick="fecharCupom(event)">
 
