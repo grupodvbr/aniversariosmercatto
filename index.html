@@ -847,10 +847,15 @@ try{
 
 /* ================= VERIFICA SE JÁ EXISTE RESERVA ================= */
 
+const inicio = new Date(data.get("datahora"));
+const fim = new Date(inicio);
+fim.setMinutes(fim.getMinutes() + 1);
+
 const { data:existente } = await supabaseClient
 .from("reservas_mercatto")
 .select("id")
-.eq("datahora", new Date(data.get("datahora")).toISOString())
+.gte("datahora", inicio.toISOString())
+.lt("datahora", fim.toISOString())
 .limit(1);
 
 if(existente && existente.length){
@@ -872,7 +877,7 @@ nome:data.get("nome"),
 email:data.get("email"),
 telefone:data.get("telefone"),
 pessoas:Number(data.get("pessoas")),
-datahora:new Date(data.get("datahora")).toISOString(),
+datahora: dataReserva.toISOString(),
 observacoes:data.get("observacoes") || "",
 status:"Pendente",
 mesa:"Site Aniversário",
