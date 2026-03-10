@@ -717,7 +717,17 @@ placeholder="(77) 9 0000-0000">
         </div>
         <div>
           <label>Pessoas</label>
-          <input type="number" name="pessoas" min="1" required placeholder="Quantidade">
+<input
+type="number"
+name="pessoas"
+id="pessoas"
+required
+min="1"
+max="50"
+step="1"
+inputmode="numeric"
+pattern="[0-9]*"
+placeholder="Quantidade">
         </div>
       </div>
 
@@ -862,6 +872,22 @@ spinner.style.display="none";
 return;
 
 }
+
+const pessoas = data.get("pessoas");
+
+if(!pessoas || pessoas < 1){
+
+alert("Informe a quantidade de pessoas.");
+
+btn.disabled=false;
+texto.style.display="inline";
+spinner.style.display="none";
+
+return;
+
+}
+
+  
 const nome=data.get("nome");
 
 const dataSelecionada = document.getElementById("dataReserva").value;
@@ -1188,6 +1214,22 @@ v = v.replace(/^(\d{2})(\d{0,5})/,"($1) $2");
 else{
 v = v.replace(/^(\d*)/,"($1");
 }
+
+e.target.value = v;
+
+});
+
+
+
+/* ================= SOMENTE NUMERO EM PESSOAS ================= */
+
+const pessoasInput = document.getElementById("pessoas");
+
+pessoasInput.addEventListener("input", function(e){
+
+let v = e.target.value.replace(/\D/g,"");
+
+if(v.length > 2) v = v.slice(0,2);
 
 e.target.value = v;
 
