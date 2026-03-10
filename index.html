@@ -292,6 +292,11 @@ margin-top:10px;
 
 z-index:5;
 
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+
 box-shadow:0 -8px 20px rgba(0,0,0,.6);
 }
 
@@ -633,20 +638,6 @@ text-decoration:underline;
 opacity:.8;
 }
 
-
-#overlayLoading{
-position:fixed;
-top:0;
-left:0;
-width:100vw;
-height:100vh;
-background:rgba(0,0,0,.92);
-backdrop-filter:blur(6px);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:999999;
-}
 </style>
 </head>
 <body>
@@ -742,8 +733,22 @@ Termos da Reserva
 </label>
 
 </div>
-      <button class="submit" type="submit">Confirmar Reserva</button>
-    </form>
+<button class="submit" id="btnSubmit" type="submit">
+
+<span id="textoBtn">Confirmar Reserva</span>
+
+<span id="spinnerBtn" style="
+display:none;
+width:18px;
+height:18px;
+border:3px solid rgba(255,255,255,.4);
+border-top:3px solid #fff;
+border-radius:50%;
+animation:spin .8s linear infinite;
+"></span>
+
+</button>
+  </form>
 
     
 
@@ -806,7 +811,13 @@ window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
 form.onsubmit=async e=>{
 
 e.preventDefault();
+const btn = document.getElementById("btnSubmit");
+const texto = document.getElementById("textoBtn");
+const spinner = document.getElementById("spinnerBtn");
 
+btn.disabled = true;
+texto.style.display = "none";
+spinner.style.display = "inline-block";
 if(!document.getElementById("aceitarTermos").checked){
 alert("Você precisa aceitar os termos da reserva.");
 return;
@@ -879,6 +890,9 @@ alert(
 );
 
 document.getElementById("overlayLoading").style.display="none";
+btn.disabled = false;
+texto.style.display = "inline";
+spinner.style.display = "none";
 
 return;
 
@@ -1298,30 +1312,5 @@ Fechar
 </div>
 
 </dialog>
-
-<div id="overlayLoading">
-
-<div style="text-align:center">
-
-<div style="
-width:60px;
-height:60px;
-border:5px solid rgba(255,255,255,.2);
-border-top:5px solid #ffd700;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto">
-</div>
-
-<p style="
-margin-top:18px;
-font-weight:700;
-color:#fff">
-Registrando sua reserva...
-</p>
-
-</div>
-
-</div>
 </body>
 </html>
