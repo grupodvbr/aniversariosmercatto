@@ -834,13 +834,14 @@ fecharModal.onclick = () => {
   modal.close();
   document.body.style.overflow = "auto";
 };
-btnAtendente.onclick=()=>{
-const msg=encodeURIComponent("Olá! Quero fazer uma reserva no Mercatto Delícia.");
+btnAtendente.onclick = () => {
+const msg = encodeURIComponent("Olá! Quero fazer uma reserva no Mercatto Delícia.");
 window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
 };
 
-});
 document.getElementById("reservaForm").onsubmit = async e => {
+
+  
 e.preventDefault();
 const btn = document.getElementById("btnSubmit");
 const texto = document.getElementById("textoBtn");
@@ -1272,14 +1273,7 @@ link.click();
 }
 
 });
-const link=document.createElement("a");
 
-link.download="cupom-mercatto.png";
-link.href=canvas.toDataURL("image/png");
-
-link.click();
-
-});
 </script>
 
   
