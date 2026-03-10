@@ -861,7 +861,8 @@ return;
 }
 
 
-const data=new FormData(form);
+const form = document.getElementById("reservaForm");
+const data = new FormData(form);
 const email = data.get("email");
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1242,6 +1243,26 @@ modalTermos.showModal()
 }
 
 })
+
+
+document.getElementById("baixarCupom").addEventListener("click", async () => {
+
+const cupom = document.getElementById("cupom");
+
+const canvas = await html2canvas(cupom,{
+scale:5,
+backgroundColor:"#000",
+useCORS:true
+});
+
+const link=document.createElement("a");
+
+link.download="cupom-mercatto.png";
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+});
 </script>
 
   
