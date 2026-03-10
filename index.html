@@ -12,8 +12,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <title>Reservas • Mercatto Delícia</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  
 <meta name="color-scheme" content="dark" />
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -691,14 +691,29 @@ alt="Mercatto Delícia">
         </div>
         <div>
           <label>Email</label>
-          <input type="email" name="email" required placeholder="seu@email.com">
+<input
+type="email"
+name="email"
+id="email"
+required
+autocomplete="email"
+inputmode="email"
+pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+placeholder="seu@email.com">
         </div>
       </div>
 
       <div class="row">
         <div>
           <label>Telefone</label>
-          <input type="tel" name="telefone" required placeholder="(77) 9 0000-0000">
+<input
+type="tel"
+name="telefone"
+id="telefone"
+required
+maxlength="15"
+inputmode="numeric"
+placeholder="(77) 9 0000-0000">
         </div>
         <div>
           <label>Pessoas</label>
@@ -832,7 +847,21 @@ return;
 
 
 const data=new FormData(form);
+const email = data.get("email");
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!emailRegex.test(email)){
+
+alert("Digite um email válido.");
+
+btn.disabled=false;
+texto.style.display="inline";
+spinner.style.display="none";
+
+return;
+
+}
 const nome=data.get("nome");
 
 const dataSelecionada = document.getElementById("dataReserva").value;
@@ -1132,6 +1161,35 @@ horaSelect.appendChild(opt);
 });
 
 });
+
+});
+
+
+
+/* ================= MASCARA TELEFONE ================= */
+
+const telefoneInput = document.getElementById("telefone");
+
+telefoneInput.addEventListener("input", function(e){
+
+let v = e.target.value.replace(/\D/g,"");
+
+if(v.length > 11) v = v.slice(0,11);
+
+if(v.length > 10){
+v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/,"($1) $2-$3");
+}
+else if(v.length > 6){
+v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/,"($1) $2-$3");
+}
+else if(v.length > 2){
+v = v.replace(/^(\d{2})(\d{0,5})/,"($1) $2");
+}
+else{
+v = v.replace(/^(\d*)/,"($1");
+}
+
+e.target.value = v;
 
 });
 </script>
