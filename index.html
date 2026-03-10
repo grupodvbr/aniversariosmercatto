@@ -815,25 +815,25 @@ const supabaseClient = supabase.createClient(
   
   
   const WHATSAPP_NUMBER="557736135148";
+const modal = document.getElementById("modalReserva");
+const form = document.getElementById("reservaForm");
 
-document.addEventListener("DOMContentLoaded",()=>{
+const btnReservar = document.getElementById("btnReservar");
+const btnAtendente = document.getElementById("btnAtendente");
+const fecharModal = document.getElementById("fecharModal");
 
-const modal=document.getElementById("modalReserva");
-const btnReservar=document.getElementById("btnReservar");
-const btnAtendente=document.getElementById("btnAtendente");
-const fecharModal=document.getElementById("fecharModal");
-const form=document.getElementById("reservaForm");
-
-btnReservar.onclick=()=>{
-modal.showModal();
-document.body.style.overflow="hidden";
-};
-
-fecharModal.onclick=()=>{
 modal.close();
-document.body.style.overflow="auto";
+form.reset();
+
+btnReservar.onclick = () => {
+  modal.showModal();
+  document.body.style.overflow = "hidden";
 };
 
+fecharModal.onclick = () => {
+  modal.close();
+  document.body.style.overflow = "auto";
+};
 btnAtendente.onclick=()=>{
 const msg=encodeURIComponent("Olá! Quero fazer uma reserva no Mercatto Delícia.");
 window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
@@ -1092,14 +1092,6 @@ document.body.removeChild(area);
 
 /* DOWNLOAD */
 
-const link=document.createElement("a");
-
-link.download="cupom-mercatto.png";
-link.href=canvas.toDataURL("image/png");
-
-link.click();
-
-};
 
 function fecharCupom(e){
 
@@ -1187,7 +1179,11 @@ horaSelect.appendChild(opt);
 
 /* ================= MASCARA TELEFONE ================= */
 
+document.addEventListener("DOMContentLoaded",()=>{
+
 const telefoneInput = document.getElementById("telefone");
+
+if(telefoneInput){
 
 telefoneInput.addEventListener("input", function(e){
 
@@ -1209,6 +1205,10 @@ v = v.replace(/^(\d*)/,"($1");
 }
 
 e.target.value = v;
+
+});
+
+}
 
 });
 
