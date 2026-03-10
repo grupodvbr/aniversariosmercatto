@@ -672,14 +672,28 @@ alt="Mercatto Delícia">
       </div>
 
       <div>
-<label>Data e Hora da Reserva</label>
+<label>Data da Reserva</label>
 <input
-id="campoDataHora"
-type="datetime-local"
-name="datahora"
+id="dataReserva"
+type="date"
 required
-step="1800"
 >
+
+<label>Horário</label>
+<select
+id="horaReserva"
+required
+style="
+width:100%;
+padding:14px;
+border-radius:14px;
+border:1px solid var(--border);
+background:#0f131a;
+color:#fff;
+font-size:14px;
+">
+<option value="">Selecione um horário</option>
+</select>
       </div>
 
       <div>
@@ -790,8 +804,10 @@ const data=new FormData(form);
 
 const nome=data.get("nome");
 
-const dataHora = data.get("datahora");
+const dataSelecionada = document.getElementById("dataReserva").value;
+const horaSelecionada = document.getElementById("horaReserva").value;
 
+const dataHora = dataSelecionada + "T" + horaSelecionada;
 const partes = dataHora.split("T");
 
 const dataPart = partes[0].split("-");
@@ -1109,6 +1125,73 @@ alert(
 campoDataHora.value="";
 
 }
+
+});
+
+});
+
+/* ================= GERADOR DE HORÁRIOS ================= */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const dataInput = document.getElementById("dataReserva");
+const horaSelect = document.getElementById("horaReserva");
+
+dataInput.addEventListener("change",()=>{
+
+horaSelect.innerHTML='<option value="">Selecione um horário</option>';
+
+const data = new Date(dataInput.value);
+
+const dia = data.getDay();
+
+let horarios=[];
+
+/* SEGUNDA A QUINTA */
+
+if(dia>=1 && dia<=4){
+
+for(let h=11;h<=15;h++){
+
+horarios.push(`${String(h).padStart(2,"0")}:00`);
+horarios.push(`${String(h).padStart(2,"0")}:30`);
+
+}
+
+for(let h=17;h<=22;h++){
+
+horarios.push(`${String(h).padStart(2,"0")}:00`);
+horarios.push(`${String(h).padStart(2,"0")}:30`);
+
+}
+
+}
+
+/* SEXTA SABADO DOMINGO */
+
+if(dia==5 || dia==6 || dia==0){
+
+for(let h=11;h<=22;h++){
+
+horarios.push(`${String(h).padStart(2,"0")}:00`);
+horarios.push(`${String(h).padStart(2,"0")}:30`);
+
+}
+
+}
+
+/* ADICIONA NO SELECT */
+
+horarios.forEach(h=>{
+
+const opt=document.createElement("option");
+
+opt.value=h;
+opt.textContent=h;
+
+horaSelect.appendChild(opt);
+
+});
 
 });
 
