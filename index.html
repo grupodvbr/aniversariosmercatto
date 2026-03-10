@@ -776,14 +776,26 @@ const data=new FormData(form);
 
 const nome=data.get("nome");
 
-const dataHora=data.get("datahora");
-const dataReserva = new Date(dataHora);
+const dataHora = data.get("datahora");
 
-const dia = dataReserva.getDay(); 
-// 0=domingo 1=segunda 2=terça 3=quarta 4=quinta 5=sexta 6=sábado
+const partes = dataHora.split("T");
+
+const dataPart = partes[0].split("-");
+const horaPart = partes[1].split(":");
+
+const dataReserva = new Date(
+dataPart[0],
+dataPart[1]-1,
+dataPart[2],
+horaPart[0],
+horaPart[1]
+);
+
+const dia = dataReserva.getDay();
 
 const hora = dataReserva.getHours();
 const minuto = dataReserva.getMinutes();
+
 const horario = hora + minuto/60;
 
 let permitido = false;
@@ -838,7 +850,7 @@ try{
 const { data:existente } = await supabaseClient
 .from("reservas_mercatto")
 .select("id")
-.eq("datahora",data.get("datahora"))
+.eq("datahora", new Date(data.get("datahora")).toISOString())
 .limit(1);
 
 if(existente && existente.length){
