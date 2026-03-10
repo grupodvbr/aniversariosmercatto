@@ -1124,18 +1124,6 @@ document.getElementById("popupCupom").style.display="none";
 
 
 
-/* ================= ABRIR TERMOS ================= */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-const btnTermos = document.getElementById("abrirTermos");
-const modalTermos = document.getElementById("modalTermos");
-
-btnTermos.onclick = ()=>{
-modalTermos.showModal();
-};
-
-});
 
 /* ================= GERADOR DE HORÁRIOS ================= */
 
@@ -1236,6 +1224,19 @@ e.target.value = v;
 
 
 /* ================= SOMENTE NUMERO EM PESSOAS ================= */
+
+const pessoasInput = document.getElementById("pessoas");
+
+pessoasInput.addEventListener("input", function(e){
+
+let v = e.target.value.replace(/\D/g,"");
+
+if(v.length > 2) v = v.slice(0,2);
+
+e.target.value = v;
+
+});
+
 
 const pessoasInput = document.getElementById("pessoas");
 
