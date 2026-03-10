@@ -735,6 +735,7 @@ placeholder="Quantidade">
 <label>Data da Reserva</label>
 <input
 id="dataReserva"
+name="dataReserva"
 type="date"
 required
 >
@@ -964,7 +965,6 @@ return;
 
 }
 const observacoes=data.get("observacoes");
-const params=new URLSearchParams(data);
 
 try{
 
@@ -1244,8 +1244,13 @@ modalTermos.showModal()
 
 })
 
+document.addEventListener("DOMContentLoaded",()=>{
 
-document.getElementById("baixarCupom").addEventListener("click", async () => {
+const btnBaixar = document.getElementById("baixarCupom");
+
+if(btnBaixar){
+
+btnBaixar.addEventListener("click", async () => {
 
 const cupom = document.getElementById("cupom");
 
@@ -1255,6 +1260,18 @@ backgroundColor:"#000",
 useCORS:true
 });
 
+const link=document.createElement("a");
+
+link.download="cupom-mercatto.png";
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+});
+
+}
+
+});
 const link=document.createElement("a");
 
 link.download="cupom-mercatto.png";
