@@ -801,12 +801,12 @@ const horario = hora + minuto/60;
 let permitido = false;
 
 /* SEGUNDA A QUINTA */
-/* SEGUNDA A QUINTA */
-if(dia >=1 && dia <=4){
+
+if(dia >= 1 && dia <= 4){
 
   if(
     (horario >= 11 && horario <= 15) ||
-    (horario >= 17 && horario <= 19)
+    (horario >= 17 && horario <= 22)
   ){
     permitido = true;
   }
@@ -817,12 +817,12 @@ if(dia >=1 && dia <=4){
 
 if(dia == 5 || dia == 6 || dia == 0){
 
-  if(horario >= 11 && horario <= 19){
+  if(horario >= 11 && horario <= 22){
     permitido = true;
   }
 
 }
-
+  
 if(!permitido){
 
 alert(
@@ -1054,22 +1054,20 @@ const horario = hora + minuto/60;
 
 let permitido = false;
 
-/* SEGUNDA A QUINTA */
-if(dia >=1 && dia <=4){
+if(dia >= 1 && dia <= 4){
 
 if(
 (horario >= 11 && horario <= 15) ||
-(horario >= 17 && horario <= 19)
+(horario >= 17 && horario <= 22)
 ){
 permitido = true;
 }
 
 }
 
-/* SEXTA SABADO DOMINGO */
 if(dia == 5 || dia == 6 || dia == 0){
 
-if(horario >= 11 && horario <= 19){
+if(horario >= 11 && horario <= 22){
 permitido = true;
 }
 
@@ -1081,9 +1079,9 @@ alert(
 "Horário inválido.\n\n"+
 "Segunda a Quinta\n"+
 "11:00 às 15:00\n"+
-"17:00 às 19:00\n\n"+
+"17:00 às 22:00\n\n"+
 "Sexta, Sábado e Domingo\n"+
-"11:00 às 19:00"
+"11:00 às 22:00"
 );
 
 campoDataHora.value="";
