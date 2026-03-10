@@ -839,17 +839,7 @@ window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
 };
 
 });
-fecharModal.onclick=()=>{
-modal.close();
-document.body.style.overflow="auto";
-};
-btnAtendente.onclick=()=>{
-const msg=encodeURIComponent("Olá! Quero fazer uma reserva no Mercatto Delícia.");
-window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,"_blank");
-};
-
-form.onsubmit=async e=>{
-
+document.getElementById("reservaForm").onsubmit = async e => {
 e.preventDefault();
 const btn = document.getElementById("btnSubmit");
 const texto = document.getElementById("textoBtn");
